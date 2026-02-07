@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.agent;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
@@ -10,6 +9,8 @@ import java.util.Objects;
 import java.util.Properties;
 
 class JdkPatcher {
+
+	private static final Logger log = LoggerFactory.getLogger(JdkPatcher.class);
 
 	private static final String INSTRUMENT_32_BIT = "jdk_patch/instrument-32.dll";
 	private static final String INSTRUMENT_64_BIT = "jdk_patch/instrument-64.dll";

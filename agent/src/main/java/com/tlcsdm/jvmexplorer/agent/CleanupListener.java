@@ -19,8 +19,9 @@ public class CleanupListener extends Listener {
 	}
 
 
-	public CleanupListener(ExecutorService executorService) {
+	public CleanupListener(ExecutorService executorService, AgentFileLogger agentFileLogger) {
 		this.executorService = executorService;
+		this.agentFileLogger = agentFileLogger;
 	}
 
 }

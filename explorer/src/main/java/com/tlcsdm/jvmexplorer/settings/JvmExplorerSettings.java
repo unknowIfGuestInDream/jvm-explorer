@@ -98,26 +98,6 @@ public class JvmExplorerSettings {
 	}
 
 
-	public JvmExplorerSettings(static final Gson GSON, SimpleBooleanProperty showClassLoader, SimpleDoubleProperty firstDividerPosition, SimpleDoubleProperty secondDividerPosition, SimpleDoubleProperty width, SimpleDoubleProperty height, SimpleBooleanProperty maximized, SimpleDoubleProperty x, SimpleDoubleProperty y) {
-		this.GSON = GSON;
-		this.showClassLoader = showClassLoader;
-		this.firstDividerPosition = firstDividerPosition;
-		this.secondDividerPosition = secondDividerPosition;
-		this.width = width;
-		this.height = height;
-		this.maximized = maximized;
-		this.x = x;
-		this.y = y;
-	}
-
-
-	public JvmExplorerSettings() {
-	}
-
-	public static final Gson getGSON() {
-		return this.GSON;
-	}
-
 	public SimpleBooleanProperty getShowClassLoader() {
 		return this.showClassLoader;
 	}
@@ -150,25 +130,22 @@ public class JvmExplorerSettings {
 		return this.y;
 	}
 
-
 	@Override
 	public String toString() {
-		return "JvmExplorerSettings(" + "GSON=" + GSON + ", showClassLoader=" + showClassLoader + ", firstDividerPosition=" + firstDividerPosition + ", secondDividerPosition=" + secondDividerPosition + ", width=" + width + ", height=" + height + ", maximized=" + maximized + ", x=" + x + ", y=" + y" + ")";
+		return "JvmExplorerSettings()";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		JvmExplorerSettings other = (JvmExplorerSettings) o;
-		return java.util.Objects.equals(this.GSON, other.GSON) && java.util.Objects.equals(this.showClassLoader, other.showClassLoader) && java.util.Objects.equals(this.firstDividerPosition, other.firstDividerPosition) && java.util.Objects.equals(this.secondDividerPosition, other.secondDividerPosition) && java.util.Objects.equals(this.width, other.width) && java.util.Objects.equals(this.height, other.height) && java.util.Objects.equals(this.maximized, other.maximized) && java.util.Objects.equals(this.x, other.x) && java.util.Objects.equals(this.y, other.y);
+		return true;
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(GSON, showClassLoader, firstDividerPosition, secondDividerPosition, width, height, maximized, x, y);
+		return 0;
 	}
 
 }

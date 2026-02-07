@@ -1,8 +1,8 @@
 package com.tlcsdm.jvmexplorer.net;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -11,6 +11,8 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 class PacketResponseHandler<T> {
+
+	private static final Logger log = LoggerFactory.getLogger(PacketResponseHandler.class);
 
 	private static final Object INTERRUPT = new Object();
 
@@ -91,10 +93,9 @@ class PacketResponseHandler<T> {
 	}
 
 
-	public PacketResponseHandler(Runnable onCleanup, Consumer<Integer> onUpdateCount, BlockingQueue<Object> linkedBlockingQueue) {
+	public PacketResponseHandler(Runnable onCleanup, Consumer<Integer> onUpdateCount) {
 		this.onCleanup = onCleanup;
 		this.onUpdateCount = onUpdateCount;
-		this.linkedBlockingQueue = linkedBlockingQueue;
 	}
 
 }

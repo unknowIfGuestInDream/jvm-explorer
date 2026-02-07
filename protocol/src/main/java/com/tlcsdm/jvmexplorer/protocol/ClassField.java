@@ -19,8 +19,9 @@ public class ClassField {
 		this.value = value;
 	}
 
-
 	public ClassField() {
+		this.classFieldKey = null;
+		this.value = null;
 	}
 
 	public ClassFieldKey getClassFieldKey() {
@@ -31,7 +32,6 @@ public class ClassField {
 		return this.value;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -40,6 +40,9 @@ public class ClassField {
 		return java.util.Objects.equals(this.classFieldKey, other.classFieldKey) && java.util.Objects.equals(this.value, other.value);
 	}
 
+	public ClassField withValue(Object value) {
+		return new ClassField(this.classFieldKey, value);
+	}
 
 	@Override
 	public int hashCode() {

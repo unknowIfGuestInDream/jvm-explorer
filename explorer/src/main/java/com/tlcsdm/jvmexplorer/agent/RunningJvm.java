@@ -105,8 +105,9 @@ public class RunningJvm {
 		this.name = name;
 	}
 
-
 	public RunningJvm() {
+		this.id = null;
+		this.name = null;
 	}
 
 	public String getId() {
@@ -117,7 +118,6 @@ public class RunningJvm {
 		return this.name;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -125,7 +125,6 @@ public class RunningJvm {
 		RunningJvm other = (RunningJvm) o;
 		return java.util.Objects.equals(this.id, other.id) && java.util.Objects.equals(this.name, other.name);
 	}
-
 
 	@Override
 	public int hashCode() {

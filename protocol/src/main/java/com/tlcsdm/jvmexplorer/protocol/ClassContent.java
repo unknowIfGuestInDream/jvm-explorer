@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
-
 public class ClassContent {
 
 	private final LoadedClass loadedClass;
@@ -14,8 +13,10 @@ public class ClassContent {
 		this.classFields = classFields;
 	}
 
-
 	public ClassContent() {
+		this.loadedClass = null;
+		this.classContent = null;
+		this.classFields = null;
 	}
 
 	public LoadedClass getLoadedClass() {
@@ -30,12 +31,10 @@ public class ClassContent {
 		return this.classFields;
 	}
 
-
 	@Override
 	public String toString() {
-		return "ClassContent(" + "loadedClass=" + loadedClass + ", classContent=" + classContent + ", classFields=" + classFields" + ")";
+		return "ClassContent(loadedClass=" + loadedClass + ", classContent=" + classContent + ", classFields=" + classFields + ")";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -44,7 +43,6 @@ public class ClassContent {
 		ClassContent other = (ClassContent) o;
 		return java.util.Objects.equals(this.loadedClass, other.loadedClass) && java.util.Objects.equals(this.classContent, other.classContent) && java.util.Objects.equals(this.classFields, other.classFields);
 	}
-
 
 	@Override
 	public int hashCode() {

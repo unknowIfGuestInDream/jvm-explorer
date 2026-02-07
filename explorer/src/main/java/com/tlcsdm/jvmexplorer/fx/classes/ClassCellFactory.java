@@ -592,11 +592,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 
-	public ClassCellFactory(PatchHelper patchHelper, ClassTreeHelper classTreeHelper, FileHelper fileHelper, RemoteCodeHelper remoteCodeHelper, ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm, ClientHandler clientHandler, FilterableTreeItem<ClassTreeNode> classesTreeRoot, ExportHelper exportHelper, Consumer<RunningJvm> onLoadClasses, JvmExplorerSettings settings) {
-		this.patchHelper = patchHelper;
-		this.classTreeHelper = classTreeHelper;
-		this.fileHelper = fileHelper;
-		this.remoteCodeHelper = remoteCodeHelper;
+	public ClassCellFactory(ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm, ClientHandler clientHandler, FilterableTreeItem<ClassTreeNode> classesTreeRoot, ExportHelper exportHelper, Consumer<RunningJvm> onLoadClasses, JvmExplorerSettings settings) {
 		this.executorService = executorService;
 		this.alertHelper = alertHelper;
 		this.currentJvm = currentJvm;

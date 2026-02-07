@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.bytecode.compile;
 
-
 public class CompileResult {
 
 	private final String stdOut;
@@ -14,8 +13,10 @@ public class CompileResult {
 		this.classContent = classContent;
 	}
 
-
 	public CompileResult() {
+		this.stdOut = null;
+		this.success = false;
+		this.classContent = null;
 	}
 
 	public String getStdOut() {
@@ -30,12 +31,10 @@ public class CompileResult {
 		return this.classContent;
 	}
 
-
 	@Override
 	public String toString() {
-		return "CompileResult(" + "stdOut=" + stdOut + ", success=" + success + ", classContent=" + classContent" + ")";
+		return "CompileResult(stdOut=" + stdOut + ", success=" + success + ", classContent=" + classContent + ")";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -45,12 +44,10 @@ public class CompileResult {
 		return java.util.Objects.equals(this.stdOut, other.stdOut) && java.util.Objects.equals(this.success, other.success) && java.util.Objects.equals(this.classContent, other.classContent);
 	}
 
-
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(stdOut, success, classContent);
 	}
-
 
 	public static CompileResultBuilder builder() {
 		return new CompileResultBuilder();
@@ -65,10 +62,12 @@ public class CompileResult {
 			this.stdOut = stdOut;
 			return this;
 		}
+
 		public CompileResultBuilder success(boolean success) {
 			this.success = success;
 			return this;
 		}
+
 		public CompileResultBuilder classContent(byte[] classContent) {
 			this.classContent = classContent;
 			return this;

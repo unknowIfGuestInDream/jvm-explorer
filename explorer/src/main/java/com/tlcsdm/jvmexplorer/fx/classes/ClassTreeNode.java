@@ -18,7 +18,6 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	private static final Logger log = LoggerFactory.getLogger(ClassTreeNode.class);
 
 
-	@Getter(AccessLevel.PRIVATE)
 	private final Map<String, ClassTreeNode> children = new HashMap<>();
 	private final LoadedClass loadedClass;
 	private final String packageSegment;
@@ -84,6 +83,10 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 		return toDetailedString(0);
 	}
 
+	private Map<String, ClassTreeNode> getChildren() {
+		return this.children;
+	}
+
 	private String toDetailedString(int indent) {
 		final String nodeString = getType() + "-" + this;
 		final String childrenString = getChildren().entrySet()
@@ -123,6 +126,11 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 		CLASSLOADER("icons/classloader.png"), PACKAGE("icons/package.png"), CLASS("icons/class.png"),
 		;
 		private final String imagePath;
+
+		Type(String imagePath) {
+			this.imagePath = imagePath;
+		}
+
 		private volatile Image image;
 
 		public Image getImage() {
@@ -139,21 +147,16 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 
-	public ClassTreeNode(Map<String, ClassTreeNode> children, LoadedClass loadedClass, String packageSegment, ClassLoaderDescriptor classLoaderDescriptor, String imagePath, volatile Image image) {
-		this.children = children;
+	public ClassTreeNode(LoadedClass loadedClass, String packageSegment, ClassLoaderDescriptor classLoaderDescriptor) {
 		this.loadedClass = loadedClass;
 		this.packageSegment = packageSegment;
 		this.classLoaderDescriptor = classLoaderDescriptor;
-		this.imagePath = imagePath;
-		this.image = image;
 	}
-
 
 	public ClassTreeNode() {
-	}
-
-	public Map<String, ClassTreeNode> getChildren() {
-		return this.children;
+		this.loadedClass = null;
+		this.packageSegment = null;
+		this.classLoaderDescriptor = null;
 	}
 
 	public LoadedClass getLoadedClass() {
@@ -168,23 +171,17 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 		return this.classLoaderDescriptor;
 	}
 
-	public String getImagePath() {
-		return this.imagePath;
-	}
-
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ClassTreeNode other = (ClassTreeNode) o;
-		return java.util.Objects.equals(this.children, other.children) && java.util.Objects.equals(this.loadedClass, other.loadedClass) && java.util.Objects.equals(this.packageSegment, other.packageSegment) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor) && java.util.Objects.equals(this.imagePath, other.imagePath) && java.util.Objects.equals(this.image, other.image);
+		return java.util.Objects.equals(this.loadedClass, other.loadedClass) && java.util.Objects.equals(this.packageSegment, other.packageSegment) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor);
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(children, loadedClass, packageSegment, classLoaderDescriptor, imagePath, image);
+		return java.util.Objects.hash(loadedClass, packageSegment, classLoaderDescriptor);
 	}
 
 }

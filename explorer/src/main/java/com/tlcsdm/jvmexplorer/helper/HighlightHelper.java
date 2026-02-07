@@ -60,53 +60,41 @@ public class HighlightHelper {
 		return context;
 	}
 
-		public static class HighlightContext {
+	public static class HighlightContext {
 		private final Set<String> matchKeys;
 		private final Pattern pattern;
-	}
 
+		public HighlightContext(Set<String> matchKeys, Pattern pattern) {
+			this.matchKeys = matchKeys;
+			this.pattern = pattern;
+		}
 
-	public HighlightHelper(static final HighlightContext DEFAULT_CONTEXT, Set<String> matchKeys, Pattern pattern) {
-		this.DEFAULT_CONTEXT = DEFAULT_CONTEXT;
-		this.matchKeys = matchKeys;
-		this.pattern = pattern;
-	}
+		public Set<String> getMatchKeys() {
+			return this.matchKeys;
+		}
 
-
-	public HighlightHelper() {
-	}
-
-	public static final HighlightContext getDEFAULT_CONTEXT() {
-		return this.DEFAULT_CONTEXT;
-	}
-
-	public Set<String> getMatchKeys() {
-		return this.matchKeys;
-	}
-
-	public Pattern getPattern() {
-		return this.pattern;
+		public Pattern getPattern() {
+			return this.pattern;
+		}
 	}
 
 
 	@Override
 	public String toString() {
-		return "HighlightHelper(" + "DEFAULT_CONTEXT=" + DEFAULT_CONTEXT + ", matchKeys=" + matchKeys + ", pattern=" + pattern" + ")";
+		return "HighlightHelper()";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		HighlightHelper other = (HighlightHelper) o;
-		return java.util.Objects.equals(this.DEFAULT_CONTEXT, other.DEFAULT_CONTEXT) && java.util.Objects.equals(this.matchKeys, other.matchKeys) && java.util.Objects.equals(this.pattern, other.pattern);
+		return true;
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(DEFAULT_CONTEXT, matchKeys, pattern);
+		return 0;
 	}
 
 }

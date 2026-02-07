@@ -65,6 +65,10 @@ public class AgentFileLogger extends Log.Logger {
 		private class Print implements Runnable {
 		private final String message;
 
+		Print(String message) {
+			this.message = message;
+		}
+
 		@Override
 		public void run() {
 			AgentFileLogger.this.printMessage(message);
@@ -72,11 +76,10 @@ public class AgentFileLogger extends Log.Logger {
 	}
 
 
-	public AgentFileLogger(ExecutorService executorService, File outputFile, boolean append, String message) {
+	public AgentFileLogger(ExecutorService executorService, File outputFile, boolean append) {
 		this.executorService = executorService;
 		this.outputFile = outputFile;
 		this.append = append;
-		this.message = message;
 	}
 
 }

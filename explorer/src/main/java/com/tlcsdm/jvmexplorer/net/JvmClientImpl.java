@@ -28,11 +28,11 @@ public class JvmClientImpl extends Connection implements JvmClient {
 	private final Map<PacketType, PacketResponseHandler<?>> packetResponseHandlers = new ConcurrentHashMap<>();
 	private final ScheduledExecutorService executorService;
 
-		private final JvmConnection jvmConnection;
+	private final JvmConnection jvmConnection;
 
-		private volatile Consumer<RunningJvm> onRegister;
+	private volatile Consumer<RunningJvm> onRegister;
 
-		private volatile RunningJvm runningJvm;
+	private volatile RunningJvm runningJvm;
 
 	public JvmClientImpl(ScheduledExecutorService executorService) {
 		this.executorService = executorService;
@@ -117,36 +117,17 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		return packetResponseHandler.getPacketStream(300, TimeUnit.SECONDS);
 	}
 
-	public ScheduledExecutorService getExecutorService() {
-		return this.executorService;
-	}
 
 	public JvmConnection getJvmConnection() {
 		return this.jvmConnection;
 	}
 
-	public volatile Consumer<RunningJvm> getOnRegister() {
-		return this.onRegister;
-	}
-
-	public volatile RunningJvm getRunningJvm() {
-		return this.runningJvm;
-	}
-
-	public void setExecutorService(ScheduledExecutorService executorService) {
-		this.executorService = executorService;
-	}
-
-	public void setJvmConnection(JvmConnection jvmConnection) {
-		this.jvmConnection = jvmConnection;
-	}
-
-	public void setOnRegister(volatile Consumer<RunningJvm> onRegister) {
+	public void setOnRegister(Consumer<RunningJvm> onRegister) {
 		this.onRegister = onRegister;
 	}
 
-	public void setRunningJvm(volatile RunningJvm runningJvm) {
-		this.runningJvm = runningJvm;
+	public RunningJvm getRunningJvm() {
+		return this.runningJvm;
 	}
 
 }

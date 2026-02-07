@@ -29,8 +29,11 @@ public class ClassFieldKey {
 		this.modifiers = modifiers;
 	}
 
-
 	public ClassFieldKey() {
+		this.className = null;
+		this.fieldName = null;
+		this.typeName = null;
+		this.modifiers = 0;
 	}
 
 	public String getClassName() {
@@ -49,7 +52,6 @@ public class ClassFieldKey {
 		return this.modifiers;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -57,7 +59,6 @@ public class ClassFieldKey {
 		ClassFieldKey other = (ClassFieldKey) o;
 		return java.util.Objects.equals(this.className, other.className) && java.util.Objects.equals(this.fieldName, other.fieldName) && java.util.Objects.equals(this.typeName, other.typeName) && java.util.Objects.equals(this.modifiers, other.modifiers);
 	}
-
 
 	@Override
 	public int hashCode() {

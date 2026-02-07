@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
-
 public class ClassFields {
 
 	private final ClassField[] fields;
@@ -10,20 +9,18 @@ public class ClassFields {
 		this.fields = fields;
 	}
 
-
 	public ClassFields() {
+		this.fields = null;
 	}
 
 	public ClassField[] getFields() {
 		return this.fields;
 	}
 
-
 	@Override
 	public String toString() {
-		return "ClassFields(" + "fields=" + fields" + ")";
+		return "ClassFields(fields=" + fields + ")";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -32,7 +29,6 @@ public class ClassFields {
 		ClassFields other = (ClassFields) o;
 		return java.util.Objects.equals(this.fields, other.fields);
 	}
-
 
 	@Override
 	public int hashCode() {

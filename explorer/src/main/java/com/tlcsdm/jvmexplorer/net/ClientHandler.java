@@ -101,37 +101,31 @@ public class ClientHandler extends Listener {
 	}
 
 
-	public ClientHandler(Set<JvmClientImpl> clients, BiConsumer<RunningJvm, Connection> onConnect, Consumer<RunningJvm> onDisconnect) {
-		this.clients = clients;
+	public ClientHandler(BiConsumer<RunningJvm, Connection> onConnect, Consumer<RunningJvm> onDisconnect) {
 		this.onConnect = onConnect;
 		this.onDisconnect = onDisconnect;
 	}
-
 
 	public static ClientHandlerBuilder builder() {
 		return new ClientHandlerBuilder();
 	}
 
 	public static class ClientHandlerBuilder {
-		private Set<JvmClientImpl> clients;
 		private BiConsumer<RunningJvm, Connection> onConnect;
 		private Consumer<RunningJvm> onDisconnect;
 
-		public ClientHandlerBuilder clients(Set<JvmClientImpl> clients) {
-			this.clients = clients;
-			return this;
-		}
 		public ClientHandlerBuilder onConnect(BiConsumer<RunningJvm, Connection> onConnect) {
 			this.onConnect = onConnect;
 			return this;
 		}
+
 		public ClientHandlerBuilder onDisconnect(Consumer<RunningJvm> onDisconnect) {
 			this.onDisconnect = onDisconnect;
 			return this;
 		}
 
 		public ClientHandler build() {
-			return new ClientHandler(clients, onConnect, onDisconnect);
+			return new ClientHandler(onConnect, onDisconnect);
 		}
 	}
 

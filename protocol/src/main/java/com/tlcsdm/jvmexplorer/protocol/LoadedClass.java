@@ -72,8 +72,10 @@ public class LoadedClass implements Comparable<LoadedClass> {
 		this.metaType = metaType;
 	}
 
-
 	public LoadedClass() {
+		this.name = null;
+		this.classLoaderDescriptor = null;
+		this.metaType = null;
 	}
 
 	public String getName() {
@@ -88,19 +90,17 @@ public class LoadedClass implements Comparable<LoadedClass> {
 		return this.metaType;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		LoadedClass other = (LoadedClass) o;
-		return java.util.Objects.equals(this.name, other.name) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor) && java.util.Objects.equals(this.metaType, other.metaType);
+		return java.util.Objects.equals(this.name, other.name) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor);
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(name, classLoaderDescriptor, metaType);
+		return java.util.Objects.hash(name, classLoaderDescriptor);
 	}
 
 }

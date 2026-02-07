@@ -153,6 +153,10 @@ public class JvmConnectionImpl implements JvmConnection {
 		private class PacketProcessor implements Runnable {
 		private final PacketType packetType;
 
+		PacketProcessor(PacketType packetType) {
+			this.packetType = packetType;
+		}
+
 		@Override
 		public void run() {
 			Log.debug("Received packet request for " + packetType);
@@ -175,13 +179,12 @@ public class JvmConnectionImpl implements JvmConnection {
 	}
 
 
-	public JvmConnectionImpl(JvmClient jvmClient, InstrumentationHelper instrumentationHelper, Client client, ExecutorService executorService, ClassLoaderStore classLoaderStore, PacketType packetType) {
+	public JvmConnectionImpl(JvmClient jvmClient, InstrumentationHelper instrumentationHelper, Client client, ExecutorService executorService, ClassLoaderStore classLoaderStore) {
 		this.jvmClient = jvmClient;
 		this.instrumentationHelper = instrumentationHelper;
 		this.client = client;
 		this.executorService = executorService;
 		this.classLoaderStore = classLoaderStore;
-		this.packetType = packetType;
 	}
 
 }

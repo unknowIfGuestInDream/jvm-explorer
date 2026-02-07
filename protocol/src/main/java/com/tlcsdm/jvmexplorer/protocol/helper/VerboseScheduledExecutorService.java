@@ -112,6 +112,10 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 		private static class VerboseRunnable implements Runnable {
 		private final Runnable runnable;
 
+		public VerboseRunnable(Runnable runnable) {
+			this.runnable = runnable;
+		}
+
 		@Override
 		public void run() {
 			try {

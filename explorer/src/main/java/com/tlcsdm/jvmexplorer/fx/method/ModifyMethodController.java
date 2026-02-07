@@ -346,8 +346,22 @@ public class ModifyMethodController {
 		           "// The following method body will be called before the rest of the method"),
 		REPLACE("Replace Method Body", true, "// The following method body will replace the specified method body");
 		private final String description;
-				private final boolean expectsReturnValue;
-				private final String comment;
+		private final boolean expectsReturnValue;
+		private final String comment;
+
+		ModifyType(String description, boolean expectsReturnValue, String comment) {
+			this.description = description;
+			this.expectsReturnValue = expectsReturnValue;
+			this.comment = comment;
+		}
+
+		public boolean isExpectsReturnValue() {
+			return this.expectsReturnValue;
+		}
+
+		public String getComment() {
+			return this.comment;
+		}
 
 		@Override
 		public String toString() {
@@ -357,6 +371,14 @@ public class ModifyMethodController {
 
 		private static class MethodDescriptor {
 		private final MethodNode methodNode;
+
+		public MethodDescriptor(MethodNode methodNode) {
+			this.methodNode = methodNode;
+		}
+
+		public MethodNode getMethodNode() {
+			return this.methodNode;
+		}
 
 		@Override
 		public String toString() {
@@ -383,9 +405,7 @@ public class ModifyMethodController {
 	}
 
 
-	public ModifyMethodController(static final String CLASS_NAME, static final String METHOD_NAME, CodeArea code, TextArea output, ComboBox<ModifyType> modifyType, ComboBox<MethodDescriptor> method, Button compileButton, Button modifyButton, ExecutorService executorService, ClientHandler clientHandler, RunningJvm runningJvm, LoadedClass initialClass, List<LoadedClass> classpath, Consumer<Boolean> onClose, byte[] classFile, ClassNode classNode, StringBinding template, String description, boolean expectsReturnValue, String comment, MethodNode methodNode) {
-		this.CLASS_NAME = CLASS_NAME;
-		this.METHOD_NAME = METHOD_NAME;
+	public ModifyMethodController(CodeArea code, TextArea output, ComboBox<ModifyType> modifyType, ComboBox<MethodDescriptor> method, Button compileButton, Button modifyButton, ExecutorService executorService, ClientHandler clientHandler, RunningJvm runningJvm, LoadedClass initialClass, List<LoadedClass> classpath, Consumer<Boolean> onClose, byte[] classFile, ClassNode classNode, StringBinding template) {
 		this.code = code;
 		this.output = output;
 		this.modifyType = modifyType;
@@ -401,22 +421,9 @@ public class ModifyMethodController {
 		this.classFile = classFile;
 		this.classNode = classNode;
 		this.template = template;
-		this.description = description;
-		this.expectsReturnValue = expectsReturnValue;
-		this.comment = comment;
-		this.methodNode = methodNode;
 	}
-
 
 	public ModifyMethodController() {
-	}
-
-	public static final String getCLASS_NAME() {
-		return this.CLASS_NAME;
-	}
-
-	public static final String getMETHOD_NAME() {
-		return this.METHOD_NAME;
 	}
 
 	public CodeArea getCode() {
@@ -479,35 +486,17 @@ public class ModifyMethodController {
 		return this.template;
 	}
 
-	public String getDescription() {
-		return this.description;
-	}
-
-	public boolean isExpectsReturnValue() {
-		return this.expectsReturnValue;
-	}
-
-	public String getComment() {
-		return this.comment;
-	}
-
-	public MethodNode getMethodNode() {
-		return this.methodNode;
-	}
-
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ModifyMethodController other = (ModifyMethodController) o;
-		return java.util.Objects.equals(this.CLASS_NAME, other.CLASS_NAME) && java.util.Objects.equals(this.METHOD_NAME, other.METHOD_NAME) && java.util.Objects.equals(this.code, other.code) && java.util.Objects.equals(this.output, other.output) && java.util.Objects.equals(this.modifyType, other.modifyType) && java.util.Objects.equals(this.method, other.method) && java.util.Objects.equals(this.compileButton, other.compileButton) && java.util.Objects.equals(this.modifyButton, other.modifyButton) && java.util.Objects.equals(this.executorService, other.executorService) && java.util.Objects.equals(this.clientHandler, other.clientHandler) && java.util.Objects.equals(this.runningJvm, other.runningJvm) && java.util.Objects.equals(this.initialClass, other.initialClass) && java.util.Objects.equals(this.classpath, other.classpath) && java.util.Objects.equals(this.onClose, other.onClose) && java.util.Objects.equals(this.classFile, other.classFile) && java.util.Objects.equals(this.classNode, other.classNode) && java.util.Objects.equals(this.template, other.template) && java.util.Objects.equals(this.description, other.description) && java.util.Objects.equals(this.expectsReturnValue, other.expectsReturnValue) && java.util.Objects.equals(this.comment, other.comment) && java.util.Objects.equals(this.methodNode, other.methodNode);
+		return java.util.Objects.equals(this.code, other.code) && java.util.Objects.equals(this.output, other.output) && java.util.Objects.equals(this.modifyType, other.modifyType) && java.util.Objects.equals(this.method, other.method) && java.util.Objects.equals(this.compileButton, other.compileButton) && java.util.Objects.equals(this.modifyButton, other.modifyButton) && java.util.Objects.equals(this.executorService, other.executorService) && java.util.Objects.equals(this.clientHandler, other.clientHandler) && java.util.Objects.equals(this.runningJvm, other.runningJvm) && java.util.Objects.equals(this.initialClass, other.initialClass) && java.util.Objects.equals(this.classpath, other.classpath) && java.util.Objects.equals(this.onClose, other.onClose) && java.util.Objects.equals(this.classFile, other.classFile) && java.util.Objects.equals(this.classNode, other.classNode) && java.util.Objects.equals(this.template, other.template);
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(CLASS_NAME, METHOD_NAME, code, output, modifyType, method, compileButton, modifyButton, executorService, clientHandler, runningJvm, initialClass, classpath, onClose, classFile, classNode, template, description, expectsReturnValue, comment, methodNode);
+		return java.util.Objects.hash(code, output, modifyType, method, compileButton, modifyButton, executorService, clientHandler, runningJvm, initialClass, classpath, onClose, classFile, classNode, template);
 	}
 
 }

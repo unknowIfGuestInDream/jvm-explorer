@@ -22,6 +22,11 @@ public class ClientListener extends Listener {
 		private final JvmClient jvmClient;
 		private final String identifier;
 
+		Register(JvmClient jvmClient, String identifier) {
+			this.jvmClient = jvmClient;
+			this.identifier = identifier;
+		}
+
 		@Override
 		public void run() {
 			jvmClient.register(identifier);
@@ -30,12 +35,10 @@ public class ClientListener extends Listener {
 	}
 
 
-	public ClientListener(ExecutorService executorService, String identifier, JvmClient jvmClient, JvmClient jvmClient, String identifier) {
+	public ClientListener(ExecutorService executorService, String identifier, JvmClient jvmClient) {
 		this.executorService = executorService;
 		this.identifier = identifier;
 		this.jvmClient = jvmClient;
-		this.jvmClient = jvmClient;
-		this.identifier = identifier;
 	}
 
 }

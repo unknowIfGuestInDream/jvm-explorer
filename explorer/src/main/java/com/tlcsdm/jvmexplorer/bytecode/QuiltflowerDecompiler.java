@@ -39,6 +39,10 @@ public class QuiltflowerDecompiler implements Decompiler {
 		private static class BytecodeProvider implements IBytecodeProvider {
 		private final byte[] bytes;
 
+		BytecodeProvider(byte[] bytes) {
+			this.bytes = bytes;
+		}
+
 		@Override
 		public byte[] getBytecode(String externalPath, String internalPath) {
 			return bytes;
@@ -86,6 +90,10 @@ public class QuiltflowerDecompiler implements Decompiler {
 	private static class ResultSaver implements IResultSaver {
 				private String content;
 
+		public String getContent() {
+			return this.content;
+		}
+
 		@Override
 		public void saveFolder(String path) {}
 
@@ -112,19 +120,6 @@ public class QuiltflowerDecompiler implements Decompiler {
 
 		@Override
 		public void closeArchive(String path, String archiveName) {}
-	}
-
-
-	public QuiltflowerDecompiler(byte[] bytes) {
-		this.bytes = bytes;
-	}
-
-	public byte[] getBytes() {
-		return this.bytes;
-	}
-
-	public String getContent() {
-		return this.content;
 	}
 
 }

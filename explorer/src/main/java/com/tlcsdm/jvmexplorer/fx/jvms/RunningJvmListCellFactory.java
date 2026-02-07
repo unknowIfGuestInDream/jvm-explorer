@@ -150,9 +150,7 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 	}
 
 
-	public RunningJvmListCellFactory(AgentPreparer agentPreparer, FileHelper fileHelper, ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm) {
-		this.agentPreparer = agentPreparer;
-		this.fileHelper = fileHelper;
+	public RunningJvmListCellFactory(ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm) {
 		this.executorService = executorService;
 		this.alertHelper = alertHelper;
 		this.currentJvm = currentJvm;

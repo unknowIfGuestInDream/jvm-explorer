@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.agent;
 
-
 public class CleanClassLoaderStore implements Runnable {
 
 	private final ClassLoaderStore classLoaderStore;

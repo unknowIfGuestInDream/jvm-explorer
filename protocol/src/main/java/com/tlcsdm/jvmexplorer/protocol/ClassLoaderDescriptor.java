@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
-
 public class ClassLoaderDescriptor {
 
 	private final String id;
@@ -23,8 +22,11 @@ public class ClassLoaderDescriptor {
 		this.parent = parent;
 	}
 
-
 	public ClassLoaderDescriptor() {
+		this.id = null;
+		this.simpleClassName = null;
+		this.description = null;
+		this.parent = null;
 	}
 
 	public String getId() {
@@ -43,7 +45,6 @@ public class ClassLoaderDescriptor {
 		return this.parent;
 	}
 
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -52,12 +53,10 @@ public class ClassLoaderDescriptor {
 		return java.util.Objects.equals(this.id, other.id) && java.util.Objects.equals(this.simpleClassName, other.simpleClassName) && java.util.Objects.equals(this.description, other.description) && java.util.Objects.equals(this.parent, other.parent);
 	}
 
-
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(id, simpleClassName, description, parent);
 	}
-
 
 	public static ClassLoaderDescriptorBuilder builder() {
 		return new ClassLoaderDescriptorBuilder();
@@ -73,14 +72,17 @@ public class ClassLoaderDescriptor {
 			this.id = id;
 			return this;
 		}
+
 		public ClassLoaderDescriptorBuilder simpleClassName(String simpleClassName) {
 			this.simpleClassName = simpleClassName;
 			return this;
 		}
+
 		public ClassLoaderDescriptorBuilder description(String description) {
 			this.description = description;
 			return this;
 		}
+
 		public ClassLoaderDescriptorBuilder parent(ClassLoaderDescriptor parent) {
 			this.parent = parent;
 			return this;

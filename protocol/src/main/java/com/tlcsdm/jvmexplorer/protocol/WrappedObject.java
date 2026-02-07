@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
-
 public class WrappedObject {
 
 	private final String objectDescription;
@@ -15,14 +14,13 @@ public class WrappedObject {
 		this.objectDescription = objectDescription;
 	}
 
-
 	public WrappedObject() {
+		this.objectDescription = null;
 	}
 
 	public String getObjectDescription() {
 		return this.objectDescription;
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -31,7 +29,6 @@ public class WrappedObject {
 		WrappedObject other = (WrappedObject) o;
 		return java.util.Objects.equals(this.objectDescription, other.objectDescription);
 	}
-
 
 	@Override
 	public int hashCode() {

@@ -1,6 +1,5 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
-
 public class ExecutionResult {
 
 	private final boolean success;
@@ -12,8 +11,9 @@ public class ExecutionResult {
 		this.message = message;
 	}
 
-
 	public ExecutionResult() {
+		this.success = false;
+		this.message = null;
 	}
 
 	public boolean isSuccess() {
@@ -24,12 +24,10 @@ public class ExecutionResult {
 		return this.message;
 	}
 
-
 	@Override
 	public String toString() {
-		return "ExecutionResult(" + "success=" + success + ", message=" + message" + ")";
+		return "ExecutionResult(success=" + success + ", message=" + message + ")";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -39,12 +37,10 @@ public class ExecutionResult {
 		return java.util.Objects.equals(this.success, other.success) && java.util.Objects.equals(this.message, other.message);
 	}
 
-
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(success, message);
 	}
-
 
 	public static ExecutionResultBuilder builder() {
 		return new ExecutionResultBuilder();
@@ -58,6 +54,7 @@ public class ExecutionResult {
 			this.success = success;
 			return this;
 		}
+
 		public ExecutionResultBuilder message(String message) {
 			this.message = message;
 			return this;

@@ -151,27 +151,25 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 
 	private enum FieldType {
 		STATIC("icons/static.png"), INSTANCE("icons/field.png"), CONSTANT("icons/constant.png");
-				private final Image image;
+		private final Image image;
 
 		FieldType(String imagePath) {
 			image = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(imagePath)));
 		}
+
+		public Image getImage() {
+			return this.image;
+		}
 	}
 
 
-	public ClassFieldCellFactory(FieldTreeHelper fieldTreeHelper, EditorHelper editorHelper, ExecutorService executorService, ClientHandler clientHandler, ObjectProperty<RunningJvm> currentJvm, AlertHelper alertHelper, ObjectProperty<ClassContent> currentClass, Image image) {
-		this.fieldTreeHelper = fieldTreeHelper;
+	public ClassFieldCellFactory(EditorHelper editorHelper, ExecutorService executorService, ClientHandler clientHandler, ObjectProperty<RunningJvm> currentJvm, AlertHelper alertHelper, ObjectProperty<ClassContent> currentClass) {
 		this.editorHelper = editorHelper;
 		this.executorService = executorService;
 		this.clientHandler = clientHandler;
 		this.currentJvm = currentJvm;
 		this.alertHelper = alertHelper;
 		this.currentClass = currentClass;
-		this.image = image;
-	}
-
-	public FieldTreeHelper getFieldTreeHelper() {
-		return this.fieldTreeHelper;
 	}
 
 	public EditorHelper getEditorHelper() {
@@ -196,10 +194,6 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 
 	public ObjectProperty<ClassContent> getCurrentClass() {
 		return this.currentClass;
-	}
-
-	public Image getImage() {
-		return this.image;
 	}
 
 }

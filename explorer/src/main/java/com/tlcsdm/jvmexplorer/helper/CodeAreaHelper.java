@@ -126,53 +126,53 @@ public class CodeAreaHelper {
 	}
 
 	// Prevent highlighting the wrong text if the text changes
-		private static class HighlightContainer {
+	private static class HighlightContainer {
 		private final StyleSpans<Collection<String>> hightlighting;
 		private final String text;
+
+		public HighlightContainer(StyleSpans<Collection<String>> hightlighting, String text) {
+			this.hightlighting = hightlighting;
+			this.text = text;
+		}
+
+		public StyleSpans<Collection<String>> getHightlighting() {
+			return this.hightlighting;
+		}
+
+		public String getText() {
+			return this.text;
+		}
 	}
 
 
-	public CodeAreaHelper(ExecutorService executorService, StyleSpans<Collection<String>> hightlighting, String text) {
+	public CodeAreaHelper(ExecutorService executorService) {
 		this.executorService = executorService;
-		this.hightlighting = hightlighting;
-		this.text = text;
 	}
-
 
 	public CodeAreaHelper() {
+		this.executorService = null;
 	}
 
 	public ExecutorService getExecutorService() {
 		return this.executorService;
 	}
 
-	public StyleSpans<Collection<String>> getHightlighting() {
-		return this.hightlighting;
-	}
-
-	public String getText() {
-		return this.text;
-	}
-
-
 	@Override
 	public String toString() {
-		return "CodeAreaHelper(" + "executorService=" + executorService + ", hightlighting=" + hightlighting + ", text=" + text" + ")";
+		return "CodeAreaHelper(executorService=" + executorService + ")";
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		CodeAreaHelper other = (CodeAreaHelper) o;
-		return java.util.Objects.equals(this.executorService, other.executorService) && java.util.Objects.equals(this.hightlighting, other.hightlighting) && java.util.Objects.equals(this.text, other.text);
+		return java.util.Objects.equals(this.executorService, other.executorService);
 	}
-
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(executorService, hightlighting, text);
+		return java.util.Objects.hash(executorService);
 	}
 
 }
