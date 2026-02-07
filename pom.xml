@@ -21,7 +21,7 @@
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://github.com/unknowIfGuestInDream/jvm-explorer/blob/main/LICENSE</url>
+            <url>https://raw.githubusercontent.com/unknowIfGuestInDream/jvm-explorer/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -139,7 +139,7 @@
                     <configuration>
                         <archive>
                             <manifestEntries>
-                                <Bundle-License>https://github.com/unknowIfGuestInDream/jvm-explorer/blob/main/LICENSE</Bundle-License>
+                                <Bundle-License>https://raw.githubusercontent.com/unknowIfGuestInDream/jvm-explorer/master/LICENSE</Bundle-License>
                             </manifestEntries>
                         </archive>
                     </configuration>
