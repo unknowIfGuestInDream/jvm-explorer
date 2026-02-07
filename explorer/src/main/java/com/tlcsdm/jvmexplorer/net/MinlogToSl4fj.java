@@ -9,6 +9,7 @@ public class MinlogToSl4fj extends Log.Logger {
 	private static final Logger log = LoggerFactory.getLogger(MinlogToSl4fj.class);
 
 
+	@Override
 	public void log(int level, String category, String message, Throwable ex) {
 		final String line = category != null ? (category + " - " + message) : message;
 

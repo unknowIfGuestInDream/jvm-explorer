@@ -28,13 +28,18 @@ public class AgentConfiguration {
 			// Should never happen
 			throw new IllegalStateException(e);
 		}
-		return AgentConfiguration.builder()
-		                         .port(Integer.parseInt(properties.getProperty(PORT_KEY)))
-		                         .hostName(properties.getProperty(HOST_NAME_KEY))
-		                         .identifier(properties.getProperty(IDENTIFIER_KEY))
-		                         .logLevel(Integer.parseInt(properties.getProperty(LOG_LEVEL_KEY)))
-		                         .logFilePath(properties.getProperty(LOG_FILE_PATH_KEY))
-		                         .build();
+		try {
+			return AgentConfiguration.builder()
+			                         .port(Integer.parseInt(properties.getProperty(PORT_KEY)))
+			                         .hostName(properties.getProperty(HOST_NAME_KEY))
+			                         .identifier(properties.getProperty(IDENTIFIER_KEY))
+			                         .logLevel(Integer.parseInt(properties.getProperty(LOG_LEVEL_KEY)))
+			                         .logFilePath(properties.getProperty(LOG_FILE_PATH_KEY))
+			                         .build();
+		}
+		catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid agent args: failed to parse numeric properties", e);
+		}
 	}
 
 	public String toAgentArgs() {

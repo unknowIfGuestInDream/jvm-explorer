@@ -42,7 +42,7 @@ public class ExportHelper {
 			             .parallel()
 			             .map(loadedClass -> new Pair<>(loadedClass, clientHandler.getClassBytes(jvm, loadedClass)))
 			             .forEach(pair -> {
-				             log.debug("Exporting: {}", loadedClasses);
+				             log.debug("Exporting: {}", pair.getKey().getName());
 				             synchronized (count) {
 					             // Possible race condition - count could be incremented before another thread, but the
 					             // other thread could run currentProgress first. Therefore, we synchronize.

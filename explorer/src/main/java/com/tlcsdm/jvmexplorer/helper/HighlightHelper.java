@@ -78,23 +78,4 @@ public class HighlightHelper {
 		}
 	}
 
-
-	@Override
-	public String toString() {
-		return "HighlightHelper()";
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		HighlightHelper other = (HighlightHelper) o;
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		return 0;
-	}
-
 }

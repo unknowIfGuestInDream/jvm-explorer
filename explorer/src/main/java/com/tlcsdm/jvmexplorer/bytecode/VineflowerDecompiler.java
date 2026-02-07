@@ -11,11 +11,12 @@ import org.jetbrains.java.decompiler.main.extern.IResultSaver;
 import java.io.File;
 import java.util.jar.Manifest;
 
-public class QuiltflowerDecompiler implements Decompiler {
+public class VineflowerDecompiler implements Decompiler {
 
-	private static final Logger log = LoggerFactory.getLogger(QuiltflowerDecompiler.class);
+	private static final Logger log = LoggerFactory.getLogger(VineflowerDecompiler.class);
 
 
+	@Override
 	public String process(byte[] bytes) {
 		final IBytecodeProvider bytecodeProvider = new BytecodeProvider(bytes);
 		final ResultSaver resultSaver = new ResultSaver();
@@ -36,7 +37,7 @@ public class QuiltflowerDecompiler implements Decompiler {
 		return resultSaver.getContent();
 	}
 
-		private static class BytecodeProvider implements IBytecodeProvider {
+	private static class BytecodeProvider implements IBytecodeProvider {
 		private final byte[] bytes;
 
 		BytecodeProvider(byte[] bytes) {
@@ -88,7 +89,7 @@ public class QuiltflowerDecompiler implements Decompiler {
 	}
 
 	private static class ResultSaver implements IResultSaver {
-				private String content;
+		private String content;
 
 		public String getContent() {
 			return this.content;

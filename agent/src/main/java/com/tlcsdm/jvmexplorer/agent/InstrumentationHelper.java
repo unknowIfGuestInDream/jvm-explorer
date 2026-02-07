@@ -179,14 +179,14 @@ public class InstrumentationHelper {
 				field.setAccessible(true);
 				currentObject = field.get(currentObject);
 				if (currentObject == null) {
-					Log.warn("Found null when searching path: " + classFieldPath);
+					Log.warn("Found null when searching path: " + Arrays.toString(classFieldPath));
 					return null;
 				}
 			}
 			return currentObject;
 		}
 		catch (NoSuchFieldException | IllegalAccessException e) {
-			Log.error("Failed to get object: " + classFieldPath, e);
+			Log.error("Failed to get object: " + Arrays.toString(classFieldPath), e);
 			return null;
 		}
 	}

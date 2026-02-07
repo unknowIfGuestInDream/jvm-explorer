@@ -23,6 +23,7 @@ public class ServerLauncher {
 		setupLogging();
 		final JvmExplorerServer server = new JvmExplorerServer(Protocol.WRITE_BUFFER_SIZE,
 		                                                       Protocol.OBJECT_BUFFER_SIZE) {
+			@Override
 			protected Connection newConnection() {
 				return new JvmClientImpl(executorService);
 			}

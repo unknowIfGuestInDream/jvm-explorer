@@ -1,5 +1,7 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
+import java.util.Arrays;
+
 public class ClassFieldPath {
 
 	private final ClassFieldKey[] classFieldKeys;
@@ -26,7 +28,7 @@ public class ClassFieldPath {
 
 	@Override
 	public String toString() {
-		return "ClassFieldPath(classFieldKeys=" + classFieldKeys + ", classLoaderDescriptor=" + classLoaderDescriptor + ")";
+		return "ClassFieldPath(classFieldKeys=" + Arrays.toString(classFieldKeys) + ", classLoaderDescriptor=" + classLoaderDescriptor + ")";
 	}
 
 	@Override
@@ -34,12 +36,12 @@ public class ClassFieldPath {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ClassFieldPath other = (ClassFieldPath) o;
-		return java.util.Objects.equals(this.classFieldKeys, other.classFieldKeys) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor);
+		return Arrays.equals(this.classFieldKeys, other.classFieldKeys) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor);
 	}
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(classFieldKeys, classLoaderDescriptor);
+		return java.util.Objects.hash(Arrays.hashCode(classFieldKeys), classLoaderDescriptor);
 	}
 
 }

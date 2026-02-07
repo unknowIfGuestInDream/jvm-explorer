@@ -33,7 +33,12 @@ public class RunningJvm {
 					version = version.substring(0, dot);
 				}
 			}
-			return Integer.parseInt(version);
+			try {
+				return Integer.parseInt(version);
+			}
+			catch (NumberFormatException e) {
+				throw new AgentException("Failed to parse java version: " + version, e);
+			}
 		}
 		catch (AgentException e) {
 			log.warn("Failed to get java version for remote code execution", e);

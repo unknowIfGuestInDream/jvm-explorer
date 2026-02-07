@@ -1,5 +1,7 @@
 package com.tlcsdm.jvmexplorer.protocol;
 
+import java.util.Arrays;
+
 public class ClassFields {
 
 	private final ClassField[] fields;
@@ -19,7 +21,7 @@ public class ClassFields {
 
 	@Override
 	public String toString() {
-		return "ClassFields(fields=" + fields + ")";
+		return "ClassFields(fields=" + Arrays.toString(fields) + ")";
 	}
 
 	@Override
@@ -27,12 +29,12 @@ public class ClassFields {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ClassFields other = (ClassFields) o;
-		return java.util.Objects.equals(this.fields, other.fields);
+		return Arrays.equals(this.fields, other.fields);
 	}
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(fields);
+		return Arrays.hashCode(fields);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.tlcsdm.jvmexplorer.bytecode.compile;
 
+import java.util.Arrays;
+
 public class CompileResult {
 
 	private final String stdOut;
@@ -33,7 +35,7 @@ public class CompileResult {
 
 	@Override
 	public String toString() {
-		return "CompileResult(stdOut=" + stdOut + ", success=" + success + ", classContent=" + classContent + ")";
+		return "CompileResult(stdOut=" + stdOut + ", success=" + success + ", classContent=" + Arrays.toString(classContent) + ")";
 	}
 
 	@Override
@@ -41,12 +43,12 @@ public class CompileResult {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		CompileResult other = (CompileResult) o;
-		return java.util.Objects.equals(this.stdOut, other.stdOut) && java.util.Objects.equals(this.success, other.success) && java.util.Objects.equals(this.classContent, other.classContent);
+		return java.util.Objects.equals(this.stdOut, other.stdOut) && java.util.Objects.equals(this.success, other.success) && Arrays.equals(this.classContent, other.classContent);
 	}
 
 	@Override
 	public int hashCode() {
-		return java.util.Objects.hash(stdOut, success, classContent);
+		return java.util.Objects.hash(stdOut, success, Arrays.hashCode(classContent));
 	}
 
 	public static CompileResultBuilder builder() {

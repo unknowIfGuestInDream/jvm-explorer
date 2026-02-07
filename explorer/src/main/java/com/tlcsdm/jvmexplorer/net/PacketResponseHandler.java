@@ -61,6 +61,10 @@ class PacketResponseHandler<T> {
 			while (true) {
 				log.trace("Generating...");
 				final long remainingMs = endMs - System.currentTimeMillis();
+				if (remainingMs <= 0) {
+					log.warn("Timed out waiting for packets");
+					return INTERRUPT;
+				}
 				try {
 					final Object t = linkedBlockingQueue.poll(remainingMs, TimeUnit.MILLISECONDS);
 					if (t == null) {
@@ -79,8 +83,8 @@ class PacketResponseHandler<T> {
 				}
 				catch (InterruptedException e) {
 					log.warn("Interrupted while waiting", e);
-					e.printStackTrace();
-					return null;
+					Thread.currentThread().interrupt();
+					return INTERRUPT;
 				}
 			}
 		}).takeWhile(o -> {

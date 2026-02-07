@@ -22,13 +22,14 @@ public class AgentPreparer {
 			try {
 				final Path tempFile = Files.createTempFile("agent", ".jar");
 				tempFile.toFile().deleteOnExit();
-				final InputStream inputStream = AgentPreparer.class.getClassLoader()
-				                                                   .getResourceAsStream(agentResourcePath);
-				if (inputStream == null) {
-					throw new IOException("Failed to find input stream for agent");
+				try (InputStream inputStream = AgentPreparer.class.getClassLoader()
+				                                                   .getResourceAsStream(agentResourcePath)) {
+					if (inputStream == null) {
+						throw new IOException("Failed to find input stream for agent");
+					}
+					final byte[] agentBytes = inputStream.readAllBytes();
+					Files.write(tempFile, agentBytes);
 				}
-				final byte[] agentBytes = inputStream.readAllBytes();
-				Files.write(tempFile, agentBytes);
 				final String localPath = tempFile.toAbsolutePath().toString();
 				log.debug("Loaded agent into temp file: {}", localPath);
 				return localPath;

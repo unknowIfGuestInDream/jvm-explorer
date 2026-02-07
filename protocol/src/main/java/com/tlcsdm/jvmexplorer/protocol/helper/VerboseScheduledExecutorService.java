@@ -49,7 +49,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
-		return this.executor.submit(task);
+		return this.executor.submit(new VerboseCallable<>(task));
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 
 	@Override
 	public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
-		return this.executor.schedule(callable, delay, unit);
+		return this.executor.schedule(new VerboseCallable<>(callable), delay, unit);
 	}
 
 	@Override
@@ -134,6 +134,25 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 				}
 
 				Log.warn("Exception thrown in executor task", throwable);
+				throw throwable;
+			}
+		}
+	}
+
+	private static class VerboseCallable<V> implements Callable<V> {
+		private final Callable<V> callable;
+
+		public VerboseCallable(Callable<V> callable) {
+			this.callable = callable;
+		}
+
+		@Override
+		public V call() throws Exception {
+			try {
+				return callable.call();
+			}
+			catch (Throwable throwable) {
+				Log.warn("Exception thrown in executor callable task", throwable);
 				throw throwable;
 			}
 		}

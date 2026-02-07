@@ -9,6 +9,7 @@ import java.io.StringWriter;
 
 public class AsmDisassembler implements Disassembler {
 
+	@Override
 	public String process(byte[] bytes) {
 		final ClassReader classReader = new ClassReader(bytes);
 		final StringWriter stringWriter = new StringWriter();

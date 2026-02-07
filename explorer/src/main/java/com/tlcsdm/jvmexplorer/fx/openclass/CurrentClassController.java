@@ -9,7 +9,7 @@ import com.tlcsdm.jvmexplorer.bytecode.AssemblyException;
 import com.tlcsdm.jvmexplorer.bytecode.BytecodeTextifier;
 import com.tlcsdm.jvmexplorer.bytecode.OpenJdkJasmAssembler;
 import com.tlcsdm.jvmexplorer.bytecode.OpenJdkJasmDisassembler;
-import com.tlcsdm.jvmexplorer.bytecode.QuiltflowerDecompiler;
+import com.tlcsdm.jvmexplorer.bytecode.VineflowerDecompiler;
 import com.tlcsdm.jvmexplorer.bytecode.compile.CompileResult;
 import com.tlcsdm.jvmexplorer.bytecode.compile.Compiler;
 import com.tlcsdm.jvmexplorer.bytecode.compile.JavacBytecodeProvider;
@@ -461,7 +461,7 @@ public class CurrentClassController {
 			classFields.getRoot().getChildren().clear();
 		}
 		else {
-			processBytecode(newv, new QuiltflowerDecompiler(), classFile, newDecompiledClass -> {
+			processBytecode(newv, new VineflowerDecompiler(), classFile, newDecompiledClass -> {
 				allowClassFileEditing.set(!PROCESSOR_FAILED.equals(newDecompiledClass));
 				decompiledClass.set(newDecompiledClass);
 			});
