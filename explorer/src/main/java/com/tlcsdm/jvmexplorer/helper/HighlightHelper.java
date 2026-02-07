@@ -1,0 +1,112 @@
+package com.tlcsdm.jvmexplorer.helper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
+import org.objectweb.asm.tree.ClassNode;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class HighlightHelper {
+
+	private static final Logger log = LoggerFactory.getLogger(HighlightHelper.class);
+
+
+	private static final HighlightContext DEFAULT_CONTEXT =
+			HighlightPatterns.of(HighlightPatterns.getStaticPatterns());
+
+	public static StyleSpans<Collection<String>> computeHighlighting(String text) {
+		return computeHighlighting(text, DEFAULT_CONTEXT);
+	}
+
+	public static StyleSpans<Collection<String>> computeHighlighting(String text, HighlightContext highlightContext) {
+		final Matcher matcher = highlightContext.getPattern().matcher(text);
+		int lastMatchEnd = 0;
+		final StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+		while (matcher.find()) {
+			final String styleClass = highlightContext.getMatchKeys()
+			                                          .stream()
+			                                          .filter(group -> matcher.group(group) != null)
+			                                          .findFirst()
+			                                          .map(String::toLowerCase)
+			                                          .orElseThrow(); // There has to be a match
+			spansBuilder.add(Collections.emptyList(), matcher.start() - lastMatchEnd);
+			spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+			lastMatchEnd = matcher.end();
+		}
+		spansBuilder.add(Collections.emptyList(), text.length() - lastMatchEnd);
+		return spansBuilder.create();
+	}
+
+	// Some of this context is considering how the decompiler will decompile the code
+	public static HighlightContext createContextFor(ClassNode classNode) {
+
+		final String methods = HighlightPatterns.createMethodPattern(classNode);
+		final String fields = HighlightPatterns.createFieldPattern(classNode);
+
+		final Map<String, String> patterns = new LinkedHashMap<>(HighlightPatterns.getStaticPatterns());
+		patterns.put("method", methods);
+		patterns.put("field", fields);
+
+		final HighlightContext context = HighlightPatterns.of(patterns);
+		log.debug("Generated highlight pattern for {}: {}", classNode.name, context.getPattern().pattern());
+		return context;
+	}
+
+		public static class HighlightContext {
+		private final Set<String> matchKeys;
+		private final Pattern pattern;
+	}
+
+
+	public HighlightHelper(static final HighlightContext DEFAULT_CONTEXT, Set<String> matchKeys, Pattern pattern) {
+		this.DEFAULT_CONTEXT = DEFAULT_CONTEXT;
+		this.matchKeys = matchKeys;
+		this.pattern = pattern;
+	}
+
+
+	public HighlightHelper() {
+	}
+
+	public static final HighlightContext getDEFAULT_CONTEXT() {
+		return this.DEFAULT_CONTEXT;
+	}
+
+	public Set<String> getMatchKeys() {
+		return this.matchKeys;
+	}
+
+	public Pattern getPattern() {
+		return this.pattern;
+	}
+
+
+	@Override
+	public String toString() {
+		return "HighlightHelper(" + "DEFAULT_CONTEXT=" + DEFAULT_CONTEXT + ", matchKeys=" + matchKeys + ", pattern=" + pattern" + ")";
+	}
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		HighlightHelper other = (HighlightHelper) o;
+		return java.util.Objects.equals(this.DEFAULT_CONTEXT, other.DEFAULT_CONTEXT) && java.util.Objects.equals(this.matchKeys, other.matchKeys) && java.util.Objects.equals(this.pattern, other.pattern);
+	}
+
+
+	@Override
+	public int hashCode() {
+		return java.util.Objects.hash(DEFAULT_CONTEXT, matchKeys, pattern);
+	}
+
+}
