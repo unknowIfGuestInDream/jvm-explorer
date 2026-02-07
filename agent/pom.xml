@@ -59,6 +59,9 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <finalName>agent</finalName>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

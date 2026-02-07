@@ -34,8 +34,8 @@
     <modules>
         <module>protocol</module>
         <module>agent</module>
-        <module>explorer</module>
         <module>launch-agent</module>
+        <module>explorer</module>
     </modules>
 
     <properties>
