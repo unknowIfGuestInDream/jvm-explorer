@@ -6,7 +6,7 @@ public class WrappedObject {
 
 	@Override
 	public String toString() {
-		return objectDescription;
+		return String.valueOf(objectDescription);
 	}
 
 

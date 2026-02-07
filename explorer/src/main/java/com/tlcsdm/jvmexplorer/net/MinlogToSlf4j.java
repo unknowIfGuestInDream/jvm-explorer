@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.esotericsoftware.minlog.Log;
 
-public class MinlogToSl4fj extends Log.Logger {
+public class MinlogToSlf4j extends Log.Logger {
 
-	private static final Logger log = LoggerFactory.getLogger(MinlogToSl4fj.class);
+	private static final Logger log = LoggerFactory.getLogger(MinlogToSlf4j.class);
 
 
 	@Override

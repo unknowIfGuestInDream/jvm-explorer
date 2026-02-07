@@ -64,24 +64,28 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
-		return this.executor.invokeAll(tasks);
+		return this.executor.invokeAll(wrapCallables(tasks));
 	}
 
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
 			throws InterruptedException {
-		return this.executor.invokeAll(tasks, timeout, unit);
+		return this.executor.invokeAll(wrapCallables(tasks), timeout, unit);
 	}
 
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-		return this.executor.invokeAny(tasks);
+		return this.executor.invokeAny(wrapCallables(tasks));
 	}
 
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
 			throws InterruptedException, ExecutionException, TimeoutException {
-		return this.executor.invokeAny(tasks, timeout, unit);
+		return this.executor.invokeAny(wrapCallables(tasks), timeout, unit);
+	}
+
+	private <T> Collection<VerboseCallable<T>> wrapCallables(Collection<? extends Callable<T>> tasks) {
+		return tasks.stream().map(VerboseCallable::new).collect(java.util.stream.Collectors.toList());
 	}
 
 	@Override

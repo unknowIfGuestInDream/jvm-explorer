@@ -20,6 +20,9 @@ public class AgentConfiguration {
 	private final String logFilePath;
 
 	public static AgentConfiguration parseAgentArgs(String agentArgs) {
+		if (agentArgs == null || agentArgs.isBlank()) {
+			throw new IllegalArgumentException("Agent args must not be null or blank");
+		}
 		final Properties properties = new Properties();
 		try {
 			properties.load(new StringReader(agentArgs));

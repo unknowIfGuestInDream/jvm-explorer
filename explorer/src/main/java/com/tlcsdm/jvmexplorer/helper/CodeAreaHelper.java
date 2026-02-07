@@ -81,6 +81,9 @@ public class CodeAreaHelper {
 			if (keyEvent.getCode() == KeyCode.ENTER) {
 				final int caretPosition = codeArea.getCaretPosition();
 				final int currentParagraph = codeArea.getCurrentParagraph();
+				if (currentParagraph <= 0) {
+					return;
+				}
 				final Matcher matcher = whiteSpace.matcher(codeArea.getParagraph(currentParagraph - 1)
 				                                                   .getSegments()
 				                                                   .get(0));

@@ -52,8 +52,12 @@ public class HighlightHelper {
 		final String fields = HighlightPatterns.createFieldPattern(classNode);
 
 		final Map<String, String> patterns = new LinkedHashMap<>(HighlightPatterns.getStaticPatterns());
-		patterns.put("method", methods);
-		patterns.put("field", fields);
+		if (methods != null && !methods.isEmpty()) {
+			patterns.put("method", methods);
+		}
+		if (fields != null && !fields.isEmpty()) {
+			patterns.put("field", fields);
+		}
 
 		final HighlightContext context = HighlightPatterns.of(patterns);
 		log.debug("Generated highlight pattern for {}: {}", classNode.name, context.getPattern().pattern());

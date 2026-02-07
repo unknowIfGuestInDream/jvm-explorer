@@ -26,10 +26,10 @@ public class PatchHelper {
 		final AtomicInteger patchedClassCount = new AtomicInteger();
 		try (final JarFile jar = new JarFile(jarFile)) {
 			jar.stream().parallel().filter(j -> j.getName().endsWith(".class")).forEach(classFile -> {
-				try {
+				try (var entryStream = jar.getInputStream(classFile)) {
 					final String name = classFile.getName().replace('/', '.').replace(".class", "");
 					log.debug("Patching {}", name);
-					final byte[] classContents = jar.getInputStream(classFile).readAllBytes();
+					final byte[] classContents = entryStream.readAllBytes();
 					// Note - we may not always want to pass in the class loader. It could be in a child classloader.
 					final LoadedClass loadedClass = new LoadedClass(name, classLoaderDescriptor, null);
 					final PatchResult result = clientHandler.replaceClass(runningJvm, loadedClass, classContents);

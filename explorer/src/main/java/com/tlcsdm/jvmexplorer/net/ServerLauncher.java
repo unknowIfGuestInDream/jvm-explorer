@@ -39,7 +39,7 @@ public class ServerLauncher {
 		final int minlogLevel = getLogLevel();
 		log.debug("Setting minlog log level to {}", minlogLevel);
 		Log.set(minlogLevel);
-		Log.setLogger(new MinlogToSl4fj());
+		Log.setLogger(new MinlogToSlf4j());
 	}
 
 	private void registerProtocol(Server server) {

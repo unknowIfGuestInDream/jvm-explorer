@@ -19,9 +19,8 @@ public class CodeTemplateHelper {
 	}
 
 	private String loadTemplate(String path) {
-		try {
-			final byte[] templateBytes = Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path))
-			                                    .readAllBytes();
+		try (var inputStream = getClass().getClassLoader().getResourceAsStream(path)) {
+			final byte[] templateBytes = Objects.requireNonNull(inputStream).readAllBytes();
 			return new String(templateBytes);
 		}
 		catch (IOException e) {
