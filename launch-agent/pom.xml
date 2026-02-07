@@ -51,6 +51,9 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <finalName>launch-agent</finalName>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

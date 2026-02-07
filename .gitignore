@@ -4,6 +4,7 @@ target/
 *.war
 *.ear
 !.mvn/wrapper/maven-wrapper.jar
+dependency-reduced-pom.xml
 
 # IDE
 .idea/
