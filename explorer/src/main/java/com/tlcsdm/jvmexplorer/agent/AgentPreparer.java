@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +20,14 @@ public class AgentPreparer {
 
 	public String loadAgentOnFileSystem(String agentResourcePath) {
 		return tempAgentFiles.computeIfAbsent(agentResourcePath, k -> {
+			// First, try to load from the running path (working directory)
+			Path localFile = Paths.get(agentResourcePath);
+			if (Files.exists(localFile)) {
+				String localPath = localFile.toAbsolutePath().toString();
+				log.debug("Loaded agent from local path: {}", localPath);
+				return localPath;
+			}
+
 			try {
 				final Path tempFile = Files.createTempFile("agent", ".jar");
 				tempFile.toFile().deleteOnExit();
