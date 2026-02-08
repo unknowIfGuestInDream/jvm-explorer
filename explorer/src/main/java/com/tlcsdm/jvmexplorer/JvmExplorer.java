@@ -6,9 +6,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class JvmExplorer extends Application {
 
@@ -26,6 +28,10 @@ public class JvmExplorer extends Application {
 		final Scene scene = new Scene(root);
 		scene.getStylesheets().addAll("css/style-override.css", "css/java-keywords.css");
 		primaryStage.setScene(scene);
+		InputStream iconStream = getClass().getClassLoader().getResourceAsStream("icons/jvm.png");
+		if (iconStream != null) {
+			primaryStage.getIcons().add(new Image(iconStream));
+		}
 
 		jvmExplorerController.initialize(primaryStage);
 
