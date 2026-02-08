@@ -37,6 +37,8 @@ public class JvmExplorerController {
 	private static final Logger log = LoggerFactory.getLogger(JvmExplorerController.class);
 
 
+	private static final long SERVER_SHUTDOWN_TIMEOUT_MS = 5000;
+
 	private final ScheduledExecutorService executorService =
 			new VerboseScheduledExecutorService(Executors.newScheduledThreadPool(
 			8));
@@ -64,13 +66,27 @@ public class JvmExplorerController {
 		server = serverLauncher.launch(executorService, clientHandler);
 		stage.setOnHidden(e -> {
 			log.debug("Stage hidden, cleaning up resources");
+			executorService.shutdown();
+			server.stop();
+			final Thread updateThread = server.getUpdateThread();
+			if (updateThread != null) {
+				try {
+					updateThread.join(SERVER_SHUTDOWN_TIMEOUT_MS);
+				}
+				catch (InterruptedException ex) {
+					log.warn("Interrupted while waiting for server thread to stop", ex);
+					Thread.currentThread().interrupt();
+				}
+				if (updateThread.isAlive()) {
+					log.warn("Server thread did not stop within timeout");
+				}
+			}
 			try {
 				server.dispose();
 			}
 			catch (IOException ex) {
 				log.warn("Failed to close server", ex);
 			}
-			executorService.shutdown();
 		});
 
 		setupTitlePaneText();
