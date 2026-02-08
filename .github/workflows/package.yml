@@ -38,7 +38,7 @@ jobs:
 
       - name: Build and Package
         shell: bash
-        run: mvn -B clean package --no-transfer-progress -DskipTests
+        run: mvn -B package --no-transfer-progress -DskipTests
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
