@@ -17,9 +17,17 @@ JVM Explorer is a Java desktop application for browsing loaded class files insid
 
 ## Build
 
+**Important**: This is a multi-module Maven project. Always build from the root directory:
+
 ```bash
+# Clean and build all modules
+mvn clean install
+
+# Or just package without installing to local repository
 mvn clean package
 ```
+
+**Note**: Building individual modules alone (e.g., `cd explorer && mvn compile`) will fail with dependency resolution errors unless you have first run `mvn install` from the root directory to install dependencies to your local Maven repository.
 
 ## Run
 
