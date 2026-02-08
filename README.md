@@ -44,6 +44,10 @@ mvn -pl explorer javafx:run
 | `launch-agent` | Launch patch agent for JDK compatibility     |
 | `explorer`     | JavaFX desktop application (main module)     |
 
+## Antivirus Compatibility
+
+JVM Explorer uses Java's Attach API and Instrumentation API to inspect running JVM processes. Some antivirus software may flag these standard Java development operations as suspicious. See [ANTIVIRUS.md](ANTIVIRUS.md) for details and recommended solutions.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

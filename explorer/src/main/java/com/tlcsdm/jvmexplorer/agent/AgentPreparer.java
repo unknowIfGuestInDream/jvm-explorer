@@ -29,7 +29,12 @@ public class AgentPreparer {
 			}
 
 			try {
-				final Path tempFile = Files.createTempFile("agent", ".jar");
+				final Path tempDir = Files.createTempDirectory("jvm-explorer");
+				// Register directory deletion first so it is deleted last
+				// (deleteOnExit hooks execute in reverse registration order:
+				// file is deleted first, then the empty directory)
+				tempDir.toFile().deleteOnExit();
+				final Path tempFile = tempDir.resolve("jvm-explorer-agent.jar");
 				tempFile.toFile().deleteOnExit();
 				try (InputStream inputStream = AgentPreparer.class.getClassLoader()
 				                                                   .getResourceAsStream(agentResourcePath)) {
