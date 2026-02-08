@@ -123,7 +123,7 @@
                 <executions>
                     <execution>
                         <id>copy-agents</id>
-                        <phase>prepare-package</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
@@ -131,9 +131,11 @@
                             <target>
                                 <mkdir dir="${project.build.outputDirectory}/agents"/>
                                 <copy file="${project.basedir}/../agent/target/agent.jar"
-                                      tofile="${project.build.outputDirectory}/agents/agent.jar"/>
+                                      tofile="${project.build.outputDirectory}/agents/agent.jar"
+                                      failonerror="false"/>
                                 <copy file="${project.basedir}/../launch-agent/target/launch-agent.jar"
-                                      tofile="${project.build.outputDirectory}/agents/launch-agent.jar"/>
+                                      tofile="${project.build.outputDirectory}/agents/launch-agent.jar"
+                                      failonerror="false"/>
                             </target>
                         </configuration>
                     </execution>
@@ -155,6 +157,10 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.tlcsdm.jvmexplorer.Startup</mainClass>
+                    <options>
+                        <option>--enable-native-access=ALL-UNNAMED</option>
+                        <option>--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
