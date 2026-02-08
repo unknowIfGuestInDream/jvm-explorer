@@ -32,6 +32,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Install Multi-Module Dependencies
+        shell: bash
+        run: mvn -B clean install --no-transfer-progress -DskipTests
+
       - name: Build and Package
         shell: bash
         run: mvn -B package --no-transfer-progress -DskipTests
