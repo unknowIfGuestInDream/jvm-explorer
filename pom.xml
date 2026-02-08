@@ -178,9 +178,6 @@
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
-                        <compilerArgs>
-                            <arg>--add-modules=ALL-SYSTEM</arg>
-                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
