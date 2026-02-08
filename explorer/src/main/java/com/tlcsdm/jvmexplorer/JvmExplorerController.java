@@ -64,13 +64,24 @@ public class JvmExplorerController {
 		server = serverLauncher.launch(executorService, clientHandler);
 		stage.setOnHidden(e -> {
 			log.debug("Stage hidden, cleaning up resources");
+			executorService.shutdown();
+			server.stop();
+			final Thread updateThread = server.getUpdateThread();
+			if (updateThread != null) {
+				try {
+					updateThread.join(5000);
+				}
+				catch (InterruptedException ex) {
+					log.warn("Interrupted while waiting for server thread to stop", ex);
+					Thread.currentThread().interrupt();
+				}
+			}
 			try {
 				server.dispose();
 			}
 			catch (IOException ex) {
 				log.warn("Failed to close server", ex);
 			}
-			executorService.shutdown();
 		});
 
 		setupTitlePaneText();
