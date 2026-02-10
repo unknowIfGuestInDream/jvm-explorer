@@ -35,7 +35,7 @@ jobs:
 
       - name: Install Multi-Module Dependencies
         shell: bash
-        run: mvn -B clean install --no-transfer-progress -DskipTests
+        run: mvn -B clean install --no-transfer-progress -DskipTests -pl protocol,agent,launch-agent -am
 
       - name: Build and Package
         shell: bash
