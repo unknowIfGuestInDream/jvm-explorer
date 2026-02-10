@@ -21,28 +21,16 @@ This is a multi-module Maven project. The `explorer` application depends on `pro
 
 ### Step 1 — Install dependency modules
 
-Install `protocol`, `agent`, and `launch-agent` to the local Maven repository:
+Install `protocol`, `agent`, and `launch-agent` to the local Maven repository (the `explorer` module automatically skips install):
 
 ```bash
-mvn clean install -pl protocol,agent,launch-agent -am -DskipTests
+mvn clean install -DskipTests
 ```
 
 ### Step 2 — Package the application
 
 ```bash
-mvn package -pl explorer -DskipTests
-```
-
-Or build everything from the root:
-
-```bash
 mvn package -DskipTests
-```
-
-### Full build (single command)
-
-```bash
-mvn clean install -pl protocol,agent,launch-agent -am -DskipTests && mvn package -DskipTests
 ```
 
 ## Run
