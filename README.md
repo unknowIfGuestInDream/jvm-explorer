@@ -15,25 +15,33 @@ JVM Explorer is a Java desktop application for browsing loaded class files insid
 - Java 21 or later
 - Maven 3.9+
 
-## Build
+## Build & Run
 
-**Important**: This is a multi-module Maven project. Always build from the root directory:
+**Important**: This is a multi-module Maven project. Always build from the root directory.
 
 ```bash
-# Clean and build all modules
-mvn clean install
-
-# Or just package without installing to local repository
+# Build all modules (agent JARs are automatically copied to explorer)
 mvn clean package
-```
 
-**Note**: Building individual modules alone (e.g., `cd explorer && mvn compile`) will fail with dependency resolution errors unless you have first run `mvn install` from the root directory to install dependencies to your local Maven repository.
-
-## Run
-
-```bash
+# Run the application
 mvn -pl explorer javafx:run
 ```
+
+You can also build and run in a single command:
+
+```bash
+mvn clean package -DskipTests && mvn -pl explorer javafx:run
+```
+
+### IDE Development
+
+When developing in an IDE (IntelliJ IDEA, Eclipse, etc.):
+
+1. Import the project as a Maven multi-module project from the root `pom.xml`
+2. Run `mvn clean package -DskipTests` from the root directory at least once to generate agent JARs
+3. After modifying agent or launch-agent code, re-run `mvn clean package -DskipTests` from the root before launching the application
+
+**Note**: A separate `mvn install` step is **not** required. The Maven reactor builds modules in the correct order (protocol → agent → launch-agent → explorer), so agent JARs are available when the explorer module needs them.
 
 ## Project Structure
 
