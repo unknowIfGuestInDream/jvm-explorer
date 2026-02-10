@@ -17,17 +17,21 @@ JVM Explorer is a Java desktop application for browsing loaded class files insid
 
 ## Build
 
-**Important**: This is a multi-module Maven project. Always build from the root directory:
+This is a multi-module Maven project. The `explorer` application depends on `protocol`, `agent`, and `launch-agent` modules. The `agent` and `launch-agent` shaded JARs must exist in their respective `target/` directories so that the `maven-antrun-plugin` can copy them into `explorer`'s classpath.
+
+### Step 1 — Install dependency modules
+
+Install `protocol`, `agent`, and `launch-agent` to the local Maven repository (the `explorer` module automatically skips install):
 
 ```bash
-# Clean and build all modules
-mvn clean install
-
-# Or just package without installing to local repository
-mvn clean package
+mvn clean install -DskipTests
 ```
 
-**Note**: Building individual modules alone (e.g., `cd explorer && mvn compile`) will fail with dependency resolution errors unless you have first run `mvn install` from the root directory to install dependencies to your local Maven repository.
+### Step 2 — Package the application
+
+```bash
+mvn package -DskipTests
+```
 
 ## Run
 
