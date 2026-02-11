@@ -112,7 +112,7 @@ jobs:
           rm -rf staging
 
       - name: Upload packaged artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: jvm-explorer-${{ matrix.os }}
           path: dist/*
