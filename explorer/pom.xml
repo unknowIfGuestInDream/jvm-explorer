@@ -116,6 +116,7 @@
     </repositories>
 
     <build>
+        <finalName>explorer</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

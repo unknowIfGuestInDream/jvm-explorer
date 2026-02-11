@@ -12,7 +12,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -33,20 +33,88 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Install Multi-Module Dependencies
+      - name: Build with Maven
         shell: bash
-        run: mvn -B clean install --no-transfer-progress -DskipTests
+        run: mvn -B clean package --no-transfer-progress -DskipTests
 
-      - name: Build and Package
+      - name: Resolve version & stage files (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $versionOutput = & mvn -q -DforceStdout 'help:evaluate' -Dexpression='project.version' 2>$null
+          $version = $versionOutput.Trim()
+          if (-not $version) { throw 'Failed to extract version from Maven' }
+          Add-Content -Path $env:GITHUB_ENV -Value "APP_VERSION=$version" -Encoding utf8
+
+          if (-not (Test-Path dist)) { New-Item -ItemType Directory -Path dist | Out-Null }
+
+          # Create staging directory
+          $stagingDir = 'staging'
+          if (-not (Test-Path $stagingDir)) { New-Item -ItemType Directory -Path $stagingDir | Out-Null }
+          $agentDir = Join-Path $stagingDir 'agent'
+          if (-not (Test-Path $agentDir)) { New-Item -ItemType Directory -Path $agentDir | Out-Null }
+
+          # Copy files to staging
+          Copy-Item -Path 'explorer\target\explorer.jar' -Destination $stagingDir
+          Copy-Item -Path 'agent\target\agent.jar' -Destination $agentDir
+          Copy-Item -Path 'launch-agent\target\launch-agent.jar' -Destination $agentDir
+          Copy-Item -Path 'README.md' -Destination $stagingDir
+          Copy-Item -Path 'LICENSE' -Destination $stagingDir
+          Copy-Item -Path 'scripts\win\*' -Destination $stagingDir -Recurse
+
+      - name: Download JRE (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Push-Location staging
+          & ..\scripts\jre.ps1
+          Pop-Location
+
+      - name: Package artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path 'staging\*' -DestinationPath "dist/jvm-explorer-windows-$env:APP_VERSION.zip" -Force
+          Write-Host "Created dist/jvm-explorer-windows-$env:APP_VERSION.zip"
+          Remove-Item -Path 'staging' -Recurse -Force
+
+      - name: Resolve version & stage files (Linux)
+        if: runner.os == 'Linux'
         shell: bash
-        run: mvn -B package --no-transfer-progress -DskipTests
+        run: |
+          version=$(mvn -q -DforceStdout 'help:evaluate' -Dexpression=project.version 2>/dev/null)
+          version=$(echo "$version" | tr -d '\r')
+          if [ -z "$version" ]; then echo "Failed to extract version from Maven" >&2; exit 1; fi
+          echo "APP_VERSION=$version" >> $GITHUB_ENV
+
+          mkdir -p dist staging/agent
+          cp explorer/target/explorer.jar staging/
+          cp agent/target/agent.jar staging/agent/
+          cp launch-agent/target/launch-agent.jar staging/agent/
+          cp README.md LICENSE staging/
+          cp scripts/linux/* staging/
+
+      - name: Download JRE (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cd staging
+          bash ../scripts/jre.sh
+          cd ..
+
+      - name: Package artifact (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cd staging
+          zip -r "../dist/jvm-explorer-linux-${APP_VERSION}.zip" .
+          cd ..
+          echo "Created dist/jvm-explorer-linux-${APP_VERSION}.zip"
+          rm -rf staging
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            explorer/target/*.jar
-            agent/target/*.jar
-            launch-agent/target/*.jar
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
