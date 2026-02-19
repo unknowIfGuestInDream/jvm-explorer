@@ -27,6 +27,12 @@ public class Compiler {
 
 			final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
+			if (compiler == null) {
+				String msg = "JavaCompiler is not available. Ensure a JDK (not JRE) is used or jdk.compiler module is included.";
+				log.error(msg);
+				return CompileResult.builder().success(false).stdOut(msg).build();
+			}
+
 			final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
 
 			final StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(null, null, null);

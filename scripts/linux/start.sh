@@ -44,8 +44,8 @@ else
 echo 'Stop Process Successfully!'
 echo 'start Process...'
 if [ -f "./jre/bin/java" ];then
-  nohup jre/bin/java --add-modules jdk.attach -jar $APP_NAME > nohup.out &
+  nohup jre/bin/java --add-modules jdk.attach,jdk.compiler -jar $APP_NAME > nohup.out &
 else
-  nohup java --add-modules jdk.attach -jar $APP_NAME > nohup.out &
+  nohup java --add-modules jdk.attach,jdk.compiler -jar $APP_NAME > nohup.out &
 fi
 fi
