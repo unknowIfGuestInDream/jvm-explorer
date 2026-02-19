@@ -39,4 +39,9 @@ jdk-21.0.10+7/bin/jlink \
   --compress zip-6 \
   --output jre
 
+if [ $? -ne 0 ]; then
+  echo "jlink failed to create custom runtime" >&2
+  exit 1
+fi
+
 rm -rf jdk-21.0.10+7 jdk.tar.gz

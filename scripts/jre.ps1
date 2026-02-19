@@ -37,5 +37,9 @@ Expand-Archive -Path 'jdk.zip' -DestinationPath '.' -Force
   --compress zip-6 `
   --output jre
 
+if ($LASTEXITCODE -ne 0) {
+  throw 'jlink failed to create custom runtime'
+}
+
 Remove-Item -Path 'jdk-21.0.10+7' -Recurse -Force
 Remove-Item -Path 'jdk.zip' -Force
