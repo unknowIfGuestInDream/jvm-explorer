@@ -16,6 +16,6 @@ if not %errorlevel% == 0 (
 set java_path=javaw
 )
 :START
-cmd /c start /b %java_path% --add-modules jdk.attach,jdk.compiler -jar explorer.jar
+cmd /c start /b %java_path% --add-modules jdk.attach -jar explorer.jar
 
 :END
