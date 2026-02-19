@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.fx.openclass;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.AgentException;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.bytecode.Assembler;
@@ -68,6 +69,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -79,8 +81,8 @@ public class CurrentClassController {
 	private static final Logger log = LoggerFactory.getLogger(CurrentClassController.class);
 
 
-	private static final String NO_CLASS_FILE_OPEN = "Select a loaded class to open";
-	private static final String PROCESSOR_FAILED = "Processor failed";
+	private static final String NO_CLASS_FILE_OPEN = "placeholder.selectClass";
+	private static final String PROCESSOR_FAILED = "placeholder.processorFailed";
 
 	private final EditorHelper editorHelper = new EditorHelper();
 	private final FieldTreeHelper fieldTreeHelper = new FieldTreeHelper();
@@ -193,7 +195,7 @@ public class CurrentClassController {
 				final PatchResult result = clientHandler.replaceClass(runningJvm, loadedClass, assembledClassFile);
 				Platform.runLater(() -> {
 					if (!result.isSuccess()) {
-						alertHelper.showError("Class Patch Failed", result.getMessage());
+						alertHelper.showError(JvmExplorer.getBundle().getString("status.classPatchFailed"), result.getMessage());
 						return;
 					}
 					disassembledClass.set(text);
@@ -201,8 +203,9 @@ public class CurrentClassController {
 				});
 			}
 			catch (AssemblyException assemblyException) {
-				Platform.runLater(() -> alertHelper.showError("Assembly Failed",
-				                                              "Failed to assemble class",
+				final ResourceBundle bundle = JvmExplorer.getBundle();
+				Platform.runLater(() -> alertHelper.showError(bundle.getString("status.assemblyFailed"),
+				                                              bundle.getString("status.assemblyFailedMsg"),
 				                                              assemblyException));
 			}
 		});
@@ -213,7 +216,7 @@ public class CurrentClassController {
 
 		final ContextMenu contextMenu = classFile.getContextMenu();
 		final KeyCodeCombination accelerator = new KeyCodeCombination(KeyCode.M, KeyCombination.CONTROL_DOWN);
-		final MenuItem modifyMethod = new MenuItem("Modify Method");
+		final MenuItem modifyMethod = new MenuItem(JvmExplorer.getBundle().getString("ctx.modifyMethod"));
 		modifyMethod.setAccelerator(accelerator);
 		modifyMethod.setOnAction(e -> showModifyMethod());
 		AcceleratorHelper.process(classFile, accelerator, modifyMethod);
@@ -243,7 +246,8 @@ public class CurrentClassController {
 		try {
 			final Dialog<ButtonType> dialog = new Dialog<>();
 			final FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-			                                                   .getResource("fxml/modify_method.fxml"));
+			                                                   .getResource("fxml/modify_method.fxml"),
+			                                         JvmExplorer.getBundle());
 			final Parent root = loader.load();
 			final ModifyMethodController modifyMethodController = loader.getController();
 			final ClassContent classContent = currentClass.get();
@@ -257,7 +261,7 @@ public class CurrentClassController {
 			final LoadedClass loadedClass = classContent.getLoadedClass();
 			final List<LoadedClass> classpath = getClassPath(loadedClass);
 			dialog.getDialogPane().setContent(root);
-			dialog.setTitle("Modify Method");
+			dialog.setTitle(JvmExplorer.getBundle().getString("dialog.modifyMethod"));
 			dialog.initOwner(classFile.getScene().getWindow());
 			DialogHelper.initCustomDialog(dialog, currentJvm);
 			final Consumer<Boolean> closeHandler = success -> {
@@ -303,11 +307,11 @@ public class CurrentClassController {
 					});
 				}
 				else {
-					Platform.runLater(() -> alertHelper.showError("Patch Failed", patchResult.getMessage()));
+					Platform.runLater(() -> alertHelper.showError(JvmExplorer.getBundle().getString("status.patchFailedTitle"), patchResult.getMessage()));
 				}
 			}
 			else {
-				Platform.runLater(() -> alertHelper.showError("Compilation Failed", compileResult.getStdOut()));
+				Platform.runLater(() -> alertHelper.showError(JvmExplorer.getBundle().getString("status.compilationFailed"), compileResult.getStdOut()));
 			}
 		});
 	}
@@ -360,7 +364,7 @@ public class CurrentClassController {
 
 		final ContextMenu contextMenu = new ContextMenu();
 
-		final MenuItem save = new MenuItem("Save Changes");
+		final MenuItem save = new MenuItem(JvmExplorer.getBundle().getString("ctx.saveChanges"));
 		save.disableProperty().bind(editorModified.not());
 
 		save.setOnAction(e -> {
@@ -382,7 +386,7 @@ public class CurrentClassController {
 
 		AcceleratorHelper.process(editor, shortcut, save);
 
-		final MenuItem reset = new MenuItem("Reset Changes");
+		final MenuItem reset = new MenuItem(JvmExplorer.getBundle().getString("ctx.resetChanges"));
 		reset.disableProperty().bind(editorModified.not());
 
 		reset.setOnAction(e -> editor.replaceText(editorBaseContent.get()));
@@ -461,12 +465,13 @@ public class CurrentClassController {
 			classFields.getRoot().getChildren().clear();
 		}
 		else {
+			final String processorFailedKey = JvmExplorer.getBundle().getString(PROCESSOR_FAILED);
 			processBytecode(newv, new VineflowerDecompiler(), classFile, newDecompiledClass -> {
-				allowClassFileEditing.set(!PROCESSOR_FAILED.equals(newDecompiledClass));
+				allowClassFileEditing.set(!processorFailedKey.equals(newDecompiledClass));
 				decompiledClass.set(newDecompiledClass);
 			});
 			processBytecode(newv, new OpenJdkJasmDisassembler(), bytecode, newDisassembledClass -> {
-				allowBytecodeEditing.set(!PROCESSOR_FAILED.equals(newDisassembledClass));
+				allowBytecodeEditing.set(!processorFailedKey.equals(newDisassembledClass));
 				disassembledClass.set(newDisassembledClass);
 			});
 			loadChildren(classFields.getRoot(), newv.getClassFields());
@@ -520,7 +525,7 @@ public class CurrentClassController {
 					log.warn("Process result is empty for class {} with processor {}",
 					         classContent.getLoadedClass(),
 					         bytecodeTextifier);
-					newText = PROCESSOR_FAILED;
+					newText = JvmExplorer.getBundle().getString(PROCESSOR_FAILED);
 				}
 				else {
 					newText = processedClass;
@@ -567,9 +572,11 @@ public class CurrentClassController {
 
 		final Label classFieldsPlaceholder = new Label();
 		classFieldsPlaceholder.textProperty()
-		                      .bind(Bindings.createStringBinding(() -> currentClass.get() != null
-		                                                               ? "No static fields found" : NO_CLASS_FILE_OPEN,
-		                                                         currentClass));
+		                      .bind(Bindings.createStringBinding(() -> {
+		                          final ResourceBundle bundle = JvmExplorer.getBundle();
+		                          return currentClass.get() != null
+		                                 ? bundle.getString("placeholder.noStaticFields") : bundle.getString(NO_CLASS_FILE_OPEN);
+		                      }, currentClass));
 
 		final TreeViewPlaceholderSkin<ClassField> treeViewPlaceholderSkin = new TreeViewPlaceholderSkin<>(classFields);
 		treeViewPlaceholderSkin.placeholderProperty().setValue(classFieldsPlaceholder);
@@ -581,8 +588,8 @@ public class CurrentClassController {
 		final Label placeholderLabel = new Label();
 		placeholderLabel.textProperty()
 		                .bind(Bindings.when(this.currentClass.isNotNull())
-		                              .then("Processing class")
-		                              .otherwise(NO_CLASS_FILE_OPEN));
+		                              .then(JvmExplorer.getBundle().getString("placeholder.processingClass"))
+		                              .otherwise(JvmExplorer.getBundle().getString(NO_CLASS_FILE_OPEN)));
 		codeArea.setPlaceholder(placeholderLabel);
 		codeArea.mouseTransparentProperty()
 		        .bind(Bindings.createBooleanBinding(() -> codeArea.getText().isEmpty(), codeArea.textProperty()));

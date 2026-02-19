@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.fx.jvms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.AgentException;
 import com.tlcsdm.jvmexplorer.agent.AgentPreparer;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,7 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 			                                                                .getResourceAsStream("icons/jvm.png"))));
 		}, listCell.itemProperty()));
 		final ContextMenu rowContextMenu = new ContextMenu();
-		final MenuItem viewPropertiesItem = new MenuItem("View System Properties");
+		final MenuItem viewPropertiesItem = new MenuItem(JvmExplorer.getBundle().getString("ctx.viewSystemProperties"));
 		viewPropertiesItem.setOnAction(e -> {
 			final RunningJvm currentItem = listCell.getItem();
 			if (currentItem == null) {
@@ -88,29 +90,33 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 			try {
 				final Properties properties = jvm.getSystemProperties();
 				Platform.runLater(() -> {
+					final ResourceBundle bundle = JvmExplorer.getBundle();
 					final List<String> propertiesList = properties.entrySet()
 					                                              .stream()
 					                                              .map(entry -> entry.getKey() + ": "
 					                                                            + entry.getValue())
 					                                              .collect(Collectors.toList());
-					alertHelper.showExpandableList("JVM System Properties",
-					                               "System Properties: " + jvm,
+					alertHelper.showExpandableList(bundle.getString("dialog.jvmSystemProperties"),
+					                               java.text.MessageFormat.format(bundle.getString("dialog.systemProperties"), jvm),
 					                               null,
 					                               propertiesList);
 				});
 			}
 			catch (AgentException ex) {
-				Platform.runLater(() -> alertHelper.showError("Operation Failed",
-				                                              "Failed to load system properties",
-				                                              ex));
+				Platform.runLater(() -> {
+					final ResourceBundle bundle = JvmExplorer.getBundle();
+					alertHelper.showError(bundle.getString("error.operationFailed"),
+					                      bundle.getString("error.failedToLoadSystemProperties"),
+					                      ex);
+				});
 			}
 		});
 	}
 
 	private MenuItem createLaunchProcessMenuItem(ListView<RunningJvm> listView) {
-		final MenuItem launchProcessMenuItem = new MenuItem("Launch JAR");
+		final MenuItem launchProcessMenuItem = new MenuItem(JvmExplorer.getBundle().getString("ctx.launchJar"));
 		launchProcessMenuItem.setOnAction(e -> {
-			final File selectedFile = fileHelper.openJar(listView.getScene().getWindow(), "Launch JAR");
+			final File selectedFile = fileHelper.openJar(listView.getScene().getWindow(), JvmExplorer.getBundle().getString("ctx.launchJar"));
 			if (selectedFile == null) {
 				return;
 			}
@@ -142,7 +148,8 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 			}
 			catch (IOException ex) {
 				Platform.runLater(() -> {
-					alertHelper.showError("JAR Launch Failed", "Failed to launch JAR", ex);
+					final ResourceBundle bundle = JvmExplorer.getBundle();
+					alertHelper.showError(bundle.getString("error.jarLaunchFailed"), bundle.getString("error.failedToLaunchJar"), ex);
 					this.currentJvm.set(null);
 				});
 			}

@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.helper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.fx.compile.RemoteCodeExecutorController;
 import com.tlcsdm.jvmexplorer.net.ClientHandler;
@@ -31,7 +32,8 @@ public class RemoteCodeHelper {
 		try {
 			final Dialog<?> dialog = new Dialog<>();
 			final FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-			                                                   .getResource("fxml/remote_code_executor.fxml"));
+			                                                   .getResource("fxml/remote_code_executor.fxml"),
+			                                         JvmExplorer.getBundle());
 			final Parent root = loader.load();
 			final RemoteCodeExecutorController remoteCodeExecutorController = loader.getController();
 			remoteCodeExecutorController.initialize(executorService,
@@ -41,7 +43,7 @@ public class RemoteCodeHelper {
 			                                        packageName,
 			                                        classpath);
 			dialog.getDialogPane().setContent(root);
-			final String title = Stream.of("Remote Code Executor", classLoaderDescriptor, packageName)
+			final String title = Stream.of(JvmExplorer.getBundle().getString("dialog.remoteCodeExecutor"), classLoaderDescriptor, packageName)
 			                           .filter(Objects::nonNull)
 			                           .map(Object::toString)
 			                           .map(String::trim)

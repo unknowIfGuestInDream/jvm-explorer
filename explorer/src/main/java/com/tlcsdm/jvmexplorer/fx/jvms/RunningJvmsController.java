@@ -1,5 +1,6 @@
 package com.tlcsdm.jvmexplorer.fx.jvms;
 
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.agent.RunningJvmLoader;
 import com.tlcsdm.jvmexplorer.helper.AlertHelper;
@@ -64,7 +65,7 @@ public class RunningJvmsController {
 	}
 
 	private void initialize() {
-		processes.setPlaceholder(new Label("No JVMs found"));
+		processes.setPlaceholder(new Label(JvmExplorer.getBundle().getString("placeholder.noJvmsFound")));
 		bindSelectedItemToJvmProperty();
 		setupJvmSearching();
 		setupTitlePaneText(); // run this after setting up searching, it depends on items being set
@@ -104,7 +105,7 @@ public class RunningJvmsController {
 		jvmsTitlePane.textProperty().bind(Bindings.createStringBinding(() -> {
 			final int visibleProcesses = processes.getItems().size();
 			final int totalProcesses = runningJvms.size();
-			return "Running JVMs (" + getRunningJvmDisplay(visibleProcesses, totalProcesses) + ")";
+			return JvmExplorer.getBundle().getString("ui.runningJvms") + " (" + getRunningJvmDisplay(visibleProcesses, totalProcesses) + ")";
 		}, processes.getItems(), searchJvms.textProperty(), runningJvms));
 	}
 

@@ -35,10 +35,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.UncheckedIOException;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -152,7 +154,7 @@ public class LoadedClassesController {
 		});
 
 		final Tooltip tooltip = new Tooltip();
-		tooltip.setText("You can also press Enter to directly open a class with the searched name");
+		tooltip.setText(JvmExplorer.getBundle().getString("placeholder.searchTooltip"));
 		searchClasses.setTooltip(tooltip);
 	}
 
@@ -199,10 +201,12 @@ public class LoadedClassesController {
 		}
 		Platform.runLater(() -> {
 			if (propertyList.isEmpty()) {
-				alertHelper.showError("Agent Error", "Failed to load agent in JVM", e);
+				final ResourceBundle bundle = JvmExplorer.getBundle();
+				alertHelper.showError(bundle.getString("error.agentError"), bundle.getString("error.failedToLoadAgent"), e);
 			}
 			else {
-				alertHelper.showError("Agent Error", "Failed to load agent in JVM", e, propertyList);
+				final ResourceBundle bundle = JvmExplorer.getBundle();
+				alertHelper.showError(bundle.getString("error.agentError"), bundle.getString("error.failedToLoadAgent"), e, propertyList);
 			}
 			currentJvm.set(null);
 		});
@@ -301,27 +305,28 @@ public class LoadedClassesController {
 	private String getTitlePaneText() {
 		final long visibleItems = classesTreeRoot.streamVisible().filter(p -> p.getLoadedClass() != null).count();
 		final long sourceItems = classesTreeRoot.streamSource().filter(p -> p.getLoadedClass() != null).count();
-		return "Loaded Classes (" + getLoadedClassDisplay(visibleItems, sourceItems) + ")";
+		return JvmExplorer.getBundle().getString("ui.loadedClasses") + " (" + getLoadedClassDisplay(visibleItems, sourceItems) + ")";
 	}
 
 	private String getPlaceholderText() {
+		final ResourceBundle bundle = JvmExplorer.getBundle();
 		if (currentJvm.get() == null) {
-			return "No JVM selected";
+			return bundle.getString("placeholder.noJvmSelected");
 		}
 		else if (loadedClassProgressCount.get() != CLASSES_NOT_LOADING) {
 			if (loadedClassProgressCount.get() == 0) {
-				return "Loading - Initializing";
+				return bundle.getString("placeholder.loadingInitializing");
 			}
-			return "Loading - " + loadedClassProgressCount.get() + " classes";
+			return MessageFormat.format(bundle.getString("placeholder.loadingClasses"), loadedClassProgressCount.get());
 		}
 		else if (agentLoading.get()) {
-			return "Agent attaching to process";
+			return bundle.getString("placeholder.agentAttaching");
 		}
 		else if (!searchClasses.getText().trim().isEmpty()) {
-			return "No classes found";
+			return bundle.getString("placeholder.noClassesFound");
 		}
 		else {
-			return "No classes... possible " + "agent error";
+			return bundle.getString("placeholder.noClassesAgentError");
 		}
 	}
 
