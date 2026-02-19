@@ -417,7 +417,7 @@ public class JvmExplorerController {
 				if (!this.stage.isShowing()) {
 					return;
 				}
-				alertHelper.showError("Connection Lost", "Connection lost to JVM");
+				alertHelper.showError(bundle.getString("error.connectionLost"), bundle.getString("error.connectionLostToJvm"));
 				runningJvmsController.setCurrentJvm(null);
 			}
 		});

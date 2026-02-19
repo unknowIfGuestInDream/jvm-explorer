@@ -1,5 +1,6 @@
 package com.tlcsdm.jvmexplorer.fx.openclass;
 
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.helper.AlertHelper;
 import com.tlcsdm.jvmexplorer.helper.ClipboardHelper;
@@ -28,6 +29,7 @@ import javafx.util.Callback;
 
 import java.lang.reflect.Modifier;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 
 public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, TreeCell<ClassField>> {
@@ -53,7 +55,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 
 	private void setupContextMenu(TreeCell<ClassField> cell) {
 		final ContextMenu rowContextMenu = new ContextMenu();
-		final MenuItem editRow = new MenuItem("Edit Value");
+		final MenuItem editRow = new MenuItem(JvmExplorer.getBundle().getString("ctx.editValue"));
 		editRow.setOnAction(e -> {
 			final ClassField classField = cell.getItem();
 			if (classField == null) {
@@ -62,8 +64,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 			final String currentValue = editorHelper.getObjectString(classField.getClassFieldKey().getTypeName(),
 			                                                         classField.getValue());
 			final TextInputDialog dialog = new TextInputDialog(currentValue);
-			dialog.setTitle("Update Field");
-			dialog.setHeaderText("Enter new value:");
+			final ResourceBundle bundle = JvmExplorer.getBundle();
+			dialog.setTitle(bundle.getString("dialog.updateField"));
+			dialog.setHeaderText(bundle.getString("dialog.enterNewValue"));
 			dialog.setContentText(null);
 			dialog.initOwner(cell.getScene().getWindow());
 			dialog.showAndWait().ifPresent(result -> {
@@ -74,7 +77,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 				edit(selectedJvm, cell.getTreeItem(), result);
 			});
 		});
-		final MenuItem copyValue = new MenuItem("Copy Value");
+		final MenuItem copyValue = new MenuItem(JvmExplorer.getBundle().getString("ctx.copyValue"));
 		copyValue.setOnAction(e -> {
 			final ClassField classField = cell.getItem();
 			if (classField == null) {
@@ -132,7 +135,8 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 				Platform.runLater(() -> classField.setValue(updatedClassField));
 			}
 			else {
-				Platform.runLater(() -> alertHelper.showError("Operation Failed", "Failed to change field"));
+				final ResourceBundle bundle = JvmExplorer.getBundle();
+				Platform.runLater(() -> alertHelper.showError(bundle.getString("error.operationFailed"), bundle.getString("error.failedToChangeField")));
 			}
 		});
 	}

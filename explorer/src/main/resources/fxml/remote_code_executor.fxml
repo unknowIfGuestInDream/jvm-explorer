@@ -8,7 +8,7 @@
 <?import org.fxmisc.richtext.CodeArea?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
       minHeight="-Infinity"
-      minWidth="-Infinity" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1"
+      minWidth="-Infinity" prefWidth="900.0" xmlns="http://javafx.com/javafx/21"
       fx:controller="com.tlcsdm.jvmexplorer.fx.compile.RemoteCodeExecutorController">
     <children>
         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0"
@@ -19,7 +19,7 @@
         </VBox>
         <HBox alignment="CENTER_LEFT">
             <children>
-                <Button fx:id="runButton" mnemonicParsing="false" onAction="#onExecute" text="Execute Code"/>
+                <Button fx:id="runButton" mnemonicParsing="false" onAction="#onExecute" text="%ui.executeCode"/>
             </children>
             <VBox.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -28,7 +28,7 @@
         <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <children>
                 <TextArea fx:id="output" editable="false" prefHeight="150.0"
-                          promptText="Implement the 'call' method above, and click 'Execute Code'" HBox.hgrow="ALWAYS"/>
+                          promptText="%ui.executeCodePrompt" HBox.hgrow="ALWAYS"/>
             </children>
         </HBox>
     </children>

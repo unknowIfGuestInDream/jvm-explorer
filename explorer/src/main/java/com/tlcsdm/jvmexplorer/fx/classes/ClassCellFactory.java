@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.fx.classes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.helper.AlertHelper;
 import com.tlcsdm.jvmexplorer.helper.ClassTreeHelper;
@@ -37,9 +38,11 @@ import javafx.util.Callback;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -188,17 +191,18 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	private MenuItem createScopedExport(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
 		final MenuItem scopedExport = new MenuItem();
 		scopedExport.textProperty().bind(Bindings.createStringBinding(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			final ClassTreeNode classTreeNode = treeCell.getItem();
 			if (classTreeNode == null) {
 				return "";
 			}
 			switch (classTreeNode.getType()) {
 			case CLASSLOADER:
-				return "Export Class Loader";
+				return bundle.getString("ctx.exportClassLoader");
 			case PACKAGE:
-				return "Export Package";
+				return bundle.getString("ctx.exportPackage");
 			case CLASS:
-				return "Export Class";
+				return bundle.getString("ctx.exportClass");
 			}
 			log.warn("Unknown type: {}", classTreeNode.getType());
 			return "";
@@ -259,7 +263,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private MenuItem createExportClasses(TreeView<ClassTreeNode> classes) {
-		final MenuItem exportClasses = new MenuItem("Export Classes");
+		final MenuItem exportClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.exportClasses"));
 		exportClasses.setOnAction(e -> {
 			final RunningJvm activeJvm = currentJvm.get();
 			if (activeJvm == null) {
@@ -279,7 +283,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private MenuItem createReloadClasses() {
-		final MenuItem reloadClasses = new MenuItem("Refresh Classes");
+		final MenuItem reloadClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.refreshClasses"));
 		reloadClasses.setOnAction(e -> {
 			final RunningJvm activeJvm = currentJvm.get();
 			if (activeJvm == null) {
@@ -293,19 +297,20 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private MenuItem createScopedReplace(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
-		final MenuItem scopedReplace = new MenuItem("Replace Class");
+		final MenuItem scopedReplace = new MenuItem(JvmExplorer.getBundle().getString("ctx.replaceClass"));
 		scopedReplace.textProperty().bind(Bindings.createStringBinding(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			final ClassTreeNode classTreeNode = treeCell.getItem();
 			if (classTreeNode == null) {
 				return "";
 			}
 			switch (classTreeNode.getType()) {
 			case CLASSLOADER:
-				return "Replace Class Loader";
+				return bundle.getString("ctx.replaceClassLoader");
 			case PACKAGE:
-				return "Replace Package";
+				return bundle.getString("ctx.replacePackage");
 			case CLASS:
-				return "Replace Class";
+				return bundle.getString("ctx.replaceClass");
 			}
 			log.warn("Unknown type: {}", classTreeNode.getType());
 			return "";
@@ -350,7 +355,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private MenuItem createReplaceClasses(TreeView<ClassTreeNode> classes) {
-		final MenuItem replaceClasses = new MenuItem("Replace Classes");
+		final MenuItem replaceClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.replaceClasses"));
 		replaceClasses.setOnAction(e -> {
 			final RunningJvm jvm = currentJvm.get();
 			if (jvm == null) {
@@ -366,7 +371,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private MenuItem createShowClassLoader(MenuItem reloadClasses) {
-		final CheckMenuItem includeClassLoader = new CheckMenuItem("Show Class Loaders");
+		final CheckMenuItem includeClassLoader = new CheckMenuItem(JvmExplorer.getBundle().getString("ctx.showClassLoaders"));
 		includeClassLoader.setOnAction(e -> {
 			settings.getShowClassLoader().set(includeClassLoader.isSelected());
 			final RunningJvm runningJvm = currentJvm.get();
@@ -384,18 +389,19 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	private MenuItem createExecuteCode(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> treeView) {
 		final MenuItem executeCode = new MenuItem();
 		executeCode.textProperty().bind(Bindings.createStringBinding(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			final ClassTreeNode classTreeNode = treeCell.getItem();
 			if (classTreeNode != null) {
 				switch (classTreeNode.getType()) {
 				case CLASSLOADER:
-					return "Run Code In Class Loader";
+					return bundle.getString("ctx.runCodeInClassLoader");
 				case PACKAGE:
 				case CLASS:
-					return "Run Code In Package";
+					return bundle.getString("ctx.runCodeInPackage");
 				}
 				log.warn("Unknown type: {}", classTreeNode.getType());
 			}
-			return "Run Code";
+			return bundle.getString("ctx.runCode");
 		}, treeCell.itemProperty()));
 		executeCode.setOnAction(e -> {
 			final RunningJvm activeJvm = currentJvm.get();
@@ -484,7 +490,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private File selectExportJarFile(String initialFileName, Window owner) {
-		return fileHelper.saveJar(owner, "Export Classes", initialFileName);
+		return fileHelper.saveJar(owner, JvmExplorer.getBundle().getString("ctx.exportClasses"), initialFileName);
 	}
 
 	private void export(File selectedFile, List<LoadedClass> classes, RunningJvm activeJvm) {
@@ -496,15 +502,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		final SimpleBooleanProperty isComplete = new SimpleBooleanProperty(false);
 		final SimpleBooleanProperty success = new SimpleBooleanProperty(false);
 		Platform.runLater(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			final StringBinding titleText = Bindings.when(isComplete)
-			                                        .then("Export Finished")
-			                                        .otherwise("Export In Progress");
+			                                        .then(bundle.getString("status.exportFinished"))
+			                                        .otherwise(bundle.getString("status.exportInProgress"));
 			final StringBinding contentText = Bindings.createStringBinding(() -> {
 				if (isComplete.get()) {
-					return "Export " + (success.get() ? "succeeded" : "failed");
+					return success.get() ? bundle.getString("status.exportSucceeded") : bundle.getString("status.exportFailed");
 				}
 				else {
-					return "Creating JAR: " + progress.get() + " classes";
+					return MessageFormat.format(bundle.getString("status.creatingJar"), progress.get());
 				}
 			}, isComplete, success, progress);
 			alertHelper.showObservableInfo(titleText, contentText);
@@ -521,7 +528,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private File selectExportClassFile(String initialFileName, Window owner) {
-		return fileHelper.saveClass(owner, "Export Class", initialFileName);
+		return fileHelper.saveClass(owner, JvmExplorer.getBundle().getString("ctx.exportClass"), initialFileName);
 	}
 
 	private void export(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
@@ -535,7 +542,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private File selectImportJarFile(Window owner) {
-		return fileHelper.openJar(owner, "Replace Classes");
+		return fileHelper.openJar(owner, JvmExplorer.getBundle().getString("ctx.replaceClasses"));
 	}
 
 	private void replaceClasses(File selectedFile, RunningJvm activeJvm, ClassLoaderDescriptor classLoaderDescriptor) {
@@ -543,15 +550,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		final SimpleBooleanProperty isComplete = new SimpleBooleanProperty(false);
 		final SimpleBooleanProperty success = new SimpleBooleanProperty(false);
 		Platform.runLater(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			final StringBinding titleText = Bindings.when(isComplete)
-			                                        .then("Patching Finished")
-			                                        .otherwise("Patch In Progress");
+			                                        .then(bundle.getString("status.patchingFinished"))
+			                                        .otherwise(bundle.getString("status.patchInProgress"));
 			final StringBinding contentText = Bindings.createStringBinding(() -> {
 				if (isComplete.get()) {
-					return "Patch " + (success.get() ? "succeeded" : "failed");
+					return success.get() ? bundle.getString("status.patchSucceeded") : bundle.getString("status.patchFailed");
 				}
 				else {
-					return "Patching: " + progress.get() + " classes";
+					return MessageFormat.format(bundle.getString("status.patching"), progress.get());
 				}
 			}, isComplete, success, progress);
 			alertHelper.showObservableInfo(titleText, contentText);
@@ -569,7 +577,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	private File selectImportClassFile(Window owner) {
-		return fileHelper.openClass(owner, "Replace Class");
+		return fileHelper.openClass(owner, JvmExplorer.getBundle().getString("ctx.replaceClass"));
 	}
 
 	private void replaceClass(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
@@ -583,11 +591,12 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		}
 		final PatchResult replaced = clientHandler.replaceClass(activeJvm, loadedClass, contents);
 		Platform.runLater(() -> {
+			final ResourceBundle bundle = JvmExplorer.getBundle();
 			if (!replaced.isSuccess()) {
-				alertHelper.showError("Replace Failed", replaced.getMessage());
+				alertHelper.showError(bundle.getString("status.replaceFailed"), replaced.getMessage());
 				return;
 			}
-			alertHelper.show(Alert.AlertType.INFORMATION, "Replaced Class", "Successfully replaced class");
+			alertHelper.show(Alert.AlertType.INFORMATION, bundle.getString("status.replacedClass"), bundle.getString("status.replacedClassSuccess"));
 		});
 	}
 

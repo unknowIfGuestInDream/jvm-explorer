@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.fx.method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.AgentException;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.bytecode.AsmDisassembler;
@@ -150,8 +151,7 @@ public class ModifyMethodController {
 
 	private String buildBaseCode(MethodDescriptor methodDesc, ModifyType modifyType) {
 		if (methodDesc == null) {
-			// If all methods are abstract (interface), we may not be able to modify anything
-			return "// No method selected";
+			return JvmExplorer.getBundle().getString("status.noMethodSelected");
 		}
 		final String returnType =
 				modifyType.isExpectsReturnValue() ? Type.getReturnType(methodDesc.getMethodNode().desc).getClassName()
@@ -165,7 +165,7 @@ public class ModifyMethodController {
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();
 
-		final MenuItem compile = new MenuItem("Compile Code");
+		final MenuItem compile = new MenuItem(JvmExplorer.getBundle().getString("ctx.compileCode"));
 		compile.setOnAction(e -> compileButton.fire());
 
 		final KeyCodeCombination compileShortcut = new KeyCodeCombination(KeyCode.B, KeyCodeCombination.CONTROL_DOWN);
@@ -175,7 +175,7 @@ public class ModifyMethodController {
 
 		contextMenu.getItems().add(compile);
 
-		final MenuItem modifyCode = new MenuItem("Modify Code");
+		final MenuItem modifyCode = new MenuItem(JvmExplorer.getBundle().getString("ctx.modifyCode"));
 		modifyCode.setOnAction(e -> modifyButton.fire());
 
 		final KeyCodeCombination modifyShortcut = new KeyCodeCombination(KeyCode.M, KeyCodeCombination.CONTROL_DOWN);
@@ -190,11 +190,11 @@ public class ModifyMethodController {
 
 	@FXML
 	void onCompile() {
-		onCompile(c -> Platform.runLater(() -> setOutputText("Compiled Successfully", c.getStdOut())));
+		onCompile(c -> Platform.runLater(() -> setOutputText(JvmExplorer.getBundle().getString("status.compiledSuccessfully"), c.getStdOut())));
 	}
 
 	private void onCompile(Consumer<CompileResult> onCompilation) {
-		setOutputText("Compiling...", "Please wait.");
+		setOutputText(JvmExplorer.getBundle().getString("status.compiling"), JvmExplorer.getBundle().getString("status.pleaseWait"));
 		// I love when java can't compile my lambda without casting
 		executorService.submit(() -> {
 			log.debug("Compiling class with {} classes on classpath", classpath.size());
@@ -209,7 +209,7 @@ public class ModifyMethodController {
 			                                                     javacBytecodeProvider);
 			log.debug("Compile result: {}", compileResult);
 			if (!compileResult.isSuccess()) {
-				Platform.runLater(() -> setOutputText("Compilation Failed", compileResult.getStdOut()));
+				Platform.runLater(() -> setOutputText(JvmExplorer.getBundle().getString("status.compilationFailed"), compileResult.getStdOut()));
 				return;
 			}
 			onCompilation.accept(compileResult);
@@ -244,7 +244,7 @@ public class ModifyMethodController {
 			catch (Exception e) {
 				log.warn("Failed to post-process method", e);
 				Platform.runLater(() -> {
-					setOutputText("Class Processor Failed", e.getMessage());
+					setOutputText(JvmExplorer.getBundle().getString("status.classProcessorFailed"), e.getMessage());
 					resetClassNode();
 				});
 				return;
@@ -256,7 +256,7 @@ public class ModifyMethodController {
 				final String disassembledClass = disassembler.process(finishedClass);
 				log.debug("Failed to patch class\n{}\n{}", patchResult.getMessage(), disassembledClass);
 				Platform.runLater(() -> {
-					setOutputText("Patch Failed", patchResult.getMessage());
+					setOutputText(JvmExplorer.getBundle().getString("status.patchFailedTitle"), patchResult.getMessage());
 					resetClassNode();
 				});
 				return;

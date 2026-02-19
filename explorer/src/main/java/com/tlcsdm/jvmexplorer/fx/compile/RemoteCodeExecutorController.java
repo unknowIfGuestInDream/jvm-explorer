@@ -2,6 +2,7 @@ package com.tlcsdm.jvmexplorer.fx.compile;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.tlcsdm.jvmexplorer.JvmExplorer;
 import com.tlcsdm.jvmexplorer.agent.AgentException;
 import com.tlcsdm.jvmexplorer.agent.RunningJvm;
 import com.tlcsdm.jvmexplorer.bytecode.compile.CompileResult;
@@ -26,6 +27,7 @@ import javafx.scene.input.KeyCodeCombination;
 import org.fxmisc.richtext.CodeArea;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 
 public class RemoteCodeExecutorController {
@@ -77,7 +79,7 @@ public class RemoteCodeExecutorController {
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();
 
-		final MenuItem run = new MenuItem("Execute Code");
+		final MenuItem run = new MenuItem(JvmExplorer.getBundle().getString("ui.executeCode"));
 		run.setOnAction(e -> runButton.fire());
 
 		final KeyCodeCombination shortcut = new KeyCodeCombination(KeyCode.R, KeyCodeCombination.CONTROL_DOWN);
@@ -92,7 +94,7 @@ public class RemoteCodeExecutorController {
 
 	@FXML
 	void onExecute() {
-		output.setText("Compiling...");
+		output.setText(JvmExplorer.getBundle().getString("status.compiling"));
 		log.debug("Compiling class with {} classes on classpath", classpath.size());
 		executorService.submit(() -> {
 			final Compiler compiler = new Compiler();
@@ -106,16 +108,17 @@ public class RemoteCodeExecutorController {
 			                                                     javacBytecodeProvider);
 			log.debug("Compile result: {}", compileResult);
 			if (!compileResult.isSuccess()) {
-				Platform.runLater(() -> setOutputText("Compilation Failed", compileResult.getStdOut()));
+				Platform.runLater(() -> setOutputText(JvmExplorer.getBundle().getString("status.compilationFailed"), compileResult.getStdOut()));
 				return;
 			}
-			Platform.runLater(() -> output.setText("Executing code..."));
+			Platform.runLater(() -> output.setText(JvmExplorer.getBundle().getString("status.executingCode")));
 			log.debug("Executing code in class loader: {}", classLoaderDescriptor);
 			final ExecutionResult result = clientHandler.executeCallable(runningJvm,
 			                                                             mainClassName,
 			                                                             compileResult.getClassContent(),
 			                                                             classLoaderDescriptor);
-			Platform.runLater(() -> setOutputText("Execution " + (result.isSuccess() ? "Succeeded" : "Failed"),
+			final ResourceBundle bundle = JvmExplorer.getBundle();
+			Platform.runLater(() -> setOutputText((result.isSuccess() ? bundle.getString("status.executionSucceeded") : bundle.getString("status.executionFailed")),
 			                                      result.getMessage()));
 		});
 	}

@@ -30,6 +30,12 @@ public class JvmExplorer extends Application {
 
 	public static final File APP_DIR = new File(System.getProperty("user.home"), "jvm-explorer");
 
+	private static ResourceBundle resourceBundle;
+
+	public static ResourceBundle getBundle() {
+		return resourceBundle;
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		final AppPreferences preferences = AppPreferences.getInstance();
@@ -39,6 +45,7 @@ public class JvmExplorer extends Application {
 		applyTheme(preferences.getTheme());
 
 		final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale);
+		resourceBundle = bundle;
 		final FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/main.fxml"), bundle);
 		final Parent root = loader.load();
 		final JvmExplorerController jvmExplorerController = loader.getController();
