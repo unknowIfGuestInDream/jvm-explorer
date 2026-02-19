@@ -17,8 +17,6 @@ public class Startup {
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
 			log.warn("Thread uncaught exception: " + t, e);
 		});
-		java.util.logging.Logger.getLogger("com.sun.javafx.application.PlatformImpl")
-				.setLevel(java.util.logging.Level.SEVERE);
 		JvmExplorer.launch(JvmExplorer.class, args);
 	}
 
