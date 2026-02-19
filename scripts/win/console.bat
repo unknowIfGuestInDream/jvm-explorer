@@ -16,6 +16,6 @@ if not %errorlevel% == 0 (
 set java_path=java
 )
 :START
-%java_path% --add-modules jdk.attach -jar explorer.jar
+%java_path% -jar explorer.jar
 
 :END
