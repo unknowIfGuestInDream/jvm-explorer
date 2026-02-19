@@ -194,7 +194,6 @@
                 <configuration>
                     <mainClass>com.tlcsdm.jvmexplorer.Startup</mainClass>
                     <options>
-                        <option>--add-modules=jdk.attach</option>
                         <option>--enable-native-access=ALL-UNNAMED</option>
                         <option>--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
                     </options>
