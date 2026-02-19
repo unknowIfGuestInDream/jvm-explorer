@@ -29,7 +29,14 @@
 
 # see https://api.adoptium.net/q/swagger-ui/#/Binary/getBinaryByVersion
 linuxApi='https://api.adoptium.net/v3/binary/version/jdk-21.0.10%2B7/linux/x64/jdk/hotspot/normal/eclipse?project=jdk'
-wget -c ${linuxApi} --no-check-certificate -O jre.tar.gz
-tar -xzf jre.tar.gz
-mv jdk-21.0.10+7 jre
-rm -f jre.tar.gz
+wget -c ${linuxApi} --no-check-certificate -O jdk.tar.gz
+tar -xzf jdk.tar.gz
+
+# Create a custom minimal runtime using jlink instead of shipping the full JDK
+jdk-21.0.10+7/bin/jlink \
+  --add-modules java.se,jdk.attach,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
+  --strip-debug --no-man-pages --no-header-files \
+  --compress zip-6 \
+  --output jre
+
+rm -rf jdk-21.0.10+7 jdk.tar.gz

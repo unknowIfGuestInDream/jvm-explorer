@@ -27,7 +27,15 @@
 
 # see https://api.adoptium.net/q/swagger-ui/#/Binary/getBinaryByVersion
 $winApi = 'https://api.adoptium.net/v3/binary/version/jdk-21.0.10%2B7/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
-Invoke-WebRequest -Uri $winApi -OutFile 'jre.zip'
-Expand-Archive -Path 'jre.zip' -DestinationPath '.' -Force
-Rename-Item -Path 'jdk-21.0.10+7' -NewName 'jre'
-Remove-Item -Path 'jre.zip' -Force
+Invoke-WebRequest -Uri $winApi -OutFile 'jdk.zip'
+Expand-Archive -Path 'jdk.zip' -DestinationPath '.' -Force
+
+# Create a custom minimal runtime using jlink instead of shipping the full JDK
+& '.\jdk-21.0.10+7\bin\jlink.exe' `
+  --add-modules java.se,jdk.attach,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets `
+  --strip-debug --no-man-pages --no-header-files `
+  --compress zip-6 `
+  --output jre
+
+Remove-Item -Path 'jdk-21.0.10+7' -Recurse -Force
+Remove-Item -Path 'jdk.zip' -Force
