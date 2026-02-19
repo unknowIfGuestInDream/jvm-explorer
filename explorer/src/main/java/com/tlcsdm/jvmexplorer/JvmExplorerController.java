@@ -40,6 +40,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -211,7 +212,7 @@ public class JvmExplorerController {
 			}
 		});
 
-		return PreferencesFx.of(AppPreferences.class,
+		PreferencesFx pfx = PreferencesFx.of(AppPreferences.class,
 				Category.of(bundle.getString("preferences.category.general"),
 						Group.of(
 								Setting.of(bundle.getString("preferences.language"),
@@ -222,7 +223,14 @@ public class JvmExplorerController {
 										themeSelection)
 						)
 				)
-		).instantPersistent(false).saveSettings(true).buttonsVisibility(true);
+		).instantPersistent(false).saveSettings(true).buttonsVisibility(false);
+
+		var iconStream = getClass().getClassLoader().getResourceAsStream("icons/jvm.png");
+		if (iconStream != null) {
+			pfx.dialogIcon(new Image(iconStream));
+		}
+
+		return pfx;
 	}
 
 	private static String langCodeToDisplayName(String langCode) {
