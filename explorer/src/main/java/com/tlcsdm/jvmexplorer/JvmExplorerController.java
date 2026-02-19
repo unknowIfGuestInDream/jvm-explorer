@@ -40,6 +40,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -222,7 +223,8 @@ public class JvmExplorerController {
 										themeSelection)
 						)
 				)
-		).instantPersistent(false).saveSettings(true).buttonsVisibility(true);
+		).dialogIcon(new Image(getClass().getClassLoader().getResourceAsStream("icons/jvm.png")))
+				.instantPersistent(false).saveSettings(true).buttonsVisibility(false);
 	}
 
 	private static String langCodeToDisplayName(String langCode) {
