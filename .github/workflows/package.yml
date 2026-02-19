@@ -45,8 +45,6 @@ jobs:
           if (-not $version) { throw 'Failed to extract version from Maven' }
           Add-Content -Path $env:GITHUB_ENV -Value "APP_VERSION=$version" -Encoding utf8
 
-          if (-not (Test-Path dist)) { New-Item -ItemType Directory -Path dist | Out-Null }
-
           # Create staging directory
           $stagingDir = 'staging'
           if (-not (Test-Path $stagingDir)) { New-Item -ItemType Directory -Path $stagingDir | Out-Null }
@@ -55,6 +53,7 @@ jobs:
 
           # Copy files to staging
           Copy-Item -Path 'explorer\target\explorer.jar' -Destination $stagingDir
+          Copy-Item -Path 'explorer\target\lib' -Destination $stagingDir -Recurse
           Copy-Item -Path 'agent\target\agent.jar' -Destination $agentDir
           Copy-Item -Path 'launch-agent\target\launch-agent.jar' -Destination $agentDir
           Copy-Item -Path 'README.md' -Destination $stagingDir
@@ -69,14 +68,6 @@ jobs:
           & ..\scripts\jre.ps1
           Pop-Location
 
-      - name: Package artifact (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Compress-Archive -Path 'staging\*' -DestinationPath "dist/jvm-explorer-windows-$env:APP_VERSION.zip" -Force
-          Write-Host "Created dist/jvm-explorer-windows-$env:APP_VERSION.zip"
-          Remove-Item -Path 'staging' -Recurse -Force
-
       - name: Resolve version & stage files (Linux)
         if: runner.os == 'Linux'
         shell: bash
@@ -86,8 +77,9 @@ jobs:
           if [ -z "$version" ]; then echo "Failed to extract version from Maven" >&2; exit 1; fi
           echo "APP_VERSION=$version" >> $GITHUB_ENV
 
-          mkdir -p dist staging/agent
+          mkdir -p staging/agent
           cp explorer/target/explorer.jar staging/
+          cp -r explorer/target/lib staging/
           cp agent/target/agent.jar staging/agent/
           cp launch-agent/target/launch-agent.jar staging/agent/
           cp README.md LICENSE staging/
@@ -101,19 +93,9 @@ jobs:
           bash ../scripts/jre.sh
           cd ..
 
-      - name: Package artifact (Linux)
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          cd staging
-          zip -r "../dist/jvm-explorer-linux-${APP_VERSION}.zip" .
-          cd ..
-          echo "Created dist/jvm-explorer-linux-${APP_VERSION}.zip"
-          rm -rf staging
-
       - name: Upload packaged artifact
         uses: actions/upload-artifact@v6
         with:
           name: jvm-explorer-${{ matrix.os }}
-          path: dist/*
+          path: staging/
           retention-days: 7

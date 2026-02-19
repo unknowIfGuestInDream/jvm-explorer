@@ -56,6 +56,7 @@ jobs:
 
           # Copy files to staging
           Copy-Item -Path 'explorer\target\explorer.jar' -Destination $stagingDir
+          Copy-Item -Path 'explorer\target\lib' -Destination $stagingDir -Recurse
           Copy-Item -Path 'agent\target\agent.jar' -Destination $agentDir
           Copy-Item -Path 'launch-agent\target\launch-agent.jar' -Destination $agentDir
           Copy-Item -Path 'README.md' -Destination $stagingDir
@@ -89,6 +90,7 @@ jobs:
 
           mkdir -p dist staging/agent
           cp explorer/target/explorer.jar staging/
+          cp -r explorer/target/lib staging/
           cp agent/target/agent.jar staging/agent/
           cp launch-agent/target/launch-agent.jar staging/agent/
           cp README.md LICENSE staging/
