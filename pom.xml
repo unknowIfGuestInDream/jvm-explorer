@@ -62,6 +62,9 @@
         <gson.version>2.13.2</gson.version>
         <fx-gson.version>5.0.0</fx-gson.version>
         <asmtools.version>7.0.b10-ea</asmtools.version>
+        <preferencesfx.version>11.17.0</preferencesfx.version>
+        <atlantafx.version>2.1.0</atlantafx.version>
+        <ikonli.version>12.4.0</ikonli.version>
     </properties>
 
     <dependencyManagement>
@@ -143,6 +146,36 @@
                 <groupId>org.openjdk.asmtools</groupId>
                 <artifactId>asmtools-core</artifactId>
                 <version>${asmtools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dlsc.preferencesfx</groupId>
+                <artifactId>preferencesfx-core</artifactId>
+                <version>${preferencesfx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.mkpaz</groupId>
+                <artifactId>atlantafx-base</artifactId>
+                <version>${atlantafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kordamp.ikonli</groupId>
+                <artifactId>ikonli-core</artifactId>
+                <version>${ikonli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kordamp.ikonli</groupId>
+                <artifactId>ikonli-javafx</artifactId>
+                <version>${ikonli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kordamp.ikonli</groupId>
+                <artifactId>ikonli-material-pack</artifactId>
+                <version>${ikonli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kordamp.ikonli</groupId>
+                <artifactId>ikonli-materialdesign-pack</artifactId>
+                <version>${ikonli.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openjfx</groupId>
