@@ -34,7 +34,7 @@ tar -xzf jdk.tar.gz
 
 # Create a custom minimal runtime using jlink instead of shipping the full JDK
 jdk-21.0.10+7/bin/jlink \
-  --add-modules java.se,jdk.attach,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
+  --add-modules java.se,jdk.attach,jdk.compiler,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
   --strip-debug --no-man-pages --no-header-files \
   --compress zip-6 \
   --output jre
