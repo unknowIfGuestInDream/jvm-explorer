@@ -212,7 +212,7 @@ public class JvmExplorerController {
 			}
 		});
 
-		return PreferencesFx.of(AppPreferences.class,
+		PreferencesFx pfx = PreferencesFx.of(AppPreferences.class,
 				Category.of(bundle.getString("preferences.category.general"),
 						Group.of(
 								Setting.of(bundle.getString("preferences.language"),
@@ -223,8 +223,14 @@ public class JvmExplorerController {
 										themeSelection)
 						)
 				)
-		).dialogIcon(new Image(getClass().getClassLoader().getResourceAsStream("icons/jvm.png")))
-				.instantPersistent(false).saveSettings(true).buttonsVisibility(false);
+		).instantPersistent(false).saveSettings(true).buttonsVisibility(false);
+
+		var iconStream = getClass().getClassLoader().getResourceAsStream("icons/jvm.png");
+		if (iconStream != null) {
+			pfx.dialogIcon(new Image(iconStream));
+		}
+
+		return pfx;
 	}
 
 	private static String langCodeToDisplayName(String langCode) {
