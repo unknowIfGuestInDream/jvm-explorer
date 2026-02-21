@@ -44,7 +44,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <asm.version>9.9.1</asm.version>
-        <javafx.version>21.0.10</javafx.version>
+        <javafx.version>22.0.2</javafx.version>
         <kryonet.version>2.22.0-RC1</kryonet.version>
         <slf4j.version>2.0.17</slf4j.version>
         <logback.version>1.5.32</logback.version>
