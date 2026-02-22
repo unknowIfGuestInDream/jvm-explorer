@@ -17,6 +17,10 @@ class JdkPatcher {
 
 	/**
 	 * Attempts to patch the target jvm to support attaching. This may only work in a few cases.
+	 * <p>
+	 * Writing DLL files to another JVM's directory may be flagged by security software.
+	 * This behavior can be disabled by setting the system property
+	 * {@code jvm.explorer.patch.disabled=true}.
 	 *
 	 * @param runningJvm
 	 * 		the jvm to patch
@@ -24,6 +28,10 @@ class JdkPatcher {
 	 */
 	static boolean patchJdkForAgent(RunningJvm runningJvm) {
 		try {
+			if (Boolean.getBoolean("jvm.explorer.patch.disabled")) {
+				log.info("JDK patching is disabled via system property 'jvm.explorer.patch.disabled'");
+				return false;
+			}
 			if (!System.getProperty("os.name").toLowerCase().contains("win")) {
 				// Patch only supports windows at the moment
 				return false;
@@ -32,7 +40,8 @@ class JdkPatcher {
 			final String javaHome = properties.getProperty("java.home");
 			final boolean is32Bit = "x86".equals(properties.getProperty("os.arch"));
 			final String resourceName = is32Bit ? INSTRUMENT_32_BIT : INSTRUMENT_64_BIT;
-			log.debug("Patching {}", javaHome);
+			log.warn("Attempting to patch JDK at {} - this may trigger security software. "
+			         + "Set -Djvm.explorer.patch.disabled=true to disable this behavior.", javaHome);
 			final File instrumentFile = new File(javaHome, "bin" + File.separator + "instrument.dll");
 			if (instrumentFile.exists()) {
 				log.debug("Resource already exists for {}", javaHome);
