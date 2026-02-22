@@ -10,6 +10,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,6 +37,7 @@ public class AgentPreparer {
 				// instead of a randomly-named file in the system temp directory.
 				// This avoids triggering security software that monitors temp directories
 				// for suspicious file creation patterns.
+				// Always overwrite to ensure the agent matches the current explorer version.
 				Files.createDirectories(AGENT_DIR);
 				final String fileName = Paths.get(agentResourcePath).getFileName().toString();
 				final Path agentFile = AGENT_DIR.resolve(fileName);
@@ -45,7 +47,10 @@ public class AgentPreparer {
 						throw new IOException("Failed to find input stream for agent");
 					}
 					final byte[] agentBytes = inputStream.readAllBytes();
-					Files.write(agentFile, agentBytes);
+					Files.write(agentFile, agentBytes,
+					            StandardOpenOption.CREATE,
+					            StandardOpenOption.TRUNCATE_EXISTING,
+					            StandardOpenOption.WRITE);
 				}
 				final String localPath = agentFile.toAbsolutePath().toString();
 				log.debug("Loaded agent into app directory: {}", localPath);
