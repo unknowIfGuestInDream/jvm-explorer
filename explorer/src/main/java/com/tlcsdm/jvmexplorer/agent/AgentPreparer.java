@@ -19,10 +19,10 @@ public class AgentPreparer {
 
 	private static final Path AGENT_DIR = JvmExplorer.APP_DIR.toPath().resolve("agents");
 
-	private final Map<String, String> tempAgentFiles = new ConcurrentHashMap<>();
+	private final Map<String, String> loadedAgentFiles = new ConcurrentHashMap<>();
 
 	public String loadAgentOnFileSystem(String agentResourcePath) {
-		return tempAgentFiles.computeIfAbsent(agentResourcePath, k -> {
+		return loadedAgentFiles.computeIfAbsent(agentResourcePath, k -> {
 			// First, try to load from the running path (working directory)
 			Path localFile = Paths.get(agentResourcePath);
 			if (Files.exists(localFile)) {
