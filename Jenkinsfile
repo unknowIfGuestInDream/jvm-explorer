@@ -207,7 +207,7 @@ def packageApp(os) {
         script: "${M2_HOME}/bin/mvn help:evaluate -Dexpression=project.version -q -DforceStdout",
         returnStdout: true
     ).trim()
-    def scriptDir = (os == 'win') ? 'scripts/win' : (os == 'mac') ? 'scripts/mac' : 'scripts/linux'
+    def scriptDir = "scripts/${os}"
     sh "rm -rf staging && mkdir -p staging/agent"
     sh "cp explorer/target/explorer.jar staging/"
     sh "cp -r explorer/target/lib staging/"
