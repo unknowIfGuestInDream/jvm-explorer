@@ -60,6 +60,22 @@ pipeline {
             }
         }
 
+        stage('Install Modules') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} -pl agent,launch-agent -am clean install"
+                }
+            }
+            post {
+                failure {
+                    echo 'Install Modules failed'
+                }
+                aborted {
+                    echo 'Build aborted'
+                }
+            }
+        }
+
         stage('Prepare Windows Build') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
