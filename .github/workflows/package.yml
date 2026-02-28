@@ -94,7 +94,7 @@ jobs:
           cd ..
 
       - name: Upload packaged artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: jvm-explorer-${{ matrix.os }}
           path: staging/
