@@ -6,10 +6,6 @@ pipeline {
     environment {
         USER_NAME = 'Jenkins'
     }
-    tools {
-        jdk "jdk21"
-    }
-
     stages {
         stage('Check change') {
             when {
@@ -44,6 +40,9 @@ pipeline {
         }
 
         stage('Prepare JDK') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 sh 'rm -f *linux*21*.tar.gz *mac*21*.tar.gz *windows*21*.zip || true'
                 copyArtifacts filter: '*linux*21*,*mac*21*,*windows*21*', fingerprintArtifacts: true, projectName: 'env/JDK', selector: lastSuccessful()
@@ -61,6 +60,9 @@ pipeline {
         }
 
         stage('Install Modules') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} -pl agent,launch-agent -am clean install"
@@ -77,6 +79,9 @@ pipeline {
         }
 
         stage('Prepare Windows Build') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=win -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
@@ -96,6 +101,9 @@ pipeline {
         }
 
         stage('Build jvm-explorer-windows') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 script {
                     packageApp('win')
@@ -116,6 +124,9 @@ pipeline {
         }
 
         stage('Prepare Mac Build') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=mac -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
@@ -135,6 +146,9 @@ pipeline {
         }
 
         stage('Build jvm-explorer-mac') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 script {
                     packageApp('mac')
@@ -155,6 +169,9 @@ pipeline {
         }
 
         stage('Prepare Linux Build') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=linux -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
@@ -174,6 +191,9 @@ pipeline {
         }
 
         stage('Build jvm-explorer-linux') {
+            tools {
+                jdk "jdk21"
+            }
             steps {
                 script {
                     packageApp('linux')
