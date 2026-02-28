@@ -43,16 +43,16 @@ pipeline {
             }
         }
 
-        stage('Prepare JDK') {
+        stage('Prepare JRE') {
             steps {
                 sh 'rm -f *linux*21*.tar.gz *mac*21*.tar.gz *windows*21*.zip || true'
-                copyArtifacts filter: '*linux*21*,*mac*21*,*windows*21*', fingerprintArtifacts: true, projectName: 'env/JDK', selector: lastSuccessful()
+                copyArtifacts filter: '*linux*21*,*mac*21*,*windows*21*', fingerprintArtifacts: true, projectName: 'env/JRE', selector: lastSuccessful()
                 sh 'java -version'
                 sh "$M2_HOME/bin/mvn -version"
             }
             post {
                 failure {
-                    echo 'Prepare JDK failed'
+                    echo 'Prepare JRE failed'
                 }
                 aborted {
                     echo 'Build aborted'
@@ -80,17 +80,8 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=win -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
-                    sh "rm -rf jdktemp jretemp && mkdir -v jdktemp && unzip -q *windows*21*.zip -d jdktemp"
-                    sh """
-                        JDK_DIR=\$(ls -d jdktemp/jdk-*)
-                        mkdir -v jretemp
-                        jlink --module-path \${JDK_DIR}/jmods \
-                          --add-modules java.se,jdk.attach,jdk.compiler,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
-                          --strip-debug --no-man-pages --no-header-files \
-                          --compress zip-6 \
-                          --output jretemp/jre
-                        rm -rf jdktemp
-                    """
+                    sh "rm -rf jretemp && mkdir -v jretemp && unzip -q *windows*21*.zip -d jretemp"
+                    sh "mv jretemp/jre-* jretemp/jre"
                 }
             }
         }
@@ -119,17 +110,8 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=mac -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
-                    sh "rm -rf jdktemp jretemp && mkdir -v jdktemp && tar -xzf *mac*21*.tar.gz -C jdktemp"
-                    sh """
-                        JDK_DIR=\$(ls -d jdktemp/jdk-*/Contents/Home)
-                        mkdir -v jretemp
-                        jlink --module-path \${JDK_DIR}/jmods \
-                          --add-modules java.se,jdk.attach,jdk.compiler,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
-                          --strip-debug --no-man-pages --no-header-files \
-                          --compress zip-6 \
-                          --output jretemp/jre
-                        rm -rf jdktemp
-                    """
+                    sh "rm -rf jretemp && mkdir -v jretemp && tar -xzf *mac*21*.tar.gz -C jretemp"
+                    sh "mv jretemp/jre-*/Contents/Home jretemp/jre"
                 }
             }
         }
@@ -158,17 +140,8 @@ pipeline {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=linux -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
-                    sh "rm -rf jdktemp jretemp && mkdir -v jdktemp && tar -xzf *linux*21*.tar.gz -C jdktemp"
-                    sh """
-                        JDK_DIR=\$(ls -d jdktemp/jdk-*)
-                        mkdir -v jretemp
-                        jlink --module-path \${JDK_DIR}/jmods \
-                          --add-modules java.se,jdk.attach,jdk.compiler,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets \
-                          --strip-debug --no-man-pages --no-header-files \
-                          --compress zip-6 \
-                          --output jretemp/jre
-                        rm -rf jdktemp
-                    """
+                    sh "rm -rf jretemp && mkdir -v jretemp && tar -xzf *linux*21*.tar.gz -C jretemp"
+                    sh "mv jretemp/jre-* jretemp/jre"
                 }
             }
         }
