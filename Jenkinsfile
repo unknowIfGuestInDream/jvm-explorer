@@ -81,7 +81,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=win -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
                     sh "rm -rf jretemp && mkdir -v jretemp && unzip -q *windows*21*.zip -d jretemp"
-                    sh "mv jretemp/jre-* jretemp/jre"
+                    sh "mv jretemp/* jretemp/jre"
                 }
             }
         }
@@ -111,7 +111,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=mac -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
                     sh "rm -rf jretemp && mkdir -v jretemp && tar -xzf *mac*21*.tar.gz -C jretemp"
-                    sh "mv jretemp/jre-*/Contents/Home jretemp/jre"
+                    sh "mv jretemp/* jretemp/jre"
                 }
             }
         }
@@ -141,7 +141,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh "$M2_HOME/bin/mvn -B --no-transfer-progress -s $M2_HOME/conf/settings.xml -Djavafx.platform=linux -Dmaven.test.skip=true -Dmaven.compile.fork=true -Duser.name=${USER_NAME} clean package"
                     sh "rm -rf jretemp && mkdir -v jretemp && tar -xzf *linux*21*.tar.gz -C jretemp"
-                    sh "mv jretemp/jre-* jretemp/jre"
+                    sh "mv jretemp/* jretemp/jre"
                 }
             }
         }
