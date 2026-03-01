@@ -43,16 +43,16 @@ pipeline {
             }
         }
 
-        stage('Prepare JRE') {
+        stage('Prepare JDK') {
             steps {
                 sh 'rm -f *linux*21*.tar.gz *mac*21*.tar.gz *windows*21*.zip || true'
-                copyArtifacts filter: '*linux*21*,*mac*21*,*windows*21*', fingerprintArtifacts: true, projectName: 'env/JRE', selector: lastSuccessful()
+                copyArtifacts filter: '*linux*21*,*mac*21*,*windows*21*', fingerprintArtifacts: true, projectName: 'env/JDK', selector: lastSuccessful()
                 sh 'java -version'
                 sh "$M2_HOME/bin/mvn -version"
             }
             post {
                 failure {
-                    echo 'Prepare JRE failed'
+                    echo 'Prepare JDK failed'
                 }
                 aborted {
                     echo 'Build aborted'
