@@ -109,7 +109,7 @@ $jpackageArgs = @(
     '--add-modules', $modules,
     '--jlink-options', '--strip-debug --no-man-pages --no-header-files --compress zip-6',
     '--app-version', $version,
-    '--vendor', 'unknowIfGuestInDream',
+    '--vendor', 'Tlcsdm',
     '--description', 'A JavaFX-based tool to explore and debug running JVM processes',
     '--dest', $appImageDir
 )
