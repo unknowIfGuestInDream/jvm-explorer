@@ -1,0 +1,59 @@
+name: JPackage
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  jpackage:
+    name: Package on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Maven packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        shell: bash
+        run: mvn -B clean package --no-transfer-progress -DskipTests
+
+      - name: Package with jpackage (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: scripts/jpackage.ps1
+
+      - name: Package with jpackage (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: bash scripts/jpackage.sh
+
+      - name: Package with jpackage (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: bash scripts/jpackage-mac.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: jvm-explorer-jpackage-${{ matrix.os }}
+          path: dist/
+          retention-days: 7
