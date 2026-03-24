@@ -107,6 +107,13 @@ rm -rf "$appImageDir"
 
 modules="java.se,jdk.attach,jdk.compiler,jdk.unsupported,jdk.zipfs,jdk.management,jdk.crypto.ec,jdk.localedata,jdk.charsets"
 
+iconFile="explorer/src/main/resources/icons/icon.icns"
+iconArgs=()
+if [ -f "$iconFile" ]; then
+  iconArgs=(--icon "$iconFile")
+  echo "  Icon: $iconFile"
+fi
+
 jpackage \
   --input "$inputDir" \
   --name "JVM-Explorer" \
@@ -122,6 +129,7 @@ jpackage \
   --app-version "$version" \
   --vendor "Tlcsdm" \
   --description "A JavaFX-based tool to explore and debug running JVM processes" \
+  "${iconArgs[@]}" \
   --dest "$appImageDir"
 
 if [ $? -ne 0 ]; then
