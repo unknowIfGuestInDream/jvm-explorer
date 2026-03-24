@@ -12,7 +12,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -112,6 +112,49 @@ jobs:
           zip -r "../dist/jvm-explorer-linux-${APP_VERSION}.zip" .
           cd ..
           echo "Created dist/jvm-explorer-linux-${APP_VERSION}.zip"
+          rm -rf staging
+
+      - name: Resolve version & stage files (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          version=$(mvn -q -DforceStdout 'help:evaluate' -Dexpression=project.version 2>/dev/null)
+          version=$(echo "$version" | tr -d '\r')
+          if [ -z "$version" ]; then echo "Failed to extract version from Maven" >&2; exit 1; fi
+          echo "APP_VERSION=$version" >> $GITHUB_ENV
+
+          arch=$(uname -m)
+          if [ "$arch" = "arm64" ] || [ "$arch" = "aarch64" ]; then
+            archLabel="aarch64"
+          else
+            archLabel="x64"
+          fi
+          echo "ARCH_LABEL=$archLabel" >> $GITHUB_ENV
+
+          mkdir -p dist staging/agent
+          cp explorer/target/explorer.jar staging/
+          cp -r explorer/target/lib staging/
+          cp agent/target/agent.jar staging/agent/
+          cp launch-agent/target/launch-agent.jar staging/agent/
+          cp README.md LICENSE staging/
+          cp scripts/mac/* staging/
+
+      - name: Download JRE (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cd staging
+          bash ../scripts/jre-mac.sh
+          cd ..
+
+      - name: Package artifact (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cd staging
+          zip -r -y "../dist/jvm-explorer-mac-${ARCH_LABEL}-${APP_VERSION}.zip" .
+          cd ..
+          echo "Created dist/jvm-explorer-mac-${ARCH_LABEL}-${APP_VERSION}.zip"
           rm -rf staging
 
       - name: Upload Release Assets

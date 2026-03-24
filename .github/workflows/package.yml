@@ -11,7 +11,7 @@ jobs:
     name: Package on ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -91,6 +91,31 @@ jobs:
         run: |
           cd staging
           bash ../scripts/jre.sh
+          cd ..
+
+      - name: Resolve version & stage files (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          version=$(mvn -q -DforceStdout 'help:evaluate' -Dexpression=project.version 2>/dev/null)
+          version=$(echo "$version" | tr -d '\r')
+          if [ -z "$version" ]; then echo "Failed to extract version from Maven" >&2; exit 1; fi
+          echo "APP_VERSION=$version" >> $GITHUB_ENV
+
+          mkdir -p staging/agent
+          cp explorer/target/explorer.jar staging/
+          cp -r explorer/target/lib staging/
+          cp agent/target/agent.jar staging/agent/
+          cp launch-agent/target/launch-agent.jar staging/agent/
+          cp README.md LICENSE staging/
+          cp scripts/mac/* staging/
+
+      - name: Download JRE (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          cd staging
+          bash ../scripts/jre-mac.sh
           cd ..
 
       - name: Upload packaged artifact
