@@ -63,7 +63,7 @@
         <gson.version>2.13.2</gson.version>
         <fx-gson.version>5.0.0</fx-gson.version>
         <asmtools.version>7.0.b10-ea</asmtools.version>
-        <preferencesfx.version>11.17.0</preferencesfx.version>
+        <preferencesfx.version>11.19.0</preferencesfx.version>
         <atlantafx.version>2.1.0</atlantafx.version>
         <ikonli.version>12.4.0</ikonli.version>
     </properties>
