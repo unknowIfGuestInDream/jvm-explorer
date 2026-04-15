@@ -1,0 +1,2 @@
+*.bat linguist-language=Shell
+*.vbs linguist-language=Shell
