@@ -1,0 +1,129 @@
+/* Extra Doxygen styling for JVM Explorer. */
+:root {
+    --primary-color: #2563eb;
+    --primary-dark-color: #1d4ed8;
+    --primary-light-color: #dbeafe;
+    --side-nav-background: #f8fafc;
+    --page-background-color: #ffffff;
+    --fragment-background: #0f172a;
+    --fragment-foreground: #e2e8f0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#titlearea {
+    border-bottom: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #38bdf8 100%);
+    color: #ffffff;
+}
+
+#projectname,
+#projectbrief {
+    color: #ffffff;
+}
+
+#projectname {
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+#projectbrief {
+    opacity: .9;
+}
+
+#nav-tree,
+#side-nav,
+#nav-sync {
+    background: var(--side-nav-background);
+}
+
+#nav-tree .selected {
+    background: var(--primary-color);
+    color: #ffffff;
+    text-shadow: none;
+}
+
+a,
+a:visited,
+a.el,
+a.elRef {
+    color: var(--primary-dark-color);
+}
+
+a:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}
+
+.contents {
+    max-width: 1180px;
+}
+
+.contents h1,
+.contents h2,
+.contents h3 {
+    color: #0f172a;
+}
+
+.memitem,
+.memproto,
+.memdoc,
+.fieldtable,
+.directory,
+.classindex dl,
+.contents > table {
+    border-radius: 10px;
+}
+
+.memproto,
+.fieldtable th,
+.directory .levels {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.memdoc,
+.fieldtable td,
+.directory {
+    border-color: #dbeafe;
+}
+
+div.fragment {
+    border-radius: 10px;
+    border: 1px solid #1e293b;
+    background: var(--fragment-background);
+    color: var(--fragment-foreground);
+}
+
+div.line {
+    color: var(--fragment-foreground);
+}
+
+.ttc,
+.ttd,
+.ttdoc,
+.ttname {
+    border-radius: 8px;
+}
+
+.ah,
+.icona,
+.icon {
+    border-radius: 6px;
+}
+
+.summary {
+    color: #475569;
+}
+
+.paramname,
+.retval,
+.exception {
+    color: #1d4ed8;
+}
