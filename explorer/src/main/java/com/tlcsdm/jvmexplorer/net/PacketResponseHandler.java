@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+/**
+ * Provides the packet response handler implementation used by the com.tlcsdm.jvmexplorer.net package.
+ */
 class PacketResponseHandler<T> {
 
 	private static final Logger log = LoggerFactory.getLogger(PacketResponseHandler.class);
@@ -24,6 +27,9 @@ class PacketResponseHandler<T> {
 	private volatile int totalItemsSent = -1;
 	private volatile boolean addedInterrupt = false;
 
+	/**
+	 * Handles the packet received event.
+	 */
 	public synchronized void onPacketReceived(T[] packets) {
 		receivedItemCount += packets.length;
 		Collections.addAll(linkedBlockingQueue, packets);
@@ -35,6 +41,9 @@ class PacketResponseHandler<T> {
 		}
 	}
 
+	/**
+	 * Handles the interrupt workflow.
+	 */
 	public synchronized void interrupt() {
 		if (addedInterrupt) {
 			return;
@@ -45,6 +54,9 @@ class PacketResponseHandler<T> {
 		onCleanup.run();
 	}
 
+	/**
+	 * Handles the received end workflow.
+	 */
 	public synchronized void receivedEnd(int totalItemsSent) {
 		log.debug("Received total item count: {}", totalItemsSent);
 		this.totalItemsSent = totalItemsSent;
@@ -53,6 +65,9 @@ class PacketResponseHandler<T> {
 		}
 	}
 
+	/**
+	 * Returns the packet stream value.
+	 */
 	public Stream<T> getPacketStream(long timeout, TimeUnit timeUnit) {
 		log.trace("Creating stream...");
 		final long durationMs = TimeUnit.MILLISECONDS.convert(timeout, timeUnit);
@@ -97,6 +112,9 @@ class PacketResponseHandler<T> {
 	}
 
 
+	/**
+	 * Creates a new PacketResponseHandler instance.
+	 */
 	public PacketResponseHandler(Runnable onCleanup, Consumer<Integer> onUpdateCount) {
 		this.onCleanup = onCleanup;
 		this.onUpdateCount = onUpdateCount;

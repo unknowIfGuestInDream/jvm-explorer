@@ -14,6 +14,9 @@ import java.lang.instrument.Instrumentation;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Provides the client launcher implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class ClientLauncher {
 
 	public Client launch(ScheduledExecutorService executorService, AgentConfiguration agentConfiguration,
@@ -49,6 +52,9 @@ public class ClientLauncher {
 		client.addListener(clientListener);
 	}
 
+	/**
+	 * Starts client.
+	 */
 	private static void startClient(Client client, String host, int port) throws IOException {
 		client.start();
 		client.connect(15000, host, port);

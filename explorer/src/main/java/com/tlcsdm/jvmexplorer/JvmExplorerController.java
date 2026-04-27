@@ -50,6 +50,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Provides the jvm explorer controller implementation used by the com.tlcsdm.jvmexplorer package.
+ */
 public class JvmExplorerController {
 
 	private static final Logger log = LoggerFactory.getLogger(JvmExplorerController.class);
@@ -96,6 +99,9 @@ public class JvmExplorerController {
 	                                                         .build();
 	private JvmExplorerServer server;
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	public void initialize(Stage stage, ResourceBundle bundle) {
 		this.stage = stage;
 		this.bundle = bundle;
@@ -134,6 +140,9 @@ public class JvmExplorerController {
 		wireChildControllers();
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initializeMenuBar() {
 		Menu fileMenu = new Menu(bundle.getString("menu.file"));
 
@@ -160,6 +169,9 @@ public class JvmExplorerController {
 		menuBar.getMenus().addAll(fileMenu, preferencesMenu, helpMenu);
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initializePreferences() {
 		final AppPreferences preferences = AppPreferences.getInstance();
 		preferencesFx = createPreferencesFx(preferences);
@@ -171,6 +183,9 @@ public class JvmExplorerController {
 		});
 	}
 
+	/**
+	 * Creates preferences fx.
+	 */
 	private PreferencesFx createPreferencesFx(AppPreferences preferences) {
 		ObservableList<String> languageOptions =
 				FXCollections.observableArrayList(LANG_DISPLAY_ENGLISH, LANG_DISPLAY_CHINESE, LANG_DISPLAY_JAPANESE);
@@ -233,6 +248,9 @@ public class JvmExplorerController {
 		return pfx;
 	}
 
+	/**
+	 * Handles the lang code to display name workflow.
+	 */
 	private static String langCodeToDisplayName(String langCode) {
 		return switch (langCode) {
 			case LANG_CODE_CHINESE -> LANG_DISPLAY_CHINESE;
@@ -241,6 +259,9 @@ public class JvmExplorerController {
 		};
 	}
 
+	/**
+	 * Handles the display name to lang code workflow.
+	 */
 	private static String displayNameToLangCode(String displayName) {
 		return switch (displayName) {
 			case LANG_DISPLAY_CHINESE -> LANG_CODE_CHINESE;
@@ -249,6 +270,9 @@ public class JvmExplorerController {
 		};
 	}
 
+	/**
+	 * Handles the restart application workflow.
+	 */
 	private void restartApplication() {
 		preferencesFx = null;
 		stage.close();
@@ -268,10 +292,16 @@ public class JvmExplorerController {
 		});
 	}
 
+	/**
+	 * Handles the show preferences workflow.
+	 */
 	private void showPreferences() {
 		preferencesFx.show(true);
 	}
 
+	/**
+	 * Handles the show about dialog workflow.
+	 */
 	private void showAboutDialog() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle(bundle.getString("app.about.title"));
@@ -281,6 +311,9 @@ public class JvmExplorerController {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Sets up title pane text binding.
+	 */
 	private void setupTitlePaneText() {
 		stage.titleProperty().bind(Bindings.createStringBinding(() -> {
 			final RunningJvm currentJvm = this.runningJvmsController.getCurrentJvm();
@@ -291,6 +324,9 @@ public class JvmExplorerController {
 		}, this.runningJvmsController.currentJvmProperty()));
 	}
 
+	/**
+	 * Handles the wire child controllers workflow.
+	 */
 	private void wireChildControllers() {
 		final ObjectProperty<RunningJvm> currentJvm = this.runningJvmsController.currentJvmProperty();
 		final ObjectProperty<ClassContent> currentClass = this.loadedClassesController.currentClassProperty();
@@ -321,6 +357,9 @@ public class JvmExplorerController {
 		                                       loadedClassesController::select);
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initializeStage(JvmExplorerSettings jvmExplorerSettings) {
 		final EventHandler<WindowEvent> onFirstShow = e -> {
 
@@ -411,6 +450,9 @@ public class JvmExplorerController {
 		});
 	}
 
+	/**
+	 * Handles the connect event.
+	 */
 	private void onConnect(RunningJvm jvm, Connection connection) {
 		log.debug("Connected to {}", jvm);
 		if (jvm.equals(runningJvmsController.getCurrentJvm())) {
@@ -418,6 +460,9 @@ public class JvmExplorerController {
 		}
 	}
 
+	/**
+	 * Handles the disconnect event.
+	 */
 	private void onDisconnect(RunningJvm jvm) {
 		Platform.runLater(() -> {
 			final RunningJvm selectedJvm = runningJvmsController.getCurrentJvm();

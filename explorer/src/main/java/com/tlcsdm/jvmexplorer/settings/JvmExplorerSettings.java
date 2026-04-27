@@ -16,6 +16,9 @@ import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Objects;
 
+ /**
+ * Provides the JVM Explorer settings implementation used by the com.tlcsdm.jvmexplorer.settings package.
+ */
 public class JvmExplorerSettings {
 
 	private static final Logger log = LoggerFactory.getLogger(JvmExplorerSettings.class);
@@ -41,6 +44,9 @@ public class JvmExplorerSettings {
 	private final SimpleDoubleProperty x = new SimpleDoubleProperty(Double.NaN);
 	private final SimpleDoubleProperty y = new SimpleDoubleProperty(Double.NaN);
 
+	/**
+	 * Loads JVM Explorer settings from the specified file.
+	 */
 	public static JvmExplorerSettings load(File settingsFile) {
 		try {
 			final String settingsFileContent = Files.readString(settingsFile.toPath());
@@ -59,6 +65,9 @@ public class JvmExplorerSettings {
 		}
 	}
 
+	/**
+	 * Compares all properties with another JvmExplorerSettings instance.
+	 */
 	public boolean propertiesEquals(JvmExplorerSettings other) {
 		final List<Property<?>> ourProperties = properties();
 		final List<Property<?>> otherProperties = other.properties();
@@ -75,14 +84,23 @@ public class JvmExplorerSettings {
 		return true;
 	}
 
+	/**
+	 * Returns all observable properties in this settings instance.
+	 */
 	private List<Property<?>> properties() {
 		return List.of(x, y, width, height, maximized, firstDividerPosition, secondDividerPosition, showClassLoader);
 	}
 
+	/**
+	 * Handles the configure auto saving workflow.
+	 */
 	public void configureAutoSaving(File settingsFile) {
 		properties().forEach(property -> property.addListener((obs, old, newv) -> save(settingsFile)));
 	}
 
+	/**
+	 * Handles the save workflow.
+	 */
 	public void save(File settingsFile) {
 		try {
 			final File parent = settingsFile.getParentFile();
@@ -98,38 +116,65 @@ public class JvmExplorerSettings {
 	}
 
 
+	/**
+	 * Returns the show class loader value.
+	 */
 	public SimpleBooleanProperty getShowClassLoader() {
 		return this.showClassLoader;
 	}
 
+	/**
+	 * Returns the first divider position value.
+	 */
 	public SimpleDoubleProperty getFirstDividerPosition() {
 		return this.firstDividerPosition;
 	}
 
+	/**
+	 * Returns the second divider position value.
+	 */
 	public SimpleDoubleProperty getSecondDividerPosition() {
 		return this.secondDividerPosition;
 	}
 
+	/**
+	 * Returns the width value.
+	 */
 	public SimpleDoubleProperty getWidth() {
 		return this.width;
 	}
 
+	/**
+	 * Returns the height value.
+	 */
 	public SimpleDoubleProperty getHeight() {
 		return this.height;
 	}
 
+	/**
+	 * Returns the maximized value.
+	 */
 	public SimpleBooleanProperty getMaximized() {
 		return this.maximized;
 	}
 
+	/**
+	 * Returns the x value.
+	 */
 	public SimpleDoubleProperty getX() {
 		return this.x;
 	}
 
+	/**
+	 * Returns the y value.
+	 */
 	public SimpleDoubleProperty getY() {
 		return this.y;
 	}
 
+	/**
+	 * Returns a readable description of this instance.
+	 */
 	@Override
 	public String toString() {
 		return "JvmExplorerSettings()";

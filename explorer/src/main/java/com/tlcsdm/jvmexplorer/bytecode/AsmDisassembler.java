@@ -7,8 +7,14 @@ import org.objectweb.asm.util.TraceClassVisitor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Provides the asm disassembler implementation used by the com.tlcsdm.jvmexplorer.bytecode package.
+ */
 public class AsmDisassembler implements Disassembler {
 
+	/**
+	 * Handles the process request.
+	 */
 	@Override
 	public String process(byte[] bytes) {
 		final ClassReader classReader = new ClassReader(bytes);

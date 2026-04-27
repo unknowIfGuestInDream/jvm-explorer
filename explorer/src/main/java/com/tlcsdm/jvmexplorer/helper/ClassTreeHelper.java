@@ -17,11 +17,17 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Provides the class tree helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class ClassTreeHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(ClassTreeHelper.class);
 
 
+	/**
+	 * Builds the configured result object.
+	 */
 	public ClassTreeNode buildClassLoaderTree(List<LoadedClass> loadedClasses) {
 		final ClassTreeNode classTreeRoot = ClassTreeNode.root();
 		for (LoadedClass loadedClass : loadedClasses) {
@@ -34,6 +40,9 @@ public class ClassTreeHelper {
 		return classTreeRoot;
 	}
 
+	/**
+	 * Handles the add class loader workflow.
+	 */
 	private ClassTreeNode addClassLoader(LoadedClass loadedClass, ClassTreeNode treeRoot) {
 		ClassTreeNode classLoaderTree = treeRoot;
 		final List<ClassLoaderDescriptor> classLoaders = Stream.iterate(loadedClass.getClassLoaderDescriptor(),
@@ -49,6 +58,9 @@ public class ClassTreeHelper {
 		return classLoaderTree;
 	}
 
+	/**
+	 * Handles the add class workflow.
+	 */
 	private void addClass(LoadedClass loadedClass, ClassTreeNode classRoot) {
 		final String[] classNameParts = loadedClass.getName().split("\\.");
 		ClassTreeNode classTree = classRoot;
@@ -59,6 +71,9 @@ public class ClassTreeHelper {
 		classTree.addClass(loadedClass);
 	}
 
+	/**
+	 * Builds the configured result object.
+	 */
 	public ClassTreeNode buildClassTree(List<LoadedClass> loadedClasses) {
 		final ClassTreeNode classTreeRoot = ClassTreeNode.root();
 		for (LoadedClass loadedClass : loadedClasses) {
@@ -82,12 +97,18 @@ public class ClassTreeHelper {
 		             .collect(Collectors.toList());
 	}
 
+	/**
+	 * Returns the node class loader tree item stream value.
+	 */
 	public Stream<TreeItem<ClassTreeNode>> getNodeClassLoaderTreeItemStream(TreeItem<ClassTreeNode> treeItem) {
 		return Stream.iterate(treeItem, o -> o != null && o.getValue() != null, TreeItem::getParent)
 		             .filter(p -> p.getValue().getType() == ClassTreeNode.Type.CLASSLOADER);
 	}
 
 	// classLoaderNode can be the root/null value to indicate bootstrap class loader
+	/**
+	 * Returns the classes loaded in value.
+	 */
 	private List<LoadedClass> getClassesLoadedIn(TreeItem<ClassTreeNode> classLoaderNode) {
 		final Queue<TreeItem<ClassTreeNode>> frontier = new ArrayDeque<>(getChildren(classLoaderNode));
 		final List<LoadedClass> loadedClasses = new ArrayList<>();
@@ -104,6 +125,9 @@ public class ClassTreeHelper {
 		return loadedClasses;
 	}
 
+	/**
+	 * Returns the children value.
+	 */
 	private List<TreeItem<ClassTreeNode>> getChildren(TreeItem<ClassTreeNode> treeItem) {
 		if (treeItem instanceof FilterableTreeItem) {
 			return ((FilterableTreeItem<ClassTreeNode>) treeItem).getSourceChildren();
@@ -112,6 +136,9 @@ public class ClassTreeHelper {
 		return treeItem.getChildren();
 	}
 
+	/**
+	 * Returns the package name value.
+	 */
 	public String getPackageName(TreeItem<ClassTreeNode> packageNode) {
 		final List<String> packageParts = Stream.iterate(packageNode,
 		                                                 o -> o != null && o.getValue() != null
@@ -135,16 +162,25 @@ public class ClassTreeHelper {
 		                      .collect(Collectors.toList());
 	}
 
+	/**
+	 * Returns the node class loader value.
+	 */
 	public ClassLoaderDescriptor getNodeClassLoader(TreeItem<ClassTreeNode> treeItem) {
 		final ClassTreeNode classTreeNode = getNodeClassLoaderNode(treeItem);
 		return classTreeNode != null ? classTreeNode.getClassLoaderDescriptor() : null;
 	}
 
+	/**
+	 * Returns the node class loader node value.
+	 */
 	public ClassTreeNode getNodeClassLoaderNode(TreeItem<ClassTreeNode> treeItem) {
 		final TreeItem<ClassTreeNode> classTreeNode = getNodeClassLoaderTreeItem(treeItem);
 		return classTreeNode != null ? classTreeNode.getValue() : null;
 	}
 
+	/**
+	 * Returns the node class loader tree item value.
+	 */
 	public TreeItem<ClassTreeNode> getNodeClassLoaderTreeItem(TreeItem<ClassTreeNode> treeItem) {
 		return getNodeClassLoaderTreeItemStream(treeItem).findFirst().orElse(null);
 	}

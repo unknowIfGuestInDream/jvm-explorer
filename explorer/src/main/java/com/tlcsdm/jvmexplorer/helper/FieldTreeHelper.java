@@ -8,8 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Provides the field tree helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class FieldTreeHelper {
 
+	/**
+	 * Returns the class field key path value.
+	 */
 	public ClassFieldKey[] getClassFieldKeyPath(TreeItem<ClassField> treeItemChild) {
 		final List<ClassFieldKey> classFieldKeys = new ArrayList<>();
 		TreeItem<ClassField> currentTreeItem = treeItemChild;

@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Provides the highlight patterns implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 class HighlightPatterns {
 
 	private static final String[] KEYWORDS = new String[] { "abstract",
@@ -70,6 +73,9 @@ class HighlightPatterns {
 	                                                        "volatile",
 	                                                        "while", };
 
+	/**
+	 * Creates field pattern.
+	 */
 	static String createFieldPattern(ClassNode classNode) {
 		return classNode.fields.stream().map(fn -> {
 			final String modifiers = Pattern.quote(Modifier.toString(Modifier.fieldModifiers() & fn.access));
@@ -83,6 +89,9 @@ class HighlightPatterns {
 	}
 
 	// Field type, method return type
+	/**
+	 * Returns the pattern for type declaration value.
+	 */
 	private static String getPatternForTypeDeclaration(Type type) {
 		String fieldType = ClassNameHelper.getSimpleName(type.getClassName());
 		if (fieldType.contains("$")) {
@@ -93,6 +102,9 @@ class HighlightPatterns {
 		return Pattern.quote(fieldType);
 	}
 
+	/**
+	 * Creates method pattern.
+	 */
 	static String createMethodPattern(ClassNode classNode) {
 		return classNode.methods.stream().map(mn -> {
 			final String modifiers = Pattern.quote(Modifier.toString(Modifier.methodModifiers() & mn.access));
@@ -111,11 +123,17 @@ class HighlightPatterns {
 		}).collect(Collectors.joining("|"));
 	}
 
+	/**
+	 * Handles the of workflow.
+	 */
 	static HighlightHelper.HighlightContext of(Map<String, String> patterns) {
 		final Pattern pattern = compilePattern(patterns);
 		return new HighlightHelper.HighlightContext(Set.copyOf(patterns.keySet()), pattern);
 	}
 
+	/**
+	 * Compiles pattern.
+	 */
 	static Pattern compilePattern(Map<String, String> patternMap) {
 		return Pattern.compile(patternMap.entrySet()
 		                                 .stream()

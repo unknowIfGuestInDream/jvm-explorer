@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Provides the instrumentation helper implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class InstrumentationHelper {
 
 	// Let's have some cutoffs for large arrays where it may overflow kryonet's buffers
@@ -27,6 +30,9 @@ public class InstrumentationHelper {
 	private final Instrumentation instrumentation;
 
 	// Note this includes jdk + libraries as well
+	/**
+	 * Returns the application classes value.
+	 */
 	public List<Class<?>> getApplicationClasses() {
 		final List<Class<?>> classes = new ArrayList<>();
 		for (Class<?> c : instrumentation.getAllLoadedClasses()) {
@@ -47,6 +53,9 @@ public class InstrumentationHelper {
 		return classes;
 	}
 
+	/**
+	 * Returns whether agent class is enabled or currently true.
+	 */
 	private static boolean isAgentClass(Class<?> klass) {
 		final CodeSource agentCodeSource = JvmExplorerAgent.class.getProtectionDomain().getCodeSource();
 		final CodeSource classCodeSource = klass.getProtectionDomain().getCodeSource();
@@ -54,6 +63,9 @@ public class InstrumentationHelper {
 		                                                                                          .equals(classCodeSource.getLocation());
 	}
 
+	/**
+	 * Returns the class bytes value.
+	 */
 	public byte[] getClassBytes(Class<?> klass) {
 		final ClassFileSaveTransformer transformer = new ClassFileSaveTransformer(klass.getName());
 		instrumentation.addTransformer(transformer, true);
@@ -81,6 +93,9 @@ public class InstrumentationHelper {
 		return transformer.getBytes() != null ? transformer.getBytes() : new byte[0];
 	}
 
+	/**
+	 * Sets the value identified by the supplied class field path.
+	 */
 	public boolean setObject(ClassLoader classLoader, ClassFieldKey[] classFieldKeys, Object newValue) {
 		Object currentObject = null;
 		try {
@@ -123,11 +138,17 @@ public class InstrumentationHelper {
 		return false;
 	}
 
+	/**
+	 * Finds class.
+	 */
 	private Class<?> findClass(ClassLoader classLoader, Object currentObject, ClassFieldKey classFieldKey) {
 		return currentObject != null ? findClassInHierarchy(currentObject.getClass(), classFieldKey.getClassName())
 		                             : getClassByName(classFieldKey.getClassName(), classLoader);
 	}
 
+	/**
+	 * Finds class in hierarchy.
+	 */
 	private Class<?> findClassInHierarchy(Class<?> klass, String name) {
 		while (klass != null) {
 			if (name.equals(klass.getName())) {
@@ -138,6 +159,9 @@ public class InstrumentationHelper {
 		return null;
 	}
 
+	/**
+	 * Returns the class by name value.
+	 */
 	public Class<?> getClassByName(String name, ClassLoader classLoader) {
 		try {
 			return Class.forName(name, false, classLoader != null ? classLoader : ClassLoader.getSystemClassLoader());
@@ -154,10 +178,16 @@ public class InstrumentationHelper {
 		return null;
 	}
 
+	/**
+	 * Returns the class by name value.
+	 */
 	public Class<?> getClassByName(String name) {
 		return getClassByName(name, null);
 	}
 
+	/**
+	 * Returns the class fields value.
+	 */
 	public ClassFields getClassFields(ClassLoader classLoader, ClassFieldKey[] classFieldPath) {
 		final Object object = getObject(classLoader, classFieldPath);
 		if (object == null) {
@@ -166,6 +196,9 @@ public class InstrumentationHelper {
 		return getClassFields(object.getClass(), object);
 	}
 
+	/**
+	 * Returns the object value.
+	 */
 	public Object getObject(ClassLoader classLoader, ClassFieldKey[] classFieldPath) {
 		Object currentObject = null;
 		try {
@@ -191,6 +224,9 @@ public class InstrumentationHelper {
 		}
 	}
 
+	/**
+	 * Returns the class fields value.
+	 */
 	public ClassFields getClassFields(Class<?> klass, Object object) {
 		final List<ClassField> fields = new ArrayList<>();
 		Class<?> currentClass = klass;
@@ -221,6 +257,9 @@ public class InstrumentationHelper {
 		return new ClassFields(fields.toArray(new ClassField[0]));
 	}
 
+	/**
+	 * Handles the convert to class field workflow.
+	 */
 	private ClassField convertToClassField(Class<?> currentClass, Field field, Object fieldValue) {
 		final ClassFieldKey classKey = new ClassFieldKey(currentClass.getName(),
 		                                                 field.getName(),
@@ -254,6 +293,9 @@ public class InstrumentationHelper {
 		return new ClassField(classKey, new WrappedObject(getObjectString(fieldValue)));
 	}
 
+	/**
+	 * Returns the object string value.
+	 */
 	private String getObjectString(Object fieldValue) {
 		try {
 			return String.valueOf(fieldValue);
@@ -265,6 +307,9 @@ public class InstrumentationHelper {
 		}
 	}
 
+	/**
+	 * Returns whether primitive or wrapper or string is enabled or currently true.
+	 */
 	private static boolean isPrimitiveOrWrapperOrString(Object object) {
 		final Class<?> type = object instanceof Class<?> ? (Class<?>) object : object.getClass();
 		if (type == Double.class || type == Float.class || type == Long.class || type == Integer.class
@@ -274,6 +319,9 @@ public class InstrumentationHelper {
 		return type.isPrimitive() || type == String.class;
 	}
 
+	/**
+	 * Handles the redefine class workflow.
+	 */
 	public PatchResult redefineClass(Class<?> klass, byte[] bytes) {
 		try {
 			instrumentation.redefineClasses(new ClassDefinition(klass, bytes));
@@ -290,6 +338,9 @@ public class InstrumentationHelper {
 	}
 
 
+	/**
+	 * Creates a new InstrumentationHelper instance.
+	 */
 	public InstrumentationHelper(Instrumentation instrumentation) {
 		this.instrumentation = instrumentation;
 	}

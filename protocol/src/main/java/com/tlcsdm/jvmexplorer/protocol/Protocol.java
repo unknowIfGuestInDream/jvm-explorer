@@ -6,6 +6,9 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.lang.reflect.Array;
 
+/**
+ * Provides the protocol implementation used by the com.tlcsdm.jvmexplorer.protocol package.
+ */
 public class Protocol {
 
 	// Kryonet requires specifying the max object size that we'll send up front.
@@ -38,6 +41,9 @@ public class Protocol {
 	                                             Character.class,
 	                                             String.class };
 
+	/**
+	 * Registers the endpoint.
+	 */
 	public static void register(Kryo kryo) {
 		// Need to bypass constructors since everything is a value object
 		kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());

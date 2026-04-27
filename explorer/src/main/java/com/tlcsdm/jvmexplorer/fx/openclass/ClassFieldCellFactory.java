@@ -32,6 +32,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Provides the class field cell factory implementation used by the com.tlcsdm.jvmexplorer.fx.openclass package.
+ */
 public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, TreeCell<ClassField>> {
 
 	private final FieldTreeHelper fieldTreeHelper = new FieldTreeHelper();
@@ -43,6 +46,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	private final AlertHelper alertHelper;
 	private final ObjectProperty<ClassContent> currentClass;
 
+	/**
+	 * Calls the wrapped operation and returns its result.
+	 */
 	@Override
 	public TreeCell<ClassField> call(TreeView<ClassField> param) {
 		final TreeCell<ClassField> cell = new TreeCell<>();
@@ -53,6 +59,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		return cell;
 	}
 
+	/**
+	 * Sets up the context menu for field actions.
+	 */
 	private void setupContextMenu(TreeCell<ClassField> cell) {
 		final ContextMenu rowContextMenu = new ContextMenu();
 		final MenuItem editRow = new MenuItem(JvmExplorer.getBundle().getString("ctx.editValue"));
@@ -98,6 +107,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		cell.setContextMenu(rowContextMenu);
 	}
 
+	/**
+	 * Sets up text property binding.
+	 */
 	private void setupTextBinding(TreeCell<ClassField> treeCell) {
 		treeCell.textProperty()
 		        .bind(Bindings.when(treeCell.itemProperty().isNotNull())
@@ -105,6 +117,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		                      .otherwise(""));
 	}
 
+	/**
+	 * Sets up image property binding.
+	 */
 	private void setupImageBinding(TreeCell<ClassField> treeCell) {
 		treeCell.graphicProperty().bind(Bindings.createObjectBinding(() -> {
 			final ClassField item = treeCell.getItem();
@@ -115,6 +130,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		}, treeCell.itemProperty()));
 	}
 
+	/**
+	 * Sets up tooltip property binding.
+	 */
 	private void setupTooltipBinding(TreeCell<ClassField> treeCell) {
 		final Tooltip tooltip = new Tooltip();
 		tooltip.textProperty().bind(treeCell.itemProperty().asString());
@@ -122,6 +140,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		        .bind(Bindings.when(treeCell.itemProperty().isNotNull()).then(tooltip).otherwise((Tooltip) null));
 	}
 
+	/**
+	 * Handles the edit request.
+	 */
 	private void edit(RunningJvm selectedJvm, TreeItem<ClassField> classField, String newValue) {
 		final ClassFieldKey[] classFieldKeys = fieldTreeHelper.getClassFieldKeyPath(classField);
 		final Object resultObject = editorHelper.edit(classField.getValue().getClassFieldKey().getTypeName(),
@@ -141,6 +162,9 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		});
 	}
 
+	/**
+	 * Returns the field type value.
+	 */
 	private FieldType getFieldType(ClassField classField) {
 		if (Modifier.isStatic(classField.getClassFieldKey().getModifiers())) {
 			if (Modifier.isFinal(classField.getClassFieldKey().getModifiers())) {
@@ -153,20 +177,32 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		}
 	}
 
+	/**
+	 * Enumerates the supported field type values used by the com.tlcsdm.jvmexplorer.fx.openclass package.
+	 */
 	private enum FieldType {
 		STATIC("icons/static.png"), INSTANCE("icons/field.png"), CONSTANT("icons/constant.png");
 		private final Image image;
 
+		/**
+		 * Creates a new FieldType value.
+		 */
 		FieldType(String imagePath) {
 			image = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(imagePath)));
 		}
 
+		/**
+		 * Returns the image value.
+		 */
 		public Image getImage() {
 			return this.image;
 		}
 	}
 
 
+	/**
+	 * Handles the class field cell factory workflow.
+	 */
 	public ClassFieldCellFactory(EditorHelper editorHelper, ExecutorService executorService, ClientHandler clientHandler, ObjectProperty<RunningJvm> currentJvm, AlertHelper alertHelper, ObjectProperty<ClassContent> currentClass) {
 		this.editorHelper = editorHelper;
 		this.executorService = executorService;
@@ -176,26 +212,44 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 		this.currentClass = currentClass;
 	}
 
+	/**
+	 * Returns the editor helper value.
+	 */
 	public EditorHelper getEditorHelper() {
 		return this.editorHelper;
 	}
 
+	/**
+	 * Returns the executor service value.
+	 */
 	public ExecutorService getExecutorService() {
 		return this.executorService;
 	}
 
+	/**
+	 * Returns the client handler value.
+	 */
 	public ClientHandler getClientHandler() {
 		return this.clientHandler;
 	}
 
+	/**
+	 * Returns the current jvm value.
+	 */
 	public ObjectProperty<RunningJvm> getCurrentJvm() {
 		return this.currentJvm;
 	}
 
+	/**
+	 * Returns the alert helper value.
+	 */
 	public AlertHelper getAlertHelper() {
 		return this.alertHelper;
 	}
 
+	/**
+	 * Returns the current class value.
+	 */
 	public ObjectProperty<ClassContent> getCurrentClass() {
 		return this.currentClass;
 	}

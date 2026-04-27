@@ -11,11 +11,17 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Provides the open jdk jasm assembler implementation used by the com.tlcsdm.jvmexplorer.bytecode package.
+ */
 public class OpenJdkJasmAssembler implements Assembler {
 
 	private static final Logger log = LoggerFactory.getLogger(OpenJdkJasmAssembler.class);
 
 
+	/**
+	 * Assembles bytecode text into class bytes.
+	 */
 	@Override
 	public byte[] assemble(String text) {
 		try {

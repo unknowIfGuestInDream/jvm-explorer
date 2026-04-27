@@ -9,10 +9,16 @@ import javafx.stage.Stage;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Provides the alert helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class AlertHelper {
 
 	private final Stage ownerStage;
 
+	/**
+	 * Handles the show error workflow.
+	 */
 	public void showError(String title, String headerText, Exception ex) {
 		final Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle(title);
@@ -25,6 +31,9 @@ public class AlertHelper {
 		Tooltip.uninstall(alert.getDialogPane(), tooltip);
 	}
 
+	/**
+	 * Handles the show error workflow.
+	 */
 	public void showError(String title, String headerText, Exception ex, List<String> list) {
 		final Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle(title);
@@ -41,6 +50,9 @@ public class AlertHelper {
 		Tooltip.uninstall(alert.getDialogPane(), tooltip);
 	}
 
+	/**
+	 * Handles the show expandable list workflow.
+	 */
 	public void showExpandableList(String title, String headerText, String contentText, List<String> list) {
 		final Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle(title);
@@ -54,6 +66,9 @@ public class AlertHelper {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Handles the show observable info workflow.
+	 */
 	public void showObservableInfo(ObservableValue<String> title, ObservableValue<String> headerText) {
 		final Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("Export In Progress");
@@ -64,6 +79,9 @@ public class AlertHelper {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Handles the show workflow.
+	 */
 	public void show(Alert.AlertType alertType, String titleText, String headerText) {
 		final Alert alert = new Alert(alertType);
 		alert.setTitle(titleText);
@@ -73,6 +91,9 @@ public class AlertHelper {
 		alert.showAndWait();
 	}
 
+	/**
+	 * Handles the show error workflow.
+	 */
 	public void showError(String titleText, String headerText) {
 		if (headerText != null && headerText.length() > 500) {
 			headerText = headerText.substring(0, 500) + "...";
@@ -86,6 +107,9 @@ public class AlertHelper {
 	}
 
 
+	/**
+	 * Creates a new AlertHelper instance.
+	 */
 	public AlertHelper(Stage ownerStage) {
 		this.ownerStage = ownerStage;
 	}

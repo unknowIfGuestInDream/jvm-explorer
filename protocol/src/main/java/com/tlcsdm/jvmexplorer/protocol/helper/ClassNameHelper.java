@@ -1,7 +1,13 @@
 package com.tlcsdm.jvmexplorer.protocol.helper;
 
+/**
+ * Provides the class name helper implementation used by the com.tlcsdm.jvmexplorer.protocol.helper package.
+ */
 public class ClassNameHelper {
 
+	/**
+	 * Returns the simple name value.
+	 */
 	public static String getSimpleName(String name) {
 		final int lastIndex = name.lastIndexOf('.');
 		if (lastIndex == name.length() - 1) {
@@ -11,6 +17,9 @@ public class ClassNameHelper {
 		return name.substring(lastIndex + 1);
 	}
 
+	/**
+	 * Returns the package name value.
+	 */
 	public static String getPackageName(String name) {
 		final int lastIndex = name.lastIndexOf('.');
 		if (lastIndex == -1) {

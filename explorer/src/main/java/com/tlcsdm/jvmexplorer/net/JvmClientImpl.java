@@ -20,6 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+/**
+ * Provides the jvm client impl implementation used by the com.tlcsdm.jvmexplorer.net package.
+ */
 public class JvmClientImpl extends Connection implements JvmClient {
 
 	private static final Logger log = LoggerFactory.getLogger(JvmClientImpl.class);
@@ -34,6 +37,9 @@ public class JvmClientImpl extends Connection implements JvmClient {
 
 	private volatile RunningJvm runningJvm;
 
+	/**
+	 * Creates a new JvmClientImpl instance.
+	 */
 	public JvmClientImpl(ScheduledExecutorService executorService) {
 		this.executorService = executorService;
 		final ObjectSpace objectSpace = new ObjectSpace(this);
@@ -45,6 +51,9 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		((RemoteObject) jvmConnection).setTransmitExceptions(false);
 	}
 
+	/**
+	 * Registers the endpoint.
+	 */
 	@Override
 	public void register(String identifier) {
 		if (this.runningJvm != null) {
@@ -63,6 +72,9 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		}
 	}
 
+	/**
+	 * Sends packet.
+	 */
 	@Override
 	public <T> void sendPacket(PacketType packetType, T[] packet) {
 		final PacketResponseHandler<T> packetResponseHandler = (PacketResponseHandler<T>) packetResponseHandlers.get(
@@ -75,6 +87,9 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		}
 	}
 
+	/**
+	 * Handles the end packet transfer workflow.
+	 */
 	@Override
 	public void endPacketTransfer(PacketType packetType, int packetsSent) {
 		final PacketResponseHandler<?> packetResponseHandler = packetResponseHandlers.get(packetType);
@@ -87,6 +102,9 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		}
 	}
 
+	/**
+	 * Closes the associated resource.
+	 */
 	@Override
 	public void close() {
 		super.close();
@@ -94,10 +112,16 @@ public class JvmClientImpl extends Connection implements JvmClient {
 		packetResponseHandlers.clear();
 	}
 
+	/**
+	 * Returns whether registered is enabled or currently true.
+	 */
 	public boolean isRegistered() {
 		return runningJvm != null;
 	}
 
+	/**
+	 * Returns the packet stream value.
+	 */
 	public <T> Stream<T> getPacketStream(PacketType packetType, Consumer<Integer> onUpdateCount) {
 		final AtomicReference<Future<?>> scheduledCleanup = new AtomicReference<>();
 		final PacketResponseHandler<T> packetResponseHandler = new PacketResponseHandler<>(() -> {
@@ -118,14 +142,23 @@ public class JvmClientImpl extends Connection implements JvmClient {
 	}
 
 
+	/**
+	 * Returns the jvm connection value.
+	 */
 	public JvmConnection getJvmConnection() {
 		return this.jvmConnection;
 	}
 
+	/**
+	 * Updates the on register value.
+	 */
 	public void setOnRegister(Consumer<RunningJvm> onRegister) {
 		this.onRegister = onRegister;
 	}
 
+	/**
+	 * Returns the running jvm value.
+	 */
 	public RunningJvm getRunningJvm() {
 		return this.runningJvm;
 	}

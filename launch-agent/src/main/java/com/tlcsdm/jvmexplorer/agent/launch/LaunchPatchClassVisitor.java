@@ -9,12 +9,21 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Provides the launch patch class visitor implementation used by the com.tlcsdm.jvmexplorer.agent.launch package.
+ */
 public class LaunchPatchClassVisitor extends ClassVisitor {
 
+	/**
+	 * Creates a new LaunchPatchClassVisitor instance.
+	 */
 	public LaunchPatchClassVisitor(int api, ClassVisitor classVisitor) {
 		super(api, classVisitor);
 	}
 
+	/**
+	 * Handles the visit method callback.
+	 */
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
@@ -24,6 +33,9 @@ public class LaunchPatchClassVisitor extends ClassVisitor {
 		return methodVisitor;
 	}
 
+	/**
+	 * Provides the launch patch method visitor implementation used by the com.tlcsdm.jvmexplorer.agent.launch package.
+	 */
 	private static class LaunchPatchMethodVisitor extends AdviceAdapter {
 
 		public LaunchPatchMethodVisitor(int api, MethodVisitor methodVisitor, int access, String name,
@@ -31,6 +43,9 @@ public class LaunchPatchClassVisitor extends ClassVisitor {
 			super(api, methodVisitor, access, name, descriptor);
 		}
 
+		/**
+		 * Handles the method enter event.
+		 */
 		@Override
 		public void onMethodEnter() {
 			final URL runningJarUrl = LaunchPatchAgent.class.getProtectionDomain().getCodeSource().getLocation();

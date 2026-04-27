@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * Provides the compiler implementation used by the com.tlcsdm.jvmexplorer.bytecode.compile package.
+ */
 public class Compiler {
 
 	private static final Logger log = LoggerFactory.getLogger(Compiler.class);

@@ -25,6 +25,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
+/**
+ * Provides the running jvms controller implementation used by the com.tlcsdm.jvmexplorer.fx.jvms package.
+ */
 public class RunningJvmsController {
 
 	private static final NumberFormat numberFormat = NumberFormat.getInstance();
@@ -46,24 +49,39 @@ public class RunningJvmsController {
 	private ScheduledExecutorService executorService;
 	private AlertHelper alertHelper;
 
+	/**
+	 * Returns the current jvm value.
+	 */
 	public RunningJvm getCurrentJvm() {
 		return currentJvm.get();
 	}
 
+	/**
+	 * Updates the current jvm value.
+	 */
 	public void setCurrentJvm(RunningJvm runningJvm) {
 		currentJvm.set(runningJvm);
 	}
 
+	/**
+	 * Returns the current jvm property.
+	 */
 	public ObjectProperty<RunningJvm> currentJvmProperty() {
 		return currentJvm;
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	public void initialize(Stage stage, ScheduledExecutorService scheduledExecutorService) {
 		this.alertHelper = new AlertHelper(stage);
 		this.executorService = scheduledExecutorService;
 		initialize();
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initialize() {
 		processes.setPlaceholder(new Label(JvmExplorer.getBundle().getString("placeholder.noJvmsFound")));
 		bindSelectedItemToJvmProperty();
@@ -73,6 +91,9 @@ public class RunningJvmsController {
 		scheduleRunningJvmUpdater();
 	}
 
+	/**
+	 * Returns the bind selected item to jvm property.
+	 */
 	private void bindSelectedItemToJvmProperty() {
 		// Creates a two-way directional binding
 		this.processes.getSelectionModel().selectedItemProperty().addListener((obs, old, newv) -> {
@@ -90,6 +111,9 @@ public class RunningJvmsController {
 		});
 	}
 
+	/**
+	 * Sets up JVM search filtering.
+	 */
 	private void setupJvmSearching() {
 		final FilteredList<RunningJvm> searchedJvms = new FilteredList<>(runningJvms);
 		searchedJvms.predicateProperty().bind(Bindings.createObjectBinding(() -> {
@@ -101,6 +125,9 @@ public class RunningJvmsController {
 		processes.setItems(searchedJvms);
 	}
 
+	/**
+	 * Sets up title pane text binding.
+	 */
 	private void setupTitlePaneText() {
 		jvmsTitlePane.textProperty().bind(Bindings.createStringBinding(() -> {
 			final int visibleProcesses = processes.getItems().size();
@@ -109,6 +136,9 @@ public class RunningJvmsController {
 		}, processes.getItems(), searchJvms.textProperty(), runningJvms));
 	}
 
+	/**
+	 * Handles the schedule running jvm updater workflow.
+	 */
 	private void scheduleRunningJvmUpdater() {
 		executorService.scheduleAtFixedRate(() -> {
 			final List<RunningJvm> activeJvms = runningJvmLoader.list();
@@ -126,6 +156,9 @@ public class RunningJvmsController {
 		}, 0, 1, TimeUnit.SECONDS);
 	}
 
+	/**
+	 * Returns the running jvm display value.
+	 */
 	private String getRunningJvmDisplay(int visibleProcesses, int totalProcesses) {
 		if (visibleProcesses == totalProcesses) {
 			return numberFormat.format(totalProcesses);

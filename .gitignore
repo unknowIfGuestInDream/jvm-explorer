@@ -31,6 +31,9 @@ Thumbs.db
 # Build
 build/
 
+# Doxygen generated documentation
+docs-gen/
+
 settings.json
 
 **/integration-test-screenshots/**

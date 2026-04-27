@@ -7,6 +7,9 @@ import com.tlcsdm.jvmexplorer.protocol.PacketType;
 
 import java.util.Queue;
 
+/**
+ * Provides the idle packet sender implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class IdlePacketSender<T> extends Listener {
 
 	private final Queue<T[]> packets;
@@ -22,6 +25,9 @@ public class IdlePacketSender<T> extends Listener {
 
 	// Sending too many objects at once overflows a buffer. Not sure why kryonet can't automatically handle it but
 	// this works around that by only sending when the buffer isn't too full
+	/**
+	 * Handles the idle workflow.
+	 */
 	@Override
 	public void idle(Connection connection) {
 		if (packets.isEmpty()) {
@@ -50,11 +56,17 @@ public class IdlePacketSender<T> extends Listener {
 		}
 	}
 
+	/**
+	 * Handles the end workflow.
+	 */
 	public void end() {
 		this.end = true;
 	}
 
 
+	/**
+	 * Creates a new IdlePacketSender instance.
+	 */
 	public IdlePacketSender(Queue<T[]> packets, PacketType packetType, JvmClient jvmClient, boolean autoEnd) {
 		this.packets = packets;
 		this.packetType = packetType;

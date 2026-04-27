@@ -8,6 +8,9 @@ import org.objectweb.asm.Opcodes;
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
+/**
+ * Provides the launch patch class file transformer implementation used by the com.tlcsdm.jvmexplorer.agent.launch package.
+ */
 public class LaunchPatchClassFileTransformer implements ClassFileTransformer {
 
 	@Override

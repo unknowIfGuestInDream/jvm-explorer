@@ -45,6 +45,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the loaded classes controller implementation used by the com.tlcsdm.jvmexplorer.fx.classes package.
+ */
 public class LoadedClassesController {
 
 	private static final Logger log = LoggerFactory.getLogger(LoadedClassesController.class);
@@ -87,6 +90,9 @@ public class LoadedClassesController {
 	private int serverPort;
 	private JvmExplorerSettings settings;
 
+	/**
+	 * Returns the current class property.
+	 */
 	public ObjectProperty<ClassContent> currentClassProperty() {
 		return currentClass;
 	}
@@ -105,6 +111,9 @@ public class LoadedClassesController {
 		initialize();
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initialize() {
 		setupTreeSearching();
 		setupAgentLoader();
@@ -113,6 +122,9 @@ public class LoadedClassesController {
 		setupTreePlaceholder();
 	}
 
+	/**
+	 * Sets up tree search filtering.
+	 */
 	private void setupTreeSearching() {
 		searchClasses.textProperty().addListener((obs, old, newv) -> {
 			// TreeView is kinda buggy with selection when filtering and selects a ton of random stuff sometimes
@@ -158,6 +170,9 @@ public class LoadedClassesController {
 		searchClasses.setTooltip(tooltip);
 	}
 
+	/**
+	 * Sets up agent loading and attachment.
+	 */
 	private void setupAgentLoader() {
 		currentJvm.addListener((obs, old, newv) -> {
 			if (newv == null) {
@@ -186,6 +201,9 @@ public class LoadedClassesController {
 		});
 	}
 
+	/**
+	 * Handles the attach fail event.
+	 */
 	private void onAttachFail(RunningJvm targetJvm, Exception e) {
 		final List<String> propertyList = new ArrayList<>();
 		try {
@@ -212,6 +230,9 @@ public class LoadedClassesController {
 		});
 	}
 
+	/**
+	 * Sets up core class tree functionality.
+	 */
 	private void setupClassesCore() {
 		classes.getSelectionModel()
 		       .selectedItemProperty()
@@ -228,6 +249,9 @@ public class LoadedClassesController {
 		                                            settings));
 	}
 
+	/**
+	 * Sets up title pane text binding.
+	 */
 	private void setupTitlePaneText() {
 		classesTitlePane.textProperty()
 		                .bind(Bindings.createStringBinding(this::getTitlePaneText,
@@ -237,6 +261,9 @@ public class LoadedClassesController {
 		                                                   searchClasses.textProperty()));
 	}
 
+	/**
+	 * Sets up the tree placeholder.
+	 */
 	private void setupTreePlaceholder() {
 		final TreeViewPlaceholderSkin<?> treeViewPlaceholderSkin = new TreeViewPlaceholderSkin<>(classes);
 		final Label placeholderLabel = new Label();
@@ -252,10 +279,16 @@ public class LoadedClassesController {
 		classes.setSkin(treeViewPlaceholderSkin);
 	}
 
+	/**
+	 * Handles the select workflow.
+	 */
 	public void select(TreeItem<ClassTreeNode> itemToSelect) {
 		classes.getSelectionModel().select(itemToSelect);
 	}
 
+	/**
+	 * Builds the configured result object.
+	 */
 	private String buildAgentArgs(RunningJvm runningJvm) {
 		return AgentConfiguration.builder()
 		                         .hostName("localhost")
@@ -267,6 +300,9 @@ public class LoadedClassesController {
 		                         .toAgentArgs();
 	}
 
+	/**
+	 * Handles the selected class change event.
+	 */
 	private void onSelectedClassChange(TreeItem<ClassTreeNode> old, TreeItem<ClassTreeNode> newv) {
 		if (newv == null) {
 			currentClass.setValue(null);
@@ -298,16 +334,25 @@ public class LoadedClassesController {
 		});
 	}
 
+	/**
+	 * Loads classes.
+	 */
 	public void loadClasses(RunningJvm runningJvm) {
 		executorService.submit(() -> doLoadClasses(runningJvm));
 	}
 
+	/**
+	 * Returns the title pane text value.
+	 */
 	private String getTitlePaneText() {
 		final long visibleItems = classesTreeRoot.streamVisible().filter(p -> p.getLoadedClass() != null).count();
 		final long sourceItems = classesTreeRoot.streamSource().filter(p -> p.getLoadedClass() != null).count();
 		return JvmExplorer.getBundle().getString("ui.loadedClasses") + " (" + getLoadedClassDisplay(visibleItems, sourceItems) + ")";
 	}
 
+	/**
+	 * Returns the placeholder text value.
+	 */
 	private String getPlaceholderText() {
 		final ResourceBundle bundle = JvmExplorer.getBundle();
 		if (currentJvm.get() == null) {
@@ -330,6 +375,9 @@ public class LoadedClassesController {
 		}
 	}
 
+	/**
+	 * Handles the do load classes workflow.
+	 */
 	private void doLoadClasses(RunningJvm runningJvm) {
 		Platform.runLater(() -> loadedClassProgressCount.set(0));
 		final List<LoadedClass> loadedClasses = clientHandler.getLoadedClasses(runningJvm, loadedClassPercent -> {
@@ -352,6 +400,9 @@ public class LoadedClassesController {
 		});
 	}
 
+	/**
+	 * Returns the loaded class display value.
+	 */
 	private String getLoadedClassDisplay(long visibleItems, long sourceItems) {
 		if (visibleItems == sourceItems) {
 			return numberFormat.format(visibleItems);
@@ -359,6 +410,9 @@ public class LoadedClassesController {
 		return numberFormat.format(visibleItems) + "/" + numberFormat.format(sourceItems);
 	}
 
+	/**
+	 * Builds the configured result object.
+	 */
 	private ClassTreeNode buildClassTree(List<LoadedClass> loadedClasses) {
 		if (this.settings.getShowClassLoader().get()) {
 			return classTreeHelper.buildClassLoaderTree(loadedClasses);

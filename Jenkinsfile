@@ -166,6 +166,31 @@ pipeline {
             }
         }
 
+        stage('Generate Doxygen Docs') {
+            when {
+                expression { return sh(script: 'command -v doxygen >/dev/null 2>&1', returnStatus: true) == 0 }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    sh 'doxygen --version'
+                    sh 'rm -rf docs-gen'
+                    sh 'doxygen doxygen/Doxyfile'
+                    sh 'cd docs-gen && zip -qr ../doxygen-docs.zip html'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'doxygen-docs.zip', allowEmptyArchive: true
+                }
+                failure {
+                    echo 'Generate Doxygen Docs failed'
+                }
+                aborted {
+                    echo 'Build aborted'
+                }
+            }
+        }
+
     }
 
     post {

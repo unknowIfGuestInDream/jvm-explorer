@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Provides the agent file logger implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class AgentFileLogger extends Log.Logger {
 
 	private final ExecutorService executorService;
@@ -18,6 +21,9 @@ public class AgentFileLogger extends Log.Logger {
 	private volatile PrintWriter printWriter;
 	private volatile boolean closed = false;
 
+	/**
+	 * Closes the associated resource.
+	 */
 	public void close() {
 		closed = true;
 		final PrintWriter printWriter = this.printWriter;
@@ -26,6 +32,9 @@ public class AgentFileLogger extends Log.Logger {
 		}
 	}
 
+	/**
+	 * Writes the log to the agent log.
+	 */
 	@Override
 	protected void print(String message) {
 		if (closed) {
@@ -39,6 +48,9 @@ public class AgentFileLogger extends Log.Logger {
 		executorService.submit(new Print(message));
 	}
 
+	/**
+	 * Writes the log message to the agent log.
+	 */
 	private void printMessage(String message) {
 		try {
 			getPrintWriter().println(message);
@@ -49,6 +61,9 @@ public class AgentFileLogger extends Log.Logger {
 		}
 	}
 
+	/**
+	 * Returns the print writer value.
+	 */
 	private PrintWriter getPrintWriter() throws IOException {
 		if (printWriter == null) {
 			synchronized (this) {
@@ -62,13 +77,22 @@ public class AgentFileLogger extends Log.Logger {
 		return printWriter;
 	}
 
-		private class Print implements Runnable {
+	/**
+	 * Provides the print implementation used by the com.tlcsdm.jvmexplorer.agent package.
+	 */
+	private class Print implements Runnable {
 		private final String message;
 
+		/**
+		 * Creates a new Print task.
+		 */
 		Print(String message) {
 			this.message = message;
 		}
 
+		/**
+		 * Runs the configured task.
+		 */
 		@Override
 		public void run() {
 			AgentFileLogger.this.printMessage(message);
@@ -76,6 +100,9 @@ public class AgentFileLogger extends Log.Logger {
 	}
 
 
+	/**
+	 * Handles the agent file logger workflow.
+	 */
 	public AgentFileLogger(ExecutorService executorService, File outputFile, boolean append) {
 		this.executorService = executorService;
 		this.outputFile = outputFile;

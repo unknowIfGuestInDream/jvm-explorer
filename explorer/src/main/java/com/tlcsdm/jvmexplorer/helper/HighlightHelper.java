@@ -14,6 +14,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Provides the highlight helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class HighlightHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(HighlightHelper.class);
@@ -22,10 +25,16 @@ public class HighlightHelper {
 	private static final HighlightContext DEFAULT_CONTEXT =
 			HighlightPatterns.of(HighlightPatterns.getStaticPatterns());
 
+	/**
+	 * Handles the compute highlighting workflow.
+	 */
 	public static StyleSpans<Collection<String>> computeHighlighting(String text) {
 		return computeHighlighting(text, DEFAULT_CONTEXT);
 	}
 
+	/**
+	 * Handles the compute highlighting workflow.
+	 */
 	public static StyleSpans<Collection<String>> computeHighlighting(String text, HighlightContext highlightContext) {
 		final Matcher matcher = highlightContext.getPattern().matcher(text);
 		int lastMatchEnd = 0;
@@ -46,6 +55,9 @@ public class HighlightHelper {
 	}
 
 	// Some of this context is considering how the decompiler will decompile the code
+	/**
+	 * Creates context for.
+	 */
 	public static HighlightContext createContextFor(ClassNode classNode) {
 
 		final String methods = HighlightPatterns.createMethodPattern(classNode);
@@ -64,19 +76,31 @@ public class HighlightHelper {
 		return context;
 	}
 
+	/**
+	 * Provides the highlight context implementation used by the com.tlcsdm.jvmexplorer.helper package.
+	 */
 	public static class HighlightContext {
 		private final Set<String> matchKeys;
 		private final Pattern pattern;
 
+		/**
+		 * Creates a new HighlightContext instance.
+		 */
 		public HighlightContext(Set<String> matchKeys, Pattern pattern) {
 			this.matchKeys = matchKeys;
 			this.pattern = pattern;
 		}
 
+		/**
+		 * Returns the match keys value.
+		 */
 		public Set<String> getMatchKeys() {
 			return this.matchKeys;
 		}
 
+		/**
+		 * Returns the pattern value.
+		 */
 		public Pattern getPattern() {
 			return this.pattern;
 		}

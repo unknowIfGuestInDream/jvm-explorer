@@ -53,6 +53,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the modify method controller implementation used by the com.tlcsdm.jvmexplorer.fx.method package.
+ */
 public class ModifyMethodController {
 
 	private static final Logger log = LoggerFactory.getLogger(ModifyMethodController.class);
@@ -106,6 +109,9 @@ public class ModifyMethodController {
 		setupCodeArea();
 	}
 
+	/**
+	 * Sets up the code area used by the method editor.
+	 */
 	private void setupCodeArea() {
 		final CodeAreaHelper codeAreaHelper = new CodeAreaHelper(executorService);
 
@@ -129,6 +135,9 @@ public class ModifyMethodController {
 		setupContextMenu();
 	}
 
+	/**
+	 * Handles the reset class node workflow.
+	 */
 	private void resetClassNode() {
 		// We modify the ClassNode methods in-place after compiling.
 		// Therefore, if there is some failure, we need to reset the class node, so it doesn't stay corrupted.
@@ -149,6 +158,9 @@ public class ModifyMethodController {
 		}
 	}
 
+	/**
+	 * Builds the configured result object.
+	 */
 	private String buildBaseCode(MethodDescriptor methodDesc, ModifyType modifyType) {
 		if (methodDesc == null) {
 			return JvmExplorer.getBundle().getString("status.noMethodSelected");
@@ -162,6 +174,9 @@ public class ModifyMethodController {
 		return codeTemplateHelper.loadModifyMethod(CLASS_NAME, method, code);
 	}
 
+	/**
+	 * Sets up the context menu for compile and modify actions.
+	 */
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();
 
@@ -188,11 +203,17 @@ public class ModifyMethodController {
 		code.setContextMenu(contextMenu);
 	}
 
+	/**
+	 * Handles the compile action from the method editor.
+	 */
 	@FXML
 	void onCompile() {
 		onCompile(c -> Platform.runLater(() -> setOutputText(JvmExplorer.getBundle().getString("status.compiledSuccessfully"), c.getStdOut())));
 	}
 
+	/**
+	 * Handles the compile event.
+	 */
 	private void onCompile(Consumer<CompileResult> onCompilation) {
 		setOutputText(JvmExplorer.getBundle().getString("status.compiling"), JvmExplorer.getBundle().getString("status.pleaseWait"));
 		// I love when java can't compile my lambda without casting
@@ -216,10 +237,16 @@ public class ModifyMethodController {
 		});
 	}
 
+	/**
+	 * Updates the output text value.
+	 */
 	private void setOutputText(String header, String body) {
 		output.setText(header + System.lineSeparator() + System.lineSeparator() + body);
 	}
 
+	/**
+	 * Returns the java version value.
+	 */
 	private int getJavaVersion() {
 		try {
 			return runningJvm.getJavaVersion();
@@ -230,6 +257,9 @@ public class ModifyMethodController {
 		}
 	}
 
+	/**
+	 * Handles the method modification action from the method editor.
+	 */
 	@FXML
 	void onModify() {
 		final MethodDescriptor selectedMethod = method.getValue();
@@ -304,6 +334,9 @@ public class ModifyMethodController {
 		delegateCalls(classNode, methodToModify);
 	}
 
+	/**
+	 * Handles the replace return workflow.
+	 */
 	private void replaceReturn(MethodNode methodNodeToUpdate, Label goToLabel) {
 		final List<AbstractInsnNode> returns = new ArrayList<>();
 		for (AbstractInsnNode insn : methodNodeToUpdate.instructions) {
@@ -317,6 +350,9 @@ public class ModifyMethodController {
 		});
 	}
 
+	/**
+	 * Handles the delegate calls workflow.
+	 */
 	private void delegateCalls(ClassNode owner, MethodNode updatedMethod) {
 		// Delegate calls to the real class, not the class we compiled against
 		updatedMethod.instructions.forEach(insn -> {
@@ -335,12 +371,18 @@ public class ModifyMethodController {
 		});
 	}
 
+	/**
+	 * Handles the cancel action from the method editor.
+	 */
 	@FXML
 	void onCancel() {
 		onClose.accept(false);
 	}
 
-		private enum ModifyType {
+	/**
+	 * Enumerates the supported modify type values used by the com.tlcsdm.jvmexplorer.fx.method package.
+	 */
+	private enum ModifyType {
 		ADD_BEFORE("Add Code Before Method",
 		           false,
 		           "// The following method body will be called before the rest of the method"),
@@ -349,43 +391,70 @@ public class ModifyMethodController {
 		private final boolean expectsReturnValue;
 		private final String comment;
 
+		/**
+		 * Creates a new ModifyType value.
+		 */
 		ModifyType(String description, boolean expectsReturnValue, String comment) {
 			this.description = description;
 			this.expectsReturnValue = expectsReturnValue;
 			this.comment = comment;
 		}
 
+		/**
+		 * Returns whether expects return value is enabled or currently true.
+		 */
 		public boolean isExpectsReturnValue() {
 			return this.expectsReturnValue;
 		}
 
+		/**
+		 * Returns the comment value.
+		 */
 		public String getComment() {
 			return this.comment;
 		}
 
+		/**
+		 * Returns a readable description of this instance.
+		 */
 		@Override
 		public String toString() {
 			return description;
 		}
 	}
 
-		private static class MethodDescriptor {
+	/**
+	 * Provides the method descriptor implementation used by the com.tlcsdm.jvmexplorer.fx.method package.
+	 */
+	private static class MethodDescriptor {
 		private final MethodNode methodNode;
 
+		/**
+		 * Creates a new MethodDescriptor instance.
+		 */
 		public MethodDescriptor(MethodNode methodNode) {
 			this.methodNode = methodNode;
 		}
 
+		/**
+		 * Returns the method node value.
+		 */
 		public MethodNode getMethodNode() {
 			return this.methodNode;
 		}
 
+		/**
+		 * Returns a readable description of this instance.
+		 */
 		@Override
 		public String toString() {
 			final String returnType = Type.getReturnType(methodNode.desc).getClassName();
 			return buildTemplate(methodNode.name, returnType);
 		}
 
+		/**
+		 * Builds the configured result object.
+		 */
 		private String buildTemplate(String methodName, String returnType) {
 			final AtomicInteger paramIndex = new AtomicInteger(0);
 			if (!Modifier.isStatic(methodNode.access)) {
@@ -405,6 +474,9 @@ public class ModifyMethodController {
 	}
 
 
+	/**
+	 * Handles the modify method controller workflow.
+	 */
 	public ModifyMethodController(CodeArea code, TextArea output, ComboBox<ModifyType> modifyType, ComboBox<MethodDescriptor> method, Button compileButton, Button modifyButton, ExecutorService executorService, ClientHandler clientHandler, RunningJvm runningJvm, LoadedClass initialClass, List<LoadedClass> classpath, Consumer<Boolean> onClose, byte[] classFile, ClassNode classNode, StringBinding template) {
 		this.code = code;
 		this.output = output;
@@ -423,69 +495,120 @@ public class ModifyMethodController {
 		this.template = template;
 	}
 
+	/**
+	 * Handles the modify method controller workflow.
+	 */
 	public ModifyMethodController() {
 	}
 
+	/**
+	 * Returns the code value.
+	 */
 	public CodeArea getCode() {
 		return this.code;
 	}
 
+	/**
+	 * Returns the output value.
+	 */
 	public TextArea getOutput() {
 		return this.output;
 	}
 
+	/**
+	 * Returns the modify type value.
+	 */
 	public ComboBox<ModifyType> getModifyType() {
 		return this.modifyType;
 	}
 
+	/**
+	 * Returns the method value.
+	 */
 	public ComboBox<MethodDescriptor> getMethod() {
 		return this.method;
 	}
 
+	/**
+	 * Returns the compile button value.
+	 */
 	public Button getCompileButton() {
 		return this.compileButton;
 	}
 
+	/**
+	 * Returns the modify button value.
+	 */
 	public Button getModifyButton() {
 		return this.modifyButton;
 	}
 
+	/**
+	 * Returns the executor service value.
+	 */
 	public ExecutorService getExecutorService() {
 		return this.executorService;
 	}
 
+	/**
+	 * Returns the client handler value.
+	 */
 	public ClientHandler getClientHandler() {
 		return this.clientHandler;
 	}
 
+	/**
+	 * Returns the running jvm value.
+	 */
 	public RunningJvm getRunningJvm() {
 		return this.runningJvm;
 	}
 
+	/**
+	 * Returns the initial class value.
+	 */
 	public LoadedClass getInitialClass() {
 		return this.initialClass;
 	}
 
+	/**
+	 * Returns the classpath value.
+	 */
 	public List<LoadedClass> getClasspath() {
 		return this.classpath;
 	}
 
+	/**
+	 * Returns the on close value.
+	 */
 	public Consumer<Boolean> getOnClose() {
 		return this.onClose;
 	}
 
+	/**
+	 * Returns the class file value.
+	 */
 	public byte[] getClassFile() {
 		return this.classFile;
 	}
 
+	/**
+	 * Returns the class node value.
+	 */
 	public ClassNode getClassNode() {
 		return this.classNode;
 	}
 
+	/**
+	 * Returns the template value.
+	 */
 	public StringBinding getTemplate() {
 		return this.template;
 	}
 
+	/**
+	 * Compares this instance with another object for logical equality.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -494,6 +617,9 @@ public class ModifyMethodController {
 		return java.util.Objects.equals(this.code, other.code) && java.util.Objects.equals(this.output, other.output) && java.util.Objects.equals(this.modifyType, other.modifyType) && java.util.Objects.equals(this.method, other.method) && java.util.Objects.equals(this.compileButton, other.compileButton) && java.util.Objects.equals(this.modifyButton, other.modifyButton) && java.util.Objects.equals(this.executorService, other.executorService) && java.util.Objects.equals(this.clientHandler, other.clientHandler) && java.util.Objects.equals(this.runningJvm, other.runningJvm) && java.util.Objects.equals(this.initialClass, other.initialClass) && java.util.Objects.equals(this.classpath, other.classpath) && java.util.Objects.equals(this.onClose, other.onClose) && java.util.Objects.equals(this.classFile, other.classFile) && java.util.Objects.equals(this.classNode, other.classNode) && java.util.Objects.equals(this.template, other.template);
 	}
 
+	/**
+	 * Returns the hash code for this instance.
+	 */
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(code, output, modifyType, method, compileButton, modifyButton, executorService, clientHandler, runningJvm, initialClass, classpath, onClose, classFile, classNode, template);

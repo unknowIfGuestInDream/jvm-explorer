@@ -6,14 +6,23 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the filter helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class FilterHelper {
 
+	/**
+	 * Creates string predicate.
+	 */
 	public Predicate<String> createStringPredicate(String text) {
 		final String searchPattern = createSearchPattern(text);
 		final Pattern pattern = Pattern.compile(searchPattern);
 		return string -> pattern.matcher(string).find();
 	}
 
+	/**
+	 * Creates search pattern.
+	 */
 	private String createSearchPattern(String text) {
 		if (text.isEmpty()) {
 			return ".*";

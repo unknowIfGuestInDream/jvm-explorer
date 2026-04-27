@@ -21,6 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Provides the remote code helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class RemoteCodeHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteCodeHelper.class);
