@@ -116,7 +116,7 @@ SHOW_USED_FILES        = YES
 SHOW_FILES             = YES
 SHOW_NAMESPACES        = NO
 FILE_VERSION_FILTER    =
-LAYOUT_FILE            = doxygen/DoxygenLayout.xml
+LAYOUT_FILE            =
 CITE_BIB_FILES         =
 
 #---------------------------------------------------------------------------
@@ -206,10 +206,10 @@ GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            =
-HTML_FOOTER            = doxygen/footer.html
+HTML_FOOTER            =
 HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  = doxygen/custom.css
-HTML_EXTRA_FILES       = doxygen/custom.js
+HTML_EXTRA_FILES       =
 HTML_COLORSTYLE        = AUTO_LIGHT
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
