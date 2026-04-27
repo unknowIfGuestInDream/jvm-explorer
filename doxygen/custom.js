@@ -79,7 +79,7 @@
         contents.innerHTML = "";
         const intro = document.createElement("div");
         intro.className = "textblock";
-        intro.textContent = "Java packages are listed directly below. Use these links instead of expanding the generic top-level com namespace.";
+        intro.textContent = "Java packages are listed below. Use these links instead of expanding the generic top-level com namespace.";
         contents.append(intro, packageCards());
     }
 
