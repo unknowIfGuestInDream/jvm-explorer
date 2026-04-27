@@ -68,6 +68,39 @@ a:hover {
     box-shadow: 4px 0 18px rgba(15, 23, 42, .05);
 }
 
+#sidebar-toggle {
+    position: fixed;
+    left: 292px;
+    bottom: 18px;
+    z-index: 1000;
+    padding: 7px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    color: #1d4ed8;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .12);
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+#sidebar-toggle:hover {
+    color: #0f172a;
+    background: #eff6ff;
+}
+
+body.sidebar-collapsed #side-nav {
+    display: none !important;
+}
+
+body.sidebar-collapsed #doc-content {
+    margin-left: 0 !important;
+}
+
+body.sidebar-collapsed #sidebar-toggle {
+    left: 18px;
+}
+
 #nav-tree .label,
 #nav-tree .item {
     color: #334155;
@@ -220,4 +253,32 @@ div.line,
 .exception,
 .mlabel {
     color: var(--primary-dark-color);
+}
+
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.package-card {
+    padding: 16px 18px;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+}
+
+.package-card a {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-weight: 700;
+}
+
+.package-card p {
+    margin: 0;
+    color: #475569;
+    line-height: 1.5;
 }

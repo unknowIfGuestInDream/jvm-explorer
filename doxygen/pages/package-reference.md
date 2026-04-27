@@ -1,4 +1,4 @@
-# Package Reference {#package-reference}
+# Package List {#package-list}
 
 The generated API reference uses the Java packages below. Each package now has a
 `package-info.java` source file so Doxygen can build package-level reference
