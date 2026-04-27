@@ -48,6 +48,9 @@
         setState(collapsed);
         window.addEventListener("resize", updatePosition);
         if (typeof ResizeObserver !== "undefined") {
+            if (window.jvmExplorerSidebarToggleObserver) {
+                window.jvmExplorerSidebarToggleObserver.disconnect();
+            }
             window.jvmExplorerSidebarToggleObserver = new ResizeObserver(updatePosition);
             window.jvmExplorerSidebarToggleObserver.observe(sideNav);
         }
