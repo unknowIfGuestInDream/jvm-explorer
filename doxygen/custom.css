@@ -4,7 +4,7 @@
     --primary-dark-color: #1d4ed8;
     --primary-light-color: #dbeafe;
     --page-background-color: #f8fafc;
-    --side-nav-background: #0f172a;
+    --side-nav-background: #ffffff;
     --fragment-background: #f8fafc;
     --fragment-foreground: #1e293b;
 }
@@ -63,23 +63,39 @@ a:hover {
     background: var(--side-nav-background);
 }
 
+#side-nav {
+    border-right: 1px solid #dbe3ef;
+    box-shadow: 4px 0 18px rgba(15, 23, 42, .05);
+}
+
 #nav-tree .label,
 #nav-tree .item {
-    color: #cbd5e1;
+    color: #334155;
 }
 
 #nav-tree a {
-    color: #e2e8f0;
+    color: #334155;
 }
 
 #nav-tree a:hover {
-    color: #ffffff;
+    color: #0f172a;
 }
 
 #nav-tree .selected {
-    background: #2563eb;
-    color: #ffffff;
+    background: #dbeafe;
+    color: #1d4ed8;
     text-shadow: none;
+    border-radius: 6px;
+}
+
+#nav-tree .selected a,
+#nav-tree .selected .label {
+    color: #1d4ed8;
+}
+
+#nav-tree .item:hover,
+#nav-tree .label:hover {
+    background: #eff6ff;
     border-radius: 6px;
 }
 
@@ -167,7 +183,8 @@ div.line,
 }
 
 .center iframe[src$=".svg"],
-.zoom iframe[src$=".svg"] {
+.zoom iframe[src$=".svg"],
+.dotgraph iframe[src$=".svg"] {
     width: 100%;
     min-height: 420px;
     border: 1px solid #dbe3ef;
@@ -175,7 +192,8 @@ div.line,
     background: #ffffff;
 }
 
-.zoom {
+.zoom,
+.dotgraph {
     overflow: auto;
     resize: vertical;
     min-height: 460px;

@@ -17,6 +17,9 @@ import java.util.function.Consumer;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
+/**
+ * Provides the export helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class ExportHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(ExportHelper.class);
@@ -61,6 +64,9 @@ public class ExportHelper {
 		}
 	}
 
+	/**
+	 * Writes the supplied data.
+	 */
 	private void write(String name, byte[] content, JarOutputStream jarOutputStream) {
 		final ZipEntry zipEntry = new ZipEntry(name);
 		try {
@@ -78,6 +84,9 @@ public class ExportHelper {
 	}
 
 
+	/**
+	 * Creates a new ExportHelper instance.
+	 */
 	public ExportHelper(ClientHandler clientHandler) {
 		this.clientHandler = clientHandler;
 	}

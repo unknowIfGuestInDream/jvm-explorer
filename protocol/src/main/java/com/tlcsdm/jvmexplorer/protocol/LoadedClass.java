@@ -5,6 +5,9 @@ import com.tlcsdm.jvmexplorer.protocol.helper.ClassNameHelper;
 
 import java.lang.reflect.Modifier;
 
+/**
+ * Provides the loaded class implementation used by the com.tlcsdm.jvmexplorer.protocol package.
+ */
 public class LoadedClass implements Comparable<LoadedClass> {
 
 	private final String name;
@@ -13,23 +16,38 @@ public class LoadedClass implements Comparable<LoadedClass> {
 	// Not used for equality or anything. Simply additional (optional) information.
 	private final MetaType metaType;
 
+	/**
+	 * Returns the simple name value.
+	 */
 	public String getSimpleName() {
 		return ClassNameHelper.getSimpleName(name);
 	}
 
+	/**
+	 * Returns a readable description of this instance.
+	 */
 	@Override
 	public String toString() {
 		return name;
 	}
 
+	/**
+	 * Performs the compare to operation.
+	 */
 	@Override
 	public int compareTo(LoadedClass o) {
 		return name.compareTo(o.name);
 	}
 
+	/**
+	 * Enumerates the supported meta type values used by the com.tlcsdm.jvmexplorer.protocol package.
+	 */
 	public enum MetaType {
 		INNER, INTERFACE, ABSTRACT, ENUM, ANNOTATION, EXCEPTION, ABSTRACT_EXCEPTION, ANONYMOUS;
 
+		/**
+		 * Returns the for value.
+		 */
 		public static MetaType getFor(final Class<?> c) {
 			try {
 				if (c.isAnonymousClass()) {
@@ -66,30 +84,48 @@ public class LoadedClass implements Comparable<LoadedClass> {
 	}
 
 
+	/**
+	 * Loads ed class.
+	 */
 	public LoadedClass(String name, ClassLoaderDescriptor classLoaderDescriptor, MetaType metaType) {
 		this.name = name;
 		this.classLoaderDescriptor = classLoaderDescriptor;
 		this.metaType = metaType;
 	}
 
+	/**
+	 * Loads ed class.
+	 */
 	public LoadedClass() {
 		this.name = null;
 		this.classLoaderDescriptor = null;
 		this.metaType = null;
 	}
 
+	/**
+	 * Returns the name value.
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Returns the class loader descriptor value.
+	 */
 	public ClassLoaderDescriptor getClassLoaderDescriptor() {
 		return this.classLoaderDescriptor;
 	}
 
+	/**
+	 * Returns the meta type value.
+	 */
 	public MetaType getMetaType() {
 		return this.metaType;
 	}
 
+	/**
+	 * Compares this instance with another object for logical equality.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -98,6 +134,9 @@ public class LoadedClass implements Comparable<LoadedClass> {
 		return java.util.Objects.equals(this.name, other.name) && java.util.Objects.equals(this.classLoaderDescriptor, other.classLoaderDescriptor);
 	}
 
+	/**
+	 * Returns the hash code for this instance.
+	 */
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(name, classLoaderDescriptor);

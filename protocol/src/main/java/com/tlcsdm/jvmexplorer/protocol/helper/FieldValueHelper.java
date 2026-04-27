@@ -2,8 +2,14 @@ package com.tlcsdm.jvmexplorer.protocol.helper;
 
 import java.util.Arrays;
 
+/**
+ * Provides the field value helper implementation used by the com.tlcsdm.jvmexplorer.protocol.helper package.
+ */
 public class FieldValueHelper {
 
+	/**
+	 * Returns the value as string value.
+	 */
 	public static String getValueAsString(Object value) {
 		if (value != null && value.getClass().isArray()) {
 			if (value.getClass().getComponentType().isPrimitive()) {

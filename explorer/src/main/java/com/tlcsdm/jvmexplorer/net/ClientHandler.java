@@ -23,6 +23,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the client handler implementation used by the com.tlcsdm.jvmexplorer.net package.
+ */
 public class ClientHandler extends Listener {
 
 	private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
@@ -33,14 +36,23 @@ public class ClientHandler extends Listener {
 	private final BiConsumer<RunningJvm, Connection> onConnect;
 	private final Consumer<RunningJvm> onDisconnect;
 
+	/**
+	 * Returns the class content value.
+	 */
 	public ClassContent getClassContent(RunningJvm runningJvm, LoadedClass loadedClass) {
 		return getJvmConnection(runningJvm).map(j -> j.getClassContent(loadedClass)).orElse(null);
 	}
 
+	/**
+	 * Returns the jvm connection value.
+	 */
 	private Optional<JvmConnection> getJvmConnection(RunningJvm runningJvm) {
 		return getServerTracker(runningJvm).map(JvmClientImpl::getJvmConnection);
 	}
 
+	/**
+	 * Returns the server tracker value.
+	 */
 	private Optional<JvmClientImpl> getServerTracker(RunningJvm runningJvm) {
 		return clients.stream()
 		              .filter(JvmClientImpl::isRegistered)
@@ -48,18 +60,30 @@ public class ClientHandler extends Listener {
 		              .findFirst();
 	}
 
+	/**
+	 * Updates the field value.
+	 */
 	public boolean setField(RunningJvm runningJvm, ClassFieldPath classFieldPath, Object newValue) {
 		return getJvmConnection(runningJvm).map(j -> j.setField(classFieldPath, newValue)).orElse(false);
 	}
 
+	/**
+	 * Returns the fields value.
+	 */
 	public ClassFields getFields(RunningJvm runningJvm, ClassFieldPath classFieldPath) {
 		return getJvmConnection(runningJvm).map(j -> j.getFields(classFieldPath)).orElse(null);
 	}
 
+	/**
+	 * Returns the class bytes value.
+	 */
 	public byte[] getClassBytes(RunningJvm runningJvm, LoadedClass loadedClass) {
 		return getJvmConnection(runningJvm).map(j -> j.getClassBytes(loadedClass)).orElse(null);
 	}
 
+	/**
+	 * Returns the loaded classes value.
+	 */
 	public List<LoadedClass> getLoadedClasses(RunningJvm runningJvm, Consumer<Integer> onUpdateCount) {
 		return getServerTracker(runningJvm).map(serverTracker -> serverTracker.<LoadedClass>getPacketStream(PacketType.LOADED_CLASSES,
 		                                                                                                    onUpdateCount))
@@ -67,10 +91,16 @@ public class ClientHandler extends Listener {
 		                                   .orElse(null);
 	}
 
+	/**
+	 * Closes the associated resource.
+	 */
 	public void close(RunningJvm runningJvm) {
 		getServerTracker(runningJvm).ifPresent(Connection::close);
 	}
 
+	/**
+	 * Performs the replace class operation.
+	 */
 	public PatchResult replaceClass(RunningJvm runningJvm, LoadedClass loadedClass, byte[] bytes) {
 		return getJvmConnection(runningJvm).map(jvmConnection -> jvmConnection.redefineClass(loadedClass, bytes))
 		                                   .orElse(null);
@@ -84,6 +114,9 @@ public class ClientHandler extends Listener {
 		                                   .orElse(null);
 	}
 
+	/**
+	 * Performs the connected operation.
+	 */
 	@Override
 	public void connected(Connection connection) {
 		final JvmClientImpl serverTrackerImpl = (JvmClientImpl) connection;
@@ -91,6 +124,9 @@ public class ClientHandler extends Listener {
 		serverTrackerImpl.setOnRegister(jvm -> this.onConnect.accept(jvm, connection));
 	}
 
+	/**
+	 * Performs the disconnected operation.
+	 */
 	@Override
 	public void disconnected(Connection connection) {
 		final JvmClientImpl serverTrackerImpl = (JvmClientImpl) connection;
@@ -101,29 +137,47 @@ public class ClientHandler extends Listener {
 	}
 
 
+	/**
+	 * Creates a new ClientHandler instance.
+	 */
 	public ClientHandler(BiConsumer<RunningJvm, Connection> onConnect, Consumer<RunningJvm> onDisconnect) {
 		this.onConnect = onConnect;
 		this.onDisconnect = onDisconnect;
 	}
 
+	/**
+	 * Builds the configured result object.
+	 */
 	public static ClientHandlerBuilder builder() {
 		return new ClientHandlerBuilder();
 	}
 
+	/**
+	 * Provides the client handler builder implementation used by the com.tlcsdm.jvmexplorer.net package.
+	 */
 	public static class ClientHandlerBuilder {
 		private BiConsumer<RunningJvm, Connection> onConnect;
 		private Consumer<RunningJvm> onDisconnect;
 
+		/**
+		 * Handles the connect event.
+		 */
 		public ClientHandlerBuilder onConnect(BiConsumer<RunningJvm, Connection> onConnect) {
 			this.onConnect = onConnect;
 			return this;
 		}
 
+		/**
+		 * Handles the disconnect event.
+		 */
 		public ClientHandlerBuilder onDisconnect(Consumer<RunningJvm> onDisconnect) {
 			this.onDisconnect = onDisconnect;
 			return this;
 		}
 
+		/**
+		 * Builds the configured result object.
+		 */
 		public ClientHandler build() {
 			return new ClientHandler(onConnect, onDisconnect);
 		}

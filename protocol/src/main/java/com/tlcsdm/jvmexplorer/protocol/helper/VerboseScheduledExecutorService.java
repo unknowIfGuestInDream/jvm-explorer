@@ -14,112 +14,181 @@ import java.util.concurrent.TimeoutException;
 
 // By default, an executor service will swallow exceptions. It's pretty annoying when debugging if you ignore the Future
 // so this will log every exception.
+/**
+ * Provides the verbose scheduled executor service implementation used by the com.tlcsdm.jvmexplorer.protocol.helper package.
+ */
 public class VerboseScheduledExecutorService implements ScheduledExecutorService {
 
 	private final ScheduledExecutorService executor;
 
+	/**
+	 * Creates a new VerboseScheduledExecutorService instance.
+	 */
 	public VerboseScheduledExecutorService(ScheduledExecutorService executor) {
 		this.executor = executor;
 	}
 
+	/**
+	 * Performs the shutdown operation.
+	 */
 	@Override
 	public void shutdown() {
 		this.executor.shutdown();
 	}
 
+	/**
+	 * Performs the shutdown now operation.
+	 */
 	@Override
 	public List<Runnable> shutdownNow() {
 		return this.executor.shutdownNow();
 	}
 
+	/**
+	 * Returns whether shutdown is enabled or currently true.
+	 */
 	@Override
 	public boolean isShutdown() {
 		return this.executor.isShutdown();
 	}
 
+	/**
+	 * Returns whether terminated is enabled or currently true.
+	 */
 	@Override
 	public boolean isTerminated() {
 		return this.executor.isTerminated();
 	}
 
+	/**
+	 * Performs the await termination operation.
+	 */
 	@Override
 	public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
 		return this.executor.awaitTermination(timeout, unit);
 	}
 
+	/**
+	 * Performs the submit operation.
+	 */
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
 		return this.executor.submit(new VerboseCallable<>(task));
 	}
 
+	/**
+	 * Performs the submit operation.
+	 */
 	@Override
 	public <T> Future<T> submit(Runnable task, T result) {
 		return this.executor.submit(new VerboseRunnable(task), result);
 	}
 
+	/**
+	 * Performs the submit operation.
+	 */
 	@Override
 	public Future<?> submit(Runnable task) {
 		return this.executor.submit(new VerboseRunnable(task));
 	}
 
+	/**
+	 * Performs the invoke all operation.
+	 */
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
 		return this.executor.invokeAll(wrapCallables(tasks));
 	}
 
+	/**
+	 * Performs the invoke all operation.
+	 */
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
 			throws InterruptedException {
 		return this.executor.invokeAll(wrapCallables(tasks), timeout, unit);
 	}
 
+	/**
+	 * Performs the invoke any operation.
+	 */
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
 		return this.executor.invokeAny(wrapCallables(tasks));
 	}
 
+	/**
+	 * Performs the invoke any operation.
+	 */
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
 			throws InterruptedException, ExecutionException, TimeoutException {
 		return this.executor.invokeAny(wrapCallables(tasks), timeout, unit);
 	}
 
+	/**
+	 * Performs the wrap callables operation.
+	 */
 	private <T> Collection<VerboseCallable<T>> wrapCallables(Collection<? extends Callable<T>> tasks) {
 		return tasks.stream().map(VerboseCallable::new).collect(java.util.stream.Collectors.toList());
 	}
 
+	/**
+	 * Performs the execute operation.
+	 */
 	@Override
 	public void execute(Runnable command) {
 		this.executor.execute(new VerboseRunnable(command));
 	}
 
+	/**
+	 * Performs the schedule operation.
+	 */
 	@Override
 	public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
 		return this.executor.schedule(new VerboseRunnable(command), delay, unit);
 	}
 
+	/**
+	 * Performs the schedule operation.
+	 */
 	@Override
 	public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
 		return this.executor.schedule(new VerboseCallable<>(callable), delay, unit);
 	}
 
+	/**
+	 * Performs the schedule at fixed rate operation.
+	 */
 	@Override
 	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
 		return this.executor.scheduleAtFixedRate(new VerboseRunnable(command), initialDelay, period, unit);
 	}
 
+	/**
+	 * Performs the schedule with fixed delay operation.
+	 */
 	@Override
 	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
 		return this.executor.scheduleWithFixedDelay(new VerboseRunnable(command), initialDelay, delay, unit);
 	}
 
+		/**
+		 * Provides the verbose runnable implementation used by the com.tlcsdm.jvmexplorer.protocol.helper package.
+		 */
 		private static class VerboseRunnable implements Runnable {
 		private final Runnable runnable;
 
+		/**
+		 * Creates a new VerboseRunnable instance.
+		 */
 		public VerboseRunnable(Runnable runnable) {
 			this.runnable = runnable;
 		}
 
+		/**
+		 * Runs the configured task.
+		 */
 		@Override
 		public void run() {
 			try {
@@ -143,13 +212,22 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 		}
 	}
 
+	/**
+	 * Provides the verbose callable implementation used by the com.tlcsdm.jvmexplorer.protocol.helper package.
+	 */
 	private static class VerboseCallable<V> implements Callable<V> {
 		private final Callable<V> callable;
 
+		/**
+		 * Creates a new VerboseCallable instance.
+		 */
 		public VerboseCallable(Callable<V> callable) {
 			this.callable = callable;
 		}
 
+		/**
+		 * Calls the wrapped operation and returns its result.
+		 */
 		@Override
 		public V call() throws Exception {
 			try {

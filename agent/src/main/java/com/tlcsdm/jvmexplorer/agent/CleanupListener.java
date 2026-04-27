@@ -6,11 +6,17 @@ import com.esotericsoftware.minlog.Log;
 
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Provides the cleanup listener implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class CleanupListener extends Listener {
 
 	private final ExecutorService executorService;
 	private final AgentFileLogger agentFileLogger;
 
+	/**
+	 * Performs the disconnected operation.
+	 */
 	@Override
 	public void disconnected(Connection connection) {
 		Log.info("Cleaning up");
@@ -19,6 +25,9 @@ public class CleanupListener extends Listener {
 	}
 
 
+	/**
+	 * Creates a new CleanupListener instance.
+	 */
 	public CleanupListener(ExecutorService executorService, AgentFileLogger agentFileLogger) {
 		this.executorService = executorService;
 		this.agentFileLogger = agentFileLogger;

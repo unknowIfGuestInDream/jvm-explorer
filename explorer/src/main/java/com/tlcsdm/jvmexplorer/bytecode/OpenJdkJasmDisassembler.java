@@ -10,11 +10,17 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 
+/**
+ * Provides the open jdk jasm disassembler implementation used by the com.tlcsdm.jvmexplorer.bytecode package.
+ */
 public class OpenJdkJasmDisassembler implements Disassembler {
 
 	private static final Logger log = LoggerFactory.getLogger(OpenJdkJasmDisassembler.class);
 
 
+	/**
+	 * Performs the process operation.
+	 */
 	@Override
 	public String process(byte[] bytecode) {
 		try {

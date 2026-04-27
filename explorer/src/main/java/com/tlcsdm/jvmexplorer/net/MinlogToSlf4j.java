@@ -4,11 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.esotericsoftware.minlog.Log;
 
+/**
+ * Provides the minlog to slf4j implementation used by the com.tlcsdm.jvmexplorer.net package.
+ */
 public class MinlogToSlf4j extends Log.Logger {
 
 	private static final Logger log = LoggerFactory.getLogger(MinlogToSlf4j.class);
 
 
+	/**
+	 * Performs the log operation.
+	 */
 	@Override
 	public void log(int level, String category, String message, Throwable ex) {
 		final String line = category != null ? (category + " - " + message) : message;

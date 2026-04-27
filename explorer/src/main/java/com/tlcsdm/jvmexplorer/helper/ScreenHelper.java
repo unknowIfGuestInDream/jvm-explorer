@@ -5,8 +5,14 @@ import javafx.stage.Screen;
 
 import java.awt.*;
 
+/**
+ * Provides the screen helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class ScreenHelper {
 
+	/**
+	 * Returns whether on screen is enabled or currently true.
+	 */
 	public static boolean isOnScreen(Rectangle rect, double minPercent) {
 		return Screen.getScreens().stream().anyMatch(s -> {
 			final Rectangle2D visual2d = s.getVisualBounds();

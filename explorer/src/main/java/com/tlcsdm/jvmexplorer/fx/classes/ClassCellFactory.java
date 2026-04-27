@@ -48,6 +48,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the class cell factory implementation used by the com.tlcsdm.jvmexplorer.fx.classes package.
+ */
 public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeCell<ClassTreeNode>> {
 
 	private static final Logger log = LoggerFactory.getLogger(ClassCellFactory.class);
@@ -67,6 +70,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	private final Consumer<RunningJvm> onLoadClasses;
 	private final JvmExplorerSettings settings;
 
+	/**
+	 * Calls the wrapped operation and returns its result.
+	 */
 	@Override
 	public TreeCell<ClassTreeNode> call(TreeView<ClassTreeNode> classes) {
 		final TreeCell<ClassTreeNode> treeCell = new TreeCell<>();
@@ -77,6 +83,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return treeCell;
 	}
 
+	/**
+	 * Updates the up image binding value.
+	 */
 	private void setupImageBinding(TreeCell<ClassTreeNode> treeCell) {
 		treeCell.graphicProperty().bind(Bindings.createObjectBinding(() -> {
 			final ClassTreeNode item = treeCell.getItem();
@@ -90,6 +99,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		}, treeCell.itemProperty()));
 	}
 
+	/**
+	 * Updates the up text binding value.
+	 */
 	private void setupTextBinding(TreeCell<ClassTreeNode> treeCell) {
 		treeCell.textProperty()
 		        .bind(Bindings.when(treeCell.itemProperty().isNotNull())
@@ -97,6 +109,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		                      .otherwise(""));
 	}
 
+	/**
+	 * Updates the up tooltip binding value.
+	 */
 	private void setupTooltipBinding(TreeCell<ClassTreeNode> treeCell) {
 		final Tooltip tooltip = new Tooltip();
 		tooltip.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -120,6 +135,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		        .bind(Bindings.when(treeCell.itemProperty().isNotNull()).then(tooltip).otherwise((Tooltip) null));
 	}
 
+	/**
+	 * Updates the up context menu value.
+	 */
 	private void setupContextMenu(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
 		final ContextMenu classesContextMenu = new ContextMenu();
 
@@ -149,6 +167,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		treeCell.setContextMenu(classesContextMenu);
 	}
 
+	/**
+	 * Returns the class image value.
+	 */
 	private Image getClassImage(LoadedClass loadedClass) {
 		if (loadedClass.getMetaType() == null) {
 			return ClassTreeNode.Type.CLASS.getImage();
@@ -188,6 +209,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		});
 	}
 
+	/**
+	 * Creates scoped export.
+	 */
 	private MenuItem createScopedExport(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
 		final MenuItem scopedExport = new MenuItem();
 		scopedExport.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -262,6 +286,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return scopedExport;
 	}
 
+	/**
+	 * Creates export classes.
+	 */
 	private MenuItem createExportClasses(TreeView<ClassTreeNode> classes) {
 		final MenuItem exportClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.exportClasses"));
 		exportClasses.setOnAction(e -> {
@@ -282,6 +309,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return exportClasses;
 	}
 
+	/**
+	 * Creates reload classes.
+	 */
 	private MenuItem createReloadClasses() {
 		final MenuItem reloadClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.refreshClasses"));
 		reloadClasses.setOnAction(e -> {
@@ -296,6 +326,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return reloadClasses;
 	}
 
+	/**
+	 * Creates scoped replace.
+	 */
 	private MenuItem createScopedReplace(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
 		final MenuItem scopedReplace = new MenuItem(JvmExplorer.getBundle().getString("ctx.replaceClass"));
 		scopedReplace.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -354,6 +387,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return scopedReplace;
 	}
 
+	/**
+	 * Creates replace classes.
+	 */
 	private MenuItem createReplaceClasses(TreeView<ClassTreeNode> classes) {
 		final MenuItem replaceClasses = new MenuItem(JvmExplorer.getBundle().getString("ctx.replaceClasses"));
 		replaceClasses.setOnAction(e -> {
@@ -370,6 +406,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return replaceClasses;
 	}
 
+	/**
+	 * Creates show class loader.
+	 */
 	private MenuItem createShowClassLoader(MenuItem reloadClasses) {
 		final CheckMenuItem includeClassLoader = new CheckMenuItem(JvmExplorer.getBundle().getString("ctx.showClassLoaders"));
 		includeClassLoader.setOnAction(e -> {
@@ -386,6 +425,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return includeClassLoader;
 	}
 
+	/**
+	 * Creates execute code.
+	 */
 	private MenuItem createExecuteCode(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> treeView) {
 		final MenuItem executeCode = new MenuItem();
 		executeCode.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -489,10 +531,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		return executeCode;
 	}
 
+	/**
+	 * Performs the select export jar file operation.
+	 */
 	private File selectExportJarFile(String initialFileName, Window owner) {
 		return fileHelper.saveJar(owner, JvmExplorer.getBundle().getString("ctx.exportClasses"), initialFileName);
 	}
 
+	/**
+	 * Performs the export operation.
+	 */
 	private void export(File selectedFile, List<LoadedClass> classes, RunningJvm activeJvm) {
 		final File exportParentFile = selectedFile.getParentFile();
 		if (exportParentFile != null) {
@@ -527,10 +575,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		});
 	}
 
+	/**
+	 * Performs the select export class file operation.
+	 */
 	private File selectExportClassFile(String initialFileName, Window owner) {
 		return fileHelper.saveClass(owner, JvmExplorer.getBundle().getString("ctx.exportClass"), initialFileName);
 	}
 
+	/**
+	 * Performs the export operation.
+	 */
 	private void export(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
 		try {
 			final byte[] classContent = clientHandler.getClassBytes(activeJvm, loadedClass);
@@ -541,10 +595,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		}
 	}
 
+	/**
+	 * Performs the select import jar file operation.
+	 */
 	private File selectImportJarFile(Window owner) {
 		return fileHelper.openJar(owner, JvmExplorer.getBundle().getString("ctx.replaceClasses"));
 	}
 
+	/**
+	 * Performs the replace classes operation.
+	 */
 	private void replaceClasses(File selectedFile, RunningJvm activeJvm, ClassLoaderDescriptor classLoaderDescriptor) {
 		final SimpleIntegerProperty progress = new SimpleIntegerProperty(0);
 		final SimpleBooleanProperty isComplete = new SimpleBooleanProperty(false);
@@ -576,10 +636,16 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 		});
 	}
 
+	/**
+	 * Performs the select import class file operation.
+	 */
 	private File selectImportClassFile(Window owner) {
 		return fileHelper.openClass(owner, JvmExplorer.getBundle().getString("ctx.replaceClass"));
 	}
 
+	/**
+	 * Performs the replace class operation.
+	 */
 	private void replaceClass(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
 		final byte[] contents;
 		try {
@@ -601,6 +667,9 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 
+	/**
+	 * Creates a new ClassCellFactory instance.
+	 */
 	public ClassCellFactory(ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm, ClientHandler clientHandler, FilterableTreeItem<ClassTreeNode> classesTreeRoot, ExportHelper exportHelper, Consumer<RunningJvm> onLoadClasses, JvmExplorerSettings settings) {
 		this.executorService = executorService;
 		this.alertHelper = alertHelper;

@@ -14,6 +14,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Provides the agent preparer implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class AgentPreparer {
 
 	private static final Logger log = LoggerFactory.getLogger(AgentPreparer.class);
@@ -22,6 +25,9 @@ public class AgentPreparer {
 
 	private final Map<String, String> loadedAgentFiles = new ConcurrentHashMap<>();
 
+	/**
+	 * Loads agent on file system.
+	 */
 	public String loadAgentOnFileSystem(String agentResourcePath) {
 		return loadedAgentFiles.computeIfAbsent(agentResourcePath, k -> {
 			// First, try to load from the running path (working directory)

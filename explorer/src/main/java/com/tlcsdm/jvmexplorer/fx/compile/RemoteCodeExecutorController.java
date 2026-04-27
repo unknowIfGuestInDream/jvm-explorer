@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Provides the remote code executor controller implementation used by the com.tlcsdm.jvmexplorer.fx.compile package.
+ */
 public class RemoteCodeExecutorController {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteCodeExecutorController.class);
@@ -76,6 +79,9 @@ public class RemoteCodeExecutorController {
 		setupContextMenu();
 	}
 
+	/**
+	 * Updates the up context menu value.
+	 */
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();
 
@@ -92,6 +98,9 @@ public class RemoteCodeExecutorController {
 		code.setContextMenu(contextMenu);
 	}
 
+	/**
+	 * Handles the execute-code action from the UI.
+	 */
 	@FXML
 	void onExecute() {
 		output.setText(JvmExplorer.getBundle().getString("status.compiling"));
@@ -123,6 +132,9 @@ public class RemoteCodeExecutorController {
 		});
 	}
 
+	/**
+	 * Returns the java version value.
+	 */
 	private int getJavaVersion() {
 		try {
 			return runningJvm.getJavaVersion();
@@ -133,6 +145,9 @@ public class RemoteCodeExecutorController {
 		}
 	}
 
+	/**
+	 * Updates the output text value.
+	 */
 	private void setOutputText(String header, String body) {
 		output.setText(header + System.lineSeparator() + System.lineSeparator() + body);
 	}

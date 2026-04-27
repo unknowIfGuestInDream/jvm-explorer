@@ -4,11 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
+/**
+ * Provides the editor helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class EditorHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(EditorHelper.class);
 
 
+	/**
+	 * Returns the object string value.
+	 */
 	public String getObjectString(String type, Object object) {
 		try {
 			final Class<?> klass = parseType(type);
@@ -20,6 +26,9 @@ public class EditorHelper {
 		}
 	}
 
+	/**
+	 * Parses type.
+	 */
 	private static Class<?> parseType(String className) throws ClassNotFoundException {
 		switch (className) {
 		case "boolean":
@@ -45,6 +54,9 @@ public class EditorHelper {
 		}
 	}
 
+	/**
+	 * Performs the edit operation.
+	 */
 	public Object edit(String type, String newValue) {
 		try {
 			final Class<?> klass = parseType(type);

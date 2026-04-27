@@ -1,8 +1,8 @@
 # Package Reference {#package-reference}
 
-The generated API reference uses the Java packages below. Doxygen's built-in
-package index is disabled because it is empty for this Java source layout in
-Doxygen 1.9.x; this page provides the package overview instead.
+The generated API reference uses the Java packages below. Each package now has a
+`package-info.java` source file so Doxygen can build package-level reference
+pages in addition to this maintainer-oriented overview.
 
 | Package | Description |
 |---------|-------------|

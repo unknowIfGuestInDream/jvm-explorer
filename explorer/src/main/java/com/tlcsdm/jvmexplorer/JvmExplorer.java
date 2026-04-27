@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Provides the jvm explorer implementation used by the com.tlcsdm.jvmexplorer package.
+ */
 public class JvmExplorer extends Application {
 
 	private static final Logger log = LoggerFactory.getLogger(JvmExplorer.class);
@@ -32,10 +35,16 @@ public class JvmExplorer extends Application {
 
 	private static ResourceBundle resourceBundle;
 
+	/**
+	 * Returns the bundle value.
+	 */
 	public static ResourceBundle getBundle() {
 		return resourceBundle;
 	}
 
+	/**
+	 * Starts the configured workflow.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		final AppPreferences preferences = AppPreferences.getInstance();
@@ -64,6 +73,9 @@ public class JvmExplorer extends Application {
 		log.debug("Started explorer");
 	}
 
+	/**
+	 * Applies theme.
+	 */
 	public static void applyTheme(String themeName) {
 		String stylesheet = switch (themeName) {
 			case "Default" -> null;

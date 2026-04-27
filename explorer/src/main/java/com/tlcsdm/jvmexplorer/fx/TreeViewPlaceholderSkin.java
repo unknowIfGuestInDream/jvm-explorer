@@ -12,6 +12,9 @@ import javafx.scene.layout.StackPane;
 
 // Note: we are making an assumption that the tree view root is never null, and the tree view is empty if the root
 // has no children
+/**
+ * Provides the tree view placeholder skin implementation used by the com.tlcsdm.jvmexplorer.fx package.
+ */
 public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 
 	private static final Logger log = LoggerFactory.getLogger(TreeViewPlaceholderSkin.class);
@@ -21,6 +24,9 @@ public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 
 	private StackPane placeholderRegion;
 
+	/**
+	 * Creates a new TreeViewPlaceholderSkin instance.
+	 */
 	public TreeViewPlaceholderSkin(TreeView<T> control) {
 		super(control);
 		placeholderProperty = new SimpleObjectProperty<>();
@@ -34,6 +40,9 @@ public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 		updatePlaceholderSupport();
 	}
 
+	/**
+	 * Performs the update placeholder support operation.
+	 */
 	private void updatePlaceholderSupport() {
 		final boolean empty = isTreeEmpty();
 		if (empty) {
@@ -53,14 +62,23 @@ public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 		}
 	}
 
+	/**
+	 * Returns whether tree empty is enabled or currently true.
+	 */
 	private boolean isTreeEmpty() {
 		return getSkinnable().getRoot().getChildren().isEmpty();
 	}
 
+	/**
+	 * Performs the placeholder property operation.
+	 */
 	public Property<Node> placeholderProperty() {
 		return placeholderProperty;
 	}
 
+	/**
+	 * Performs the layout children operation.
+	 */
 	@Override
 	protected void layoutChildren(double x, double y, double w, double h) {
 		super.layoutChildren(x, y, w, h);

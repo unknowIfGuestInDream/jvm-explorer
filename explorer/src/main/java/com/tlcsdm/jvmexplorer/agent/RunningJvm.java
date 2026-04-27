@@ -10,6 +10,9 @@ import com.sun.tools.attach.VirtualMachine;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Provides the running jvm implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class RunningJvm {
 
 	private static final Logger log = LoggerFactory.getLogger(RunningJvm.class);
@@ -18,6 +21,9 @@ public class RunningJvm {
 	private final String id;
 	private final String name;
 
+	/**
+	 * Returns the java version value.
+	 */
 	public int getJavaVersion() throws AgentException {
 		try {
 			String version = getSystemProperties().getProperty("java.version");
@@ -46,6 +52,9 @@ public class RunningJvm {
 		}
 	}
 
+	/**
+	 * Returns the system properties value.
+	 */
 	public Properties getSystemProperties() throws AgentException {
 		try {
 			final VirtualMachine vm = VirtualMachine.attach(id);
@@ -62,6 +71,9 @@ public class RunningJvm {
 		}
 	}
 
+	/**
+	 * Loads agent.
+	 */
 	public void loadAgent(String agentPath, String agentArgs) throws AgentException {
 		try {
 			log.debug("Attempting to load agent {} with args {} into {}", agentPath, agentArgs, this);
@@ -92,6 +104,9 @@ public class RunningJvm {
 		}
 	}
 
+	/**
+	 * Returns a readable description of this instance.
+	 */
 	@Override
 	public String toString() {
 		if (name == null || name.isEmpty()) {
@@ -100,29 +115,47 @@ public class RunningJvm {
 		return name + ": " + id;
 	}
 
+	/**
+	 * Performs the to identifier operation.
+	 */
 	public String toIdentifier() {
 		return getId() + ":" + getName();
 	}
 
 
+	/**
+	 * Creates a new RunningJvm instance.
+	 */
 	public RunningJvm(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
+	/**
+	 * Creates a new RunningJvm instance.
+	 */
 	public RunningJvm() {
 		this.id = null;
 		this.name = null;
 	}
 
+	/**
+	 * Returns the id value.
+	 */
 	public String getId() {
 		return this.id;
 	}
 
+	/**
+	 * Returns the name value.
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Compares this instance with another object for logical equality.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -131,6 +164,9 @@ public class RunningJvm {
 		return java.util.Objects.equals(this.id, other.id) && java.util.Objects.equals(this.name, other.name);
 	}
 
+	/**
+	 * Returns the hash code for this instance.
+	 */
 	@Override
 	public int hashCode() {
 		return java.util.Objects.hash(id, name);

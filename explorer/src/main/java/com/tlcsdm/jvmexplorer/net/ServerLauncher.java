@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.net.BindException;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Provides the server launcher implementation used by the com.tlcsdm.jvmexplorer.net package.
+ */
 public class ServerLauncher {
 
 	private static final Logger log = LoggerFactory.getLogger(ServerLauncher.class);
@@ -19,10 +22,16 @@ public class ServerLauncher {
 
 	private final OpenPortProvider openPortProvider;
 
+	/**
+	 * Launches the configured process.
+	 */
 	public JvmExplorerServer launch(ScheduledExecutorService executorService, ClientHandler clientHandler) {
 		setupLogging();
 		final JvmExplorerServer server = new JvmExplorerServer(Protocol.WRITE_BUFFER_SIZE,
 		                                                       Protocol.OBJECT_BUFFER_SIZE) {
+			/**
+			 * Performs the new connection operation.
+			 */
 			@Override
 			protected Connection newConnection() {
 				return new JvmClientImpl(executorService);
@@ -35,6 +44,9 @@ public class ServerLauncher {
 		return server;
 	}
 
+	/**
+	 * Updates the up logging value.
+	 */
 	private void setupLogging() {
 		final int minlogLevel = getLogLevel();
 		log.debug("Setting minlog log level to {}", minlogLevel);
@@ -42,11 +54,17 @@ public class ServerLauncher {
 		Log.setLogger(new MinlogToSlf4j());
 	}
 
+	/**
+	 * Performs the register protocol operation.
+	 */
 	private void registerProtocol(Server server) {
 		final Kryo kryo = server.getKryo();
 		Protocol.register(kryo);
 	}
 
+	/**
+	 * Performs the bind port operation.
+	 */
 	private void bindPort(JvmExplorerServer server) {
 		while (true) {
 			// This finds an open port and passes it into kryonet. It handles a race condition where a port is taken
@@ -75,6 +93,9 @@ public class ServerLauncher {
 		}
 	}
 
+	/**
+	 * Returns the log level value.
+	 */
 	private int getLogLevel() {
 		if (log.isTraceEnabled()) {
 			return Log.LEVEL_TRACE;
@@ -97,6 +118,9 @@ public class ServerLauncher {
 	}
 
 
+	/**
+	 * Creates a new ServerLauncher instance.
+	 */
 	public ServerLauncher(OpenPortProvider openPortProvider) {
 		this.openPortProvider = openPortProvider;
 	}

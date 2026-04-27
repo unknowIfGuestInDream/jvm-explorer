@@ -19,6 +19,9 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * Provides the filterable tree item implementation used by the com.tlcsdm.jvmexplorer.fx.classes package.
+ */
 public class FilterableTreeItem<T> extends TreeItem<T> {
 
 	private static final Logger log = LoggerFactory.getLogger(FilterableTreeItem.class);
@@ -30,15 +33,24 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 	// Do not convert this to a local variable. This is a field, so it doesn't get garbage collected.
 	private final FilteredList<TreeItem<T>> filteredChildren = new FilteredList<>(sourceChildren);
 
+	/**
+	 * Creates a new FilterableTreeItem instance.
+	 */
 	public FilterableTreeItem() {
 		this(null);
 	}
 
+	/**
+	 * Creates a new FilterableTreeItem instance.
+	 */
 	public FilterableTreeItem(T value) {
 		super(value);
 		setupFilteredItemBinding();
 	}
 
+	/**
+	 * Updates the up filtered item binding value.
+	 */
 	private void setupFilteredItemBinding() {
 		filteredChildren.predicateProperty().bind(Bindings.createObjectBinding(() -> {
 			// javac blows up if you inline this to a return
@@ -57,20 +69,32 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 		Bindings.bindContent(super.getChildren(), filteredChildren);
 	}
 
+	/**
+	 * Performs the predicate property operation.
+	 */
 	public ObjectProperty<Predicate<T>> predicateProperty() {
 		return predicate;
 	}
 
+	/**
+	 * Performs the stream visible operation.
+	 */
 	public Stream<T> streamVisible() {
 		return streamVisibleItems().map(TreeItem::getValue);
 	}
 
+	/**
+	 * Performs the stream visible items operation.
+	 */
 	public Stream<FilterableTreeItem<T>> streamVisibleItems() {
 		return bfs(FilterableTreeItem::getChildren);
 	}
 
 	// Assumes all children are also FilterableTreeItems
 	// This does not include the current node
+	/**
+	 * Performs the bfs operation.
+	 */
 	private Stream<FilterableTreeItem<T>> bfs(Function<FilterableTreeItem<T>, List<TreeItem<T>>> childFunction) {
 		final Queue<Supplier<Stream<FilterableTreeItem<T>>>> generations = new LinkedList<>();
 		generations.add(() -> childFunction.apply(this)
@@ -87,14 +111,23 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 		                                                           .map(FilterableTreeItem.class::cast)));
 	}
 
+	/**
+	 * Performs the stream source operation.
+	 */
 	public Stream<T> streamSource() {
 		return streamSourceItems().map(TreeItem::getValue);
 	}
 
+	/**
+	 * Performs the stream source items operation.
+	 */
 	public Stream<FilterableTreeItem<T>> streamSourceItems() {
 		return bfs(FilterableTreeItem::getSourceChildren);
 	}
 
+	/**
+	 * Returns the source children value.
+	 */
 	public ObservableList<TreeItem<T>> getSourceChildren() {
 		return sourceChildren;
 	}

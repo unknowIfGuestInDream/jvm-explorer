@@ -6,11 +6,17 @@ import org.slf4j.LoggerFactory;
 import java.util.logging.Level;
 
 
+/**
+ * Provides the startup implementation used by the com.tlcsdm.jvmexplorer package.
+ */
 public class Startup {
 
 	private static final Logger log = LoggerFactory.getLogger(Startup.class);
 
 
+	/**
+	 * Starts the standalone application entry point.
+	 */
 	public static void main(String[] args) {
 		// Suppress JavaFX 'unnamed module' warning
 		java.util.logging.Logger.getLogger("com.sun.javafx.application.PlatformImpl")

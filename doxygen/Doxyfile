@@ -37,7 +37,10 @@ ABBREVIATE_BRIEF       = "The $name class" \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = YES
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        =
+STRIP_FROM_PATH        = agent/src/main/java \
+                         explorer/src/main/java \
+                         launch-agent/src/main/java \
+                         protocol/src/main/java
 STRIP_FROM_INC_PATH    =
 SHORT_NAMES            = NO
 # Java/Javadoc related optimizations.
@@ -114,7 +117,7 @@ ENABLED_SECTIONS       =
 MAX_INITIALIZER_LINES  = 30
 SHOW_USED_FILES        = YES
 SHOW_FILES             = YES
-SHOW_NAMESPACES        = NO
+SHOW_NAMESPACES        = YES
 FILE_VERSION_FILTER    =
 LAYOUT_FILE            =
 CITE_BIB_FILES         =
@@ -178,7 +181,7 @@ FORTRAN_COMMENT_AFTER  = 72
 #---------------------------------------------------------------------------
 
 SOURCE_BROWSER         = YES
-INLINE_SOURCES         = NO
+INLINE_SOURCES         = YES
 STRIP_CODE_COMMENTS    = NO
 REFERENCED_BY_RELATION = YES
 REFERENCES_RELATION    = YES
@@ -324,8 +327,8 @@ DOT_WRAP_THRESHOLD     = 17
 TEMPLATE_RELATIONS     = YES
 INCLUDE_GRAPH          = YES
 INCLUDED_BY_GRAPH      = YES
-CALL_GRAPH             = NO
-CALLER_GRAPH           = NO
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
 GRAPHICAL_HIERARCHY    = YES
 DIRECTORY_GRAPH        = YES
 DIR_GRAPH_MAX_DEPTH    = 5

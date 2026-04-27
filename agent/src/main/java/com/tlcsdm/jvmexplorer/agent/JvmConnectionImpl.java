@@ -23,6 +23,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Provides the jvm connection impl implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class JvmConnectionImpl implements JvmConnection {
 
 	private final JvmClient jvmClient;
@@ -31,6 +34,9 @@ public class JvmConnectionImpl implements JvmConnection {
 	private final ExecutorService executorService;
 	private final ClassLoaderStore classLoaderStore;
 
+	/**
+	 * Returns the class content value.
+	 */
 	@Override
 	public ClassContent getClassContent(LoadedClass loadedClass) {
 		try {
@@ -54,12 +60,18 @@ public class JvmConnectionImpl implements JvmConnection {
 		}
 	}
 
+	/**
+	 * Updates the field value.
+	 */
 	@Override
 	public boolean setField(ClassFieldPath classFieldPath, Object newValue) {
 		final ClassLoader classLoader = classLoaderStore.lookup(classFieldPath.getClassLoaderDescriptor());
 		return instrumentationHelper.setObject(classLoader, classFieldPath.getClassFieldKeys(), newValue);
 	}
 
+	/**
+	 * Returns the fields value.
+	 */
 	@Override
 	public ClassFields getFields(ClassFieldPath classFieldPath) {
 		final ClassLoader classLoader = classLoaderStore.lookup(classFieldPath.getClassLoaderDescriptor());
@@ -72,6 +84,9 @@ public class JvmConnectionImpl implements JvmConnection {
 		return classFields;
 	}
 
+	/**
+	 * Returns the class bytes value.
+	 */
 	@Override
 	public byte[] getClassBytes(LoadedClass loadedClass) {
 		final ClassLoader classLoader = classLoaderStore.lookup(loadedClass.getClassLoaderDescriptor());
@@ -82,11 +97,17 @@ public class JvmConnectionImpl implements JvmConnection {
 		return instrumentationHelper.getClassBytes(klass);
 	}
 
+	/**
+	 * Performs the request packets operation.
+	 */
 	@Override
 	public void requestPackets(PacketType packetType) {
 		executorService.submit(new PacketProcessor(packetType));
 	}
 
+	/**
+	 * Performs the redefine class operation.
+	 */
 	@Override
 	public PatchResult redefineClass(LoadedClass loadedClass, byte[] bytes) {
 		final ClassLoader classLoader = classLoaderStore.lookup(loadedClass.getClassLoaderDescriptor());
@@ -117,6 +138,9 @@ public class JvmConnectionImpl implements JvmConnection {
 		}
 	}
 
+	/**
+	 * Performs the process loaded class packets operation.
+	 */
 	private void processLoadedClassPackets(PacketType packetType) {
 		final List<Class<?>> applicationClasses = instrumentationHelper.getApplicationClasses();
 		final List<LoadedClass> classes = new ArrayList<>();
@@ -150,13 +174,22 @@ public class JvmConnectionImpl implements JvmConnection {
 		}
 	}
 
-		private class PacketProcessor implements Runnable {
+	/**
+	 * Provides the packet processor implementation used by the com.tlcsdm.jvmexplorer.agent package.
+	 */
+	private class PacketProcessor implements Runnable {
 		private final PacketType packetType;
 
+		/**
+		 * Creates a new PacketProcessor instance.
+		 */
 		PacketProcessor(PacketType packetType) {
 			this.packetType = packetType;
 		}
 
+		/**
+		 * Runs the configured task.
+		 */
 		@Override
 		public void run() {
 			Log.debug("Received packet request for " + packetType);
@@ -179,6 +212,9 @@ public class JvmConnectionImpl implements JvmConnection {
 	}
 
 
+	/**
+	 * Performs the jvm connection impl operation.
+	 */
 	public JvmConnectionImpl(JvmClient jvmClient, InstrumentationHelper instrumentationHelper, Client client, ExecutorService executorService, ClassLoaderStore classLoaderStore) {
 		this.jvmClient = jvmClient;
 		this.instrumentationHelper = instrumentationHelper;

@@ -76,6 +76,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the current class controller implementation used by the com.tlcsdm.jvmexplorer.fx.openclass package.
+ */
 public class CurrentClassController {
 
 	private static final Logger log = LoggerFactory.getLogger(CurrentClassController.class);
@@ -139,6 +142,9 @@ public class CurrentClassController {
 		initialize();
 	}
 
+	/**
+	 * Initializes the component state and dependencies.
+	 */
 	private void initialize() {
 
 		setupTitlePaneText();
@@ -154,10 +160,16 @@ public class CurrentClassController {
 		setupJavaEditor();
 	}
 
+	/**
+	 * Updates the up bytecode editor value.
+	 */
 	private void setupBytecodeEditor() {
 		setupEditor(bytecode, disassembledClass, allowBytecodeEditing, bytecodeTab, this::onBytecodeSave);
 	}
 
+	/**
+	 * Performs the refresh class operation.
+	 */
 	private void refreshClass() {
 		final RunningJvm selectedJvm = currentJvm.get();
 		if (selectedJvm == null) {
@@ -187,6 +199,9 @@ public class CurrentClassController {
 		});
 	}
 
+	/**
+	 * Handles the bytecode save event.
+	 */
 	private void onBytecodeSave(RunningJvm runningJvm, LoadedClass loadedClass, String text) {
 		executorService.submit(() -> {
 			final Assembler assembler = new OpenJdkJasmAssembler();
@@ -211,6 +226,9 @@ public class CurrentClassController {
 		});
 	}
 
+	/**
+	 * Updates the up java editor value.
+	 */
 	private void setupJavaEditor() {
 		setupEditor(classFile, decompiledClass, allowClassFileEditing, classFileTab, this::onClassFileSave);
 
@@ -223,6 +241,9 @@ public class CurrentClassController {
 		contextMenu.getItems().add(modifyMethod);
 	}
 
+	/**
+	 * Returns the class path value.
+	 */
 	private List<LoadedClass> getClassPath(LoadedClass loadedClass) {
 		final ClassLoaderDescriptor classLoaderDescriptor = loadedClass.getClassLoaderDescriptor();
 		final TreeItem<ClassTreeNode> classLoaderTreeItem;
@@ -242,6 +263,9 @@ public class CurrentClassController {
 		return classTreeHelper.getLoadedClassScope(classesTreeRoot, classLoaderTreeItem);
 	}
 
+	/**
+	 * Performs the show modify method operation.
+	 */
 	private void showModifyMethod() {
 		try {
 			final Dialog<ButtonType> dialog = new Dialog<>();
@@ -284,6 +308,9 @@ public class CurrentClassController {
 		}
 	}
 
+	/**
+	 * Handles the class file save event.
+	 */
 	private void onClassFileSave(RunningJvm runningJvm, LoadedClass loadedClass, String text) {
 		final List<LoadedClass> classpath = getClassPath(loadedClass);
 		executorService.submit(() -> {
@@ -316,6 +343,9 @@ public class CurrentClassController {
 		});
 	}
 
+	/**
+	 * Returns the java version value.
+	 */
 	private int getJavaVersion(RunningJvm runningJvm) {
 		try {
 			return runningJvm.getJavaVersion();
@@ -396,6 +426,9 @@ public class CurrentClassController {
 		editor.setContextMenu(contextMenu);
 	}
 
+	/**
+	 * Performs the open class at cursor operation.
+	 */
 	private void openClassAtCursor(int cursorPosition, String text) {
 		if (Character.isJavaIdentifierPart(text.charAt(cursorPosition))) {
 
@@ -446,6 +479,9 @@ public class CurrentClassController {
 		}
 	}
 
+	/**
+	 * Updates the up title pane text value.
+	 */
 	private void setupTitlePaneText() {
 		loadedClassTitlePane.textProperty().bind(Bindings.createStringBinding(() -> {
 			final ClassContent currentClassContent = currentClass.get();
@@ -456,6 +492,9 @@ public class CurrentClassController {
 		}, currentClass));
 	}
 
+	/**
+	 * Handles the class change event.
+	 */
 	private void onClassChange(ClassContent old, ClassContent newv) {
 		allowClassFileEditing.set(false);
 		allowBytecodeEditing.set(false);
@@ -479,6 +518,9 @@ public class CurrentClassController {
 		}
 	}
 
+	/**
+	 * Loads highlight context.
+	 */
 	private void loadHighlightContext(byte[] newClass) {
 		final ClassNode classNode = AsmHelper.parse(newClass,
 		                                            ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE
@@ -544,6 +586,9 @@ public class CurrentClassController {
 		});
 	}
 
+	/**
+	 * Performs the process operation.
+	 */
 	private String process(BytecodeTextifier bytecodeTextifier, byte[] input) {
 		if (input == null || input.length == 0) {
 			log.warn("No input to process for {}", bytecodeTextifier);
@@ -558,6 +603,9 @@ public class CurrentClassController {
 		}
 	}
 
+	/**
+	 * Updates the up class field tree value.
+	 */
 	private void setupClassFieldTree() {
 		final TreeItem<ClassField> classFieldRoot = new TreeItem<>(null);
 		classFields.setShowRoot(false);
@@ -584,6 +632,9 @@ public class CurrentClassController {
 	}
 
 	// CodeArea must be in a VBox to replace and insert into VirtualizedScrollPane
+	/**
+	 * Updates the up code area value.
+	 */
 	private void setupCodeArea(CodeArea codeArea) {
 		final Label placeholderLabel = new Label();
 		placeholderLabel.textProperty()
@@ -598,6 +649,9 @@ public class CurrentClassController {
 		codeAreaHelper.initializeJavaEditor(codeArea);
 	}
 
+	/**
+	 * Loads children.
+	 */
 	private void loadChildren(TreeItem<ClassField> parent, ClassFields classFields) {
 		final List<TreeItem<ClassField>> newTableItems = Arrays.stream(classFields.getFields())
 		                                                       // Remove cycles
@@ -609,6 +663,9 @@ public class CurrentClassController {
 		parent.getChildren().setAll(newTableItems);
 	}
 
+	/**
+	 * Handles the wrapped object event.
+	 */
 	private void handleWrappedObject(TreeItem<ClassField> treeItem) {
 		if (!(treeItem.getValue().getValue() instanceof WrappedObject)) {
 			return;
@@ -641,7 +698,13 @@ public class CurrentClassController {
 		});
 	}
 
+	/**
+	 * Defines the contract for on save handler behavior in the com.tlcsdm.jvmexplorer.fx.openclass package.
+	 */
 	private interface OnSaveHandler {
+		/**
+		 * Saves the edited text for the selected class.
+		 */
 		void onSave(RunningJvm runningJvm, LoadedClass loadedClass, String text);
 	}
 

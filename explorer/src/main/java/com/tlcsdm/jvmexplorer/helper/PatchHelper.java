@@ -15,6 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.jar.JarFile;
 
+/**
+ * Provides the patch helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class PatchHelper {
 
 	private static final Logger log = LoggerFactory.getLogger(PatchHelper.class);

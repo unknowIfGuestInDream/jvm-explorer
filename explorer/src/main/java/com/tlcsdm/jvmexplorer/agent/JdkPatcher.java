@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Provides the jdk patcher implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 class JdkPatcher {
 
 	private static final Logger log = LoggerFactory.getLogger(JdkPatcher.class);

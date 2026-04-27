@@ -33,6 +33,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the running jvm list cell factory implementation used by the com.tlcsdm.jvmexplorer.fx.jvms package.
+ */
 public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>, ListCell<RunningJvm>> {
 
 	private static final Logger log = LoggerFactory.getLogger(RunningJvmListCellFactory.class);
@@ -45,6 +48,9 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 	private final AlertHelper alertHelper;
 	private final ObjectProperty<RunningJvm> currentJvm;
 
+	/**
+	 * Calls the wrapped operation and returns its result.
+	 */
 	@Override
 	public ListCell<RunningJvm> call(ListView<RunningJvm> listView) {
 		final ListCell<RunningJvm> listCell = new ListCell<>();
@@ -85,6 +91,9 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 		return listCell;
 	}
 
+	/**
+	 * Performs the display properties operation.
+	 */
 	private void displayProperties(RunningJvm jvm) {
 		executorService.submit(() -> {
 			try {
@@ -113,6 +122,9 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 		});
 	}
 
+	/**
+	 * Creates launch process menu item.
+	 */
 	private MenuItem createLaunchProcessMenuItem(ListView<RunningJvm> listView) {
 		final MenuItem launchProcessMenuItem = new MenuItem(JvmExplorer.getBundle().getString("ctx.launchJar"));
 		launchProcessMenuItem.setOnAction(e -> {
@@ -125,6 +137,9 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 		return launchProcessMenuItem;
 	}
 
+	/**
+	 * Launches jar.
+	 */
 	private void launchJar(File selectedFile) {
 		executorService.submit(() -> {
 			final String agentPath = agentPreparer.loadAgentOnFileSystem("agents/launch-agent.jar");
@@ -157,6 +172,9 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 	}
 
 
+	/**
+	 * Creates a new RunningJvmListCellFactory instance.
+	 */
 	public RunningJvmListCellFactory(ExecutorService executorService, AlertHelper alertHelper, ObjectProperty<RunningJvm> currentJvm) {
 		this.executorService = executorService;
 		this.alertHelper = alertHelper;

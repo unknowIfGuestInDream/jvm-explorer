@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+/**
+ * Provides the class loader store implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ */
 public class ClassLoaderStore {
 
 	// We need two maps here (inverses of one another).
@@ -17,6 +20,9 @@ public class ClassLoaderStore {
 	private final Map<ClassLoader, ClassLoaderDescriptor> classLoaderDescriptors = new WeakHashMap<>();
 	private final Map<ClassLoaderDescriptor, WeakReference<ClassLoader>> classLoaders = new HashMap<>();
 
+	/**
+	 * Performs the store operation.
+	 */
 	public synchronized ClassLoaderDescriptor store(ClassLoader classLoader) {
 		final ClassLoaderDescriptor savedClassLoaderDescriptor = classLoaderDescriptors.get(classLoader);
 		if (savedClassLoaderDescriptor != null) {
@@ -36,6 +42,9 @@ public class ClassLoaderStore {
 		return newClassLoaderDescriptor;
 	}
 
+	/**
+	 * Performs the lookup operation.
+	 */
 	public synchronized ClassLoader lookup(ClassLoaderDescriptor classLoaderDescriptor) {
 		if (classLoaderDescriptor == null) {
 			// Bootstrap classloader
@@ -55,6 +64,9 @@ public class ClassLoaderStore {
 
 	// This exists solely to clean up a bit of extra memory. It won't break anything but let's not leave
 	// dead entries in the map.
+	/**
+	 * Cleans up resources associated with the current workflow.
+	 */
 	public synchronized void clean() {
 		final Set<ClassLoaderDescriptor> toRemove = new HashSet<>();
 		for (Map.Entry<ClassLoaderDescriptor, WeakReference<ClassLoader>> entry : classLoaders.entrySet()) {
@@ -69,6 +81,9 @@ public class ClassLoaderStore {
 	}
 
 	// Exposed for testing, simulates a garbage collection
+	/**
+	 * Performs the remove class loader operation.
+	 */
 	synchronized void removeClassLoader(ClassLoader classLoader) {
 		final ClassLoaderDescriptor classLoaderDescriptor = classLoaderDescriptors.remove(classLoader);
 		if (classLoaderDescriptor == null) {
@@ -79,6 +94,9 @@ public class ClassLoaderStore {
 	}
 
 	// Exposed for testing, to ensure clean works
+	/**
+	 * Performs the contains descriptor operation.
+	 */
 	synchronized boolean containsDescriptor(ClassLoaderDescriptor classLoaderDescriptor) {
 		return classLoaders.containsKey(classLoaderDescriptor);
 	}

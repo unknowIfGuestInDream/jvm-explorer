@@ -11,6 +11,9 @@ import javax.tools.JavaFileObject;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Provides the remote javac bytecode provider implementation used by the com.tlcsdm.jvmexplorer.bytecode.compile package.
+ */
 public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteJavacBytecodeProvider.class);
@@ -21,6 +24,9 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 
 	private final List<LoadedClass> classpath;
 
+	/**
+	 * Performs the list operation.
+	 */
 	@Override
 	public List<JavaFileObject> list(String packageName, boolean recurse) {
 		return classpath.stream()
@@ -29,6 +35,9 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 		                .collect(Collectors.toList());
 	}
 
+	/**
+	 * Returns whether class in package is enabled or currently true.
+	 */
 	private boolean isClassInPackage(LoadedClass loadedClass, String packageName, boolean recurse) {
 		final String classPackageName = ClassNameHelper.getPackageName(loadedClass.getName());
 		if (recurse && classPackageName.startsWith(packageName + ".")) {
@@ -37,6 +46,9 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 		return classPackageName.equals(packageName);
 	}
 
+	/**
+	 * Returns the provided java file object value.
+	 */
 	private ProvidedJavaFileObject getProvidedJavaFileObject(LoadedClass loadedClass) {
 		return new ProvidedJavaFileObject(loadedClass.getName(),
 		                                  JavaFileObject.Kind.CLASS,
@@ -44,6 +56,9 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 	}
 
 
+	/**
+	 * Creates a new RemoteJavacBytecodeProvider instance.
+	 */
 	public RemoteJavacBytecodeProvider(ClientHandler clientHandler, RunningJvm runningJvm, List<LoadedClass> classpath) {
 		this.clientHandler = clientHandler;
 		this.runningJvm = runningJvm;

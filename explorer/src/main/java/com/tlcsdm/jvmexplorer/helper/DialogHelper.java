@@ -9,8 +9,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
+/**
+ * Provides the dialog helper implementation used by the com.tlcsdm.jvmexplorer.helper package.
+ */
 public class DialogHelper {
 
+	/**
+	 * Performs the init custom dialog operation.
+	 */
 	public static void initCustomDialog(Dialog<?> dialog, ObjectProperty<RunningJvm> currentJvm) {
 		dialog.initModality(Modality.NONE);
 		dialog.setResizable(true);
