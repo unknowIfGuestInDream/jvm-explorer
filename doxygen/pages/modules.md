@@ -3,22 +3,22 @@
 The Doxygen input includes all production Java sources from the Maven modules
 listed below.
 
-## `protocol`
+## protocol
 
 Shared packet, model and protocol helper classes used by both the desktop UI
 and the Java agent.
 
-## `agent`
+## agent
 
 Runtime agent code loaded into target JVM processes. It exposes inspection,
 execution and class-patching capabilities to the explorer application.
 
-## `launch-agent`
+## launch-agent
 
 Helper launcher code used when starting Java processes with the required agent
 setup.
 
-## `explorer`
+## explorer
 
 JavaFX desktop application code, including controllers, UI helpers, tree views,
 dialogs and bytecode/class manipulation helpers.
