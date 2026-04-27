@@ -143,6 +143,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 
 INPUT                  = README.md \
+                         doxygen/packages.dox \
                          doxygen/pages \
                          agent/src/main/java \
                          explorer/src/main/java \
@@ -150,7 +151,8 @@ INPUT                  = README.md \
                          protocol/src/main/java
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.java \
-                         *.md
+                         *.md \
+                         *.dox
 RECURSIVE              = YES
 EXCLUDE                = target \
                          build \

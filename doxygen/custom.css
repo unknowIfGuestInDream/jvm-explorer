@@ -97,6 +97,15 @@ body.sidebar-collapsed #doc-content {
     margin-left: 0 !important;
 }
 
+body.sidebar-collapsed #top,
+body.sidebar-collapsed #main-nav,
+body.sidebar-collapsed #main-menu,
+body.sidebar-collapsed div.header,
+body.sidebar-collapsed #nav-path {
+    margin-left: 0 !important;
+    left: 0 !important;
+}
+
 body.sidebar-collapsed #sidebar-toggle {
     left: 18px;
 }
@@ -253,32 +262,4 @@ div.line,
 .exception,
 .mlabel {
     color: var(--primary-dark-color);
-}
-
-.package-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 14px;
-    margin-top: 18px;
-}
-
-.package-card {
-    padding: 16px 18px;
-    border: 1px solid #dbe3ef;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
-}
-
-.package-card a {
-    display: inline-block;
-    margin-bottom: 8px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    font-weight: 700;
-}
-
-.package-card p {
-    margin: 0;
-    color: #475569;
-    line-height: 1.5;
 }

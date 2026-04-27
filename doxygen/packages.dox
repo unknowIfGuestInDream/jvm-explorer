@@ -1,0 +1,76 @@
+/**
+ * @namespace com
+ * @brief Root namespace for Java packages documented by JVM Explorer.
+ */
+/**
+ * @namespace com::tlcsdm
+ * @brief Organization namespace containing the JVM Explorer packages.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer
+ * @brief JavaFX desktop application entry points and top-level controllers.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::agent
+ * @brief Runtime agent code and client-side attach helpers for target JVM processes.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::agent::launch
+ * @brief Launch-time bytecode patching helpers used before the explorer attaches.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::bytecode
+ * @brief Bytecode disassembly, assembly and decompilation services.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::bytecode::compile
+ * @brief In-memory Java compilation support for source editing workflows.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx
+ * @brief Shared JavaFX controls and UI utilities.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx::classes
+ * @brief Class browser views, tree rendering and class-loading actions.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx::compile
+ * @brief JavaFX screens for compiling and applying source changes.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx::jvms
+ * @brief Views for discovering, listing and selecting locally running JVMs.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx::method
+ * @brief JavaFX screens for method modification workflows.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::fx::openclass
+ * @brief Open-class dialogs and field-tree inspection views.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::helper
+ * @brief Reusable desktop helper utilities for dialogs, editors and bytecode views.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::net
+ * @brief Client-side connection management and packet response handling.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::preferences
+ * @brief Persistent application preference storage.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::protocol
+ * @brief Shared protocol messages, descriptors and configuration models.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::protocol::helper
+ * @brief Shared protocol helper utilities and diagnostics.
+ */
+/**
+ * @namespace com::tlcsdm::jvmexplorer::settings
+ * @brief Application settings and configuration UI support.
+ */
