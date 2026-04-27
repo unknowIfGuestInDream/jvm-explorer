@@ -16,8 +16,8 @@ import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Provides the jvm explorer settings implementation used by the com.tlcsdm.jvmexplorer.settings package.
+ /**
+ * Provides the JVM Explorer settings implementation used by the com.tlcsdm.jvmexplorer.settings package.
  */
 public class JvmExplorerSettings {
 

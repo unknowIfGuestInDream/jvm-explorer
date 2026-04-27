@@ -699,7 +699,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Defines the contract for on save handler behavior in the com.tlcsdm.jvmexplorer.fx.openclass package.
+	 * Provides the internal save callback used by open-class editors.
 	 */
 	private interface OnSaveHandler {
 		/**

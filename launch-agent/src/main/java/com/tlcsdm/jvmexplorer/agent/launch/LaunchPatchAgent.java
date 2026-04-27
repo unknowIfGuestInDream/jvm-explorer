@@ -10,7 +10,7 @@ import java.lang.instrument.UnmodifiableClassException;
 public class LaunchPatchAgent {
 
 	/**
-	 * Starts the JVM agent after it is loaded by the JVM instrumentation API.
+	 * Starts the launch patch agent when it is supplied with {@code -javaagent}.
 	 */
 	public static void premain(String agentArgs, Instrumentation instrumentation) {
 		main(agentArgs, instrumentation);
@@ -31,7 +31,7 @@ public class LaunchPatchAgent {
 	}
 
 	/**
-	 * Starts the JVM agent after it is loaded by the JVM instrumentation API.
+	 * Starts the launch patch agent when it is attached to a running JVM.
 	 */
 	public static void agentmain(String agentArgs, Instrumentation instrumentation) {
 		main(agentArgs, instrumentation);
