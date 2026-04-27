@@ -70,7 +70,7 @@ a:hover {
 
 #sidebar-toggle {
     position: fixed;
-    left: 292px;
+    left: 18px;
     bottom: 18px;
     z-index: 1000;
     padding: 7px 12px;
