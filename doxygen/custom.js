@@ -8,20 +8,21 @@
         const button = document.createElement("button");
         button.id = "sidebar-toggle";
         button.type = "button";
+        const DEFAULT_BUTTON_WIDTH = 140;
+        const BUTTON_GAP = 14;
+        const MINIMUM_LEFT_POSITION = 18;
         const updatePosition = () => {
             if (document.body.classList.contains("sidebar-collapsed")) {
-                button.style.left = "18px";
+                button.style.left = `${MINIMUM_LEFT_POSITION}px`;
                 return;
             }
             const sideNavWidth = sideNav.getBoundingClientRect().width;
-            const buttonWidth = button.getBoundingClientRect().width || 140;
-            const gap = 14;
-            const minimumLeft = 18;
-            if (sideNavWidth < buttonWidth + (gap * 2)) {
-                button.style.left = `${minimumLeft}px`;
+            const buttonWidth = button.getBoundingClientRect().width || DEFAULT_BUTTON_WIDTH;
+            if (sideNavWidth < buttonWidth + (BUTTON_GAP * 2)) {
+                button.style.left = `${MINIMUM_LEFT_POSITION}px`;
                 return;
             }
-            button.style.left = `${Math.max(minimumLeft, sideNavWidth - buttonWidth - gap)}px`;
+            button.style.left = `${Math.max(MINIMUM_LEFT_POSITION, sideNavWidth - buttonWidth - BUTTON_GAP)}px`;
         };
         const setState = (collapsed) => {
             document.body.classList.toggle("sidebar-collapsed", collapsed);
