@@ -42,7 +42,7 @@ public class Protocol {
 	                                             String.class };
 
 	/**
-	 * Performs the register operation.
+	 * Registers the endpoint.
 	 */
 	public static void register(Kryo kryo) {
 		// Need to bypass constructors since everything is a value object

@@ -60,7 +60,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	}
 
 	/**
-	 * Updates the up context menu value.
+	 * Sets up the context menu for field actions.
 	 */
 	private void setupContextMenu(TreeCell<ClassField> cell) {
 		final ContextMenu rowContextMenu = new ContextMenu();
@@ -108,7 +108,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	}
 
 	/**
-	 * Updates the up text binding value.
+	 * Sets up text property binding.
 	 */
 	private void setupTextBinding(TreeCell<ClassField> treeCell) {
 		treeCell.textProperty()
@@ -118,7 +118,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	}
 
 	/**
-	 * Updates the up image binding value.
+	 * Sets up image property binding.
 	 */
 	private void setupImageBinding(TreeCell<ClassField> treeCell) {
 		treeCell.graphicProperty().bind(Bindings.createObjectBinding(() -> {
@@ -131,7 +131,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	}
 
 	/**
-	 * Updates the up tooltip binding value.
+	 * Sets up tooltip property binding.
 	 */
 	private void setupTooltipBinding(TreeCell<ClassField> treeCell) {
 		final Tooltip tooltip = new Tooltip();
@@ -141,7 +141,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 	}
 
 	/**
-	 * Performs the edit operation.
+	 * Handles the edit request.
 	 */
 	private void edit(RunningJvm selectedJvm, TreeItem<ClassField> classField, String newValue) {
 		final ClassFieldKey[] classFieldKeys = fieldTreeHelper.getClassFieldKeyPath(classField);
@@ -201,7 +201,7 @@ public class ClassFieldCellFactory implements Callback<TreeView<ClassField>, Tre
 
 
 	/**
-	 * Performs the class field cell factory operation.
+	 * Handles the class field cell factory workflow.
 	 */
 	public ClassFieldCellFactory(EditorHelper editorHelper, ExecutorService executorService, ClientHandler clientHandler, ObjectProperty<RunningJvm> currentJvm, AlertHelper alertHelper, ObjectProperty<ClassContent> currentClass) {
 		this.editorHelper = editorHelper;

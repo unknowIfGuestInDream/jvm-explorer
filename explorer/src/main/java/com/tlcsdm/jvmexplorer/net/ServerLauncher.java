@@ -30,7 +30,7 @@ public class ServerLauncher {
 		final JvmExplorerServer server = new JvmExplorerServer(Protocol.WRITE_BUFFER_SIZE,
 		                                                       Protocol.OBJECT_BUFFER_SIZE) {
 			/**
-			 * Performs the new connection operation.
+			 * Creates a new connection.
 			 */
 			@Override
 			protected Connection newConnection() {
@@ -45,7 +45,7 @@ public class ServerLauncher {
 	}
 
 	/**
-	 * Updates the up logging value.
+	 * Sets up logging configuration for KryoNet.
 	 */
 	private void setupLogging() {
 		final int minlogLevel = getLogLevel();
@@ -55,7 +55,7 @@ public class ServerLauncher {
 	}
 
 	/**
-	 * Performs the register protocol operation.
+	 * Registers protocol classes.
 	 */
 	private void registerProtocol(Server server) {
 		final Kryo kryo = server.getKryo();
@@ -63,7 +63,7 @@ public class ServerLauncher {
 	}
 
 	/**
-	 * Performs the bind port operation.
+	 * Handles the bind port workflow.
 	 */
 	private void bindPort(JvmExplorerServer server) {
 		while (true) {

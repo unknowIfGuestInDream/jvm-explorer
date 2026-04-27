@@ -49,7 +49,7 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 	}
 
 	/**
-	 * Updates the up filtered item binding value.
+	 * Sets up filtered item binding.
 	 */
 	private void setupFilteredItemBinding() {
 		filteredChildren.predicateProperty().bind(Bindings.createObjectBinding(() -> {
@@ -70,21 +70,21 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 	}
 
 	/**
-	 * Performs the predicate property operation.
+	 * Returns the predicate property.
 	 */
 	public ObjectProperty<Predicate<T>> predicateProperty() {
 		return predicate;
 	}
 
 	/**
-	 * Performs the stream visible operation.
+	 * Handles the stream visible workflow.
 	 */
 	public Stream<T> streamVisible() {
 		return streamVisibleItems().map(TreeItem::getValue);
 	}
 
 	/**
-	 * Performs the stream visible items operation.
+	 * Handles the stream visible items workflow.
 	 */
 	public Stream<FilterableTreeItem<T>> streamVisibleItems() {
 		return bfs(FilterableTreeItem::getChildren);
@@ -93,7 +93,7 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 	// Assumes all children are also FilterableTreeItems
 	// This does not include the current node
 	/**
-	 * Performs the bfs operation.
+	 * Handles the bfs workflow.
 	 */
 	private Stream<FilterableTreeItem<T>> bfs(Function<FilterableTreeItem<T>, List<TreeItem<T>>> childFunction) {
 		final Queue<Supplier<Stream<FilterableTreeItem<T>>>> generations = new LinkedList<>();
@@ -112,14 +112,14 @@ public class FilterableTreeItem<T> extends TreeItem<T> {
 	}
 
 	/**
-	 * Performs the stream source operation.
+	 * Handles the stream source workflow.
 	 */
 	public Stream<T> streamSource() {
 		return streamSourceItems().map(TreeItem::getValue);
 	}
 
 	/**
-	 * Performs the stream source items operation.
+	 * Handles the stream source items workflow.
 	 */
 	public Stream<FilterableTreeItem<T>> streamSourceItems() {
 		return bfs(FilterableTreeItem::getSourceChildren);

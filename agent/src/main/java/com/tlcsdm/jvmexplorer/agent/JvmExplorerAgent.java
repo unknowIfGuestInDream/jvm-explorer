@@ -44,7 +44,7 @@ public class JvmExplorerAgent {
 	}
 
 	/**
-	 * Updates the up logger value.
+	 * Sets up the file logger used by the attached agent.
 	 */
 	private static AgentFileLogger setupLogger(String logFilePath, int logLevel) {
 		final AgentFileLogger logger = new AgentFileLogger(null, new File(logFilePath), true);

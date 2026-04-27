@@ -9,7 +9,7 @@ import javafx.scene.input.ClipboardContent;
 public class ClipboardHelper {
 
 	/**
-	 * Performs the copy operation.
+	 * Handles the copy request.
 	 */
 	public static void copy(String text) {
 		final Clipboard clipboard = Clipboard.getSystemClipboard();

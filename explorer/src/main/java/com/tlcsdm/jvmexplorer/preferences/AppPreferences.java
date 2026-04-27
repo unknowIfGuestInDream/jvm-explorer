@@ -74,7 +74,7 @@ public class AppPreferences {
 	}
 
 	/**
-	 * Performs the language property operation.
+	 * Returns the language property.
 	 */
 	public StringProperty languageProperty() {
 		return language;
@@ -107,7 +107,7 @@ public class AppPreferences {
 	}
 
 	/**
-	 * Performs the theme property operation.
+	 * Returns the theme property.
 	 */
 	public StringProperty themeProperty() {
 		return theme;

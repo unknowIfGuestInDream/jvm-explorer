@@ -249,7 +249,7 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Performs the lang code to display name operation.
+	 * Handles the lang code to display name workflow.
 	 */
 	private static String langCodeToDisplayName(String langCode) {
 		return switch (langCode) {
@@ -260,7 +260,7 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Performs the display name to lang code operation.
+	 * Handles the display name to lang code workflow.
 	 */
 	private static String displayNameToLangCode(String displayName) {
 		return switch (displayName) {
@@ -271,7 +271,7 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Performs the restart application operation.
+	 * Handles the restart application workflow.
 	 */
 	private void restartApplication() {
 		preferencesFx = null;
@@ -293,14 +293,14 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Performs the show preferences operation.
+	 * Handles the show preferences workflow.
 	 */
 	private void showPreferences() {
 		preferencesFx.show(true);
 	}
 
 	/**
-	 * Performs the show about dialog operation.
+	 * Handles the show about dialog workflow.
 	 */
 	private void showAboutDialog() {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -312,7 +312,7 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Updates the up title pane text value.
+	 * Sets up title pane text binding.
 	 */
 	private void setupTitlePaneText() {
 		stage.titleProperty().bind(Bindings.createStringBinding(() -> {
@@ -325,7 +325,7 @@ public class JvmExplorerController {
 	}
 
 	/**
-	 * Performs the wire child controllers operation.
+	 * Handles the wire child controllers workflow.
 	 */
 	private void wireChildControllers() {
 		final ObjectProperty<RunningJvm> currentJvm = this.runningJvmsController.currentJvmProperty();

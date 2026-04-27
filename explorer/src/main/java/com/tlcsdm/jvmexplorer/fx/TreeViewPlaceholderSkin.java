@@ -41,7 +41,7 @@ public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 	}
 
 	/**
-	 * Performs the update placeholder support operation.
+	 * Handles the update placeholder support workflow.
 	 */
 	private void updatePlaceholderSupport() {
 		final boolean empty = isTreeEmpty();
@@ -70,14 +70,14 @@ public class TreeViewPlaceholderSkin<T> extends TreeViewSkin<T> {
 	}
 
 	/**
-	 * Performs the placeholder property operation.
+	 * Returns the placeholder property.
 	 */
 	public Property<Node> placeholderProperty() {
 		return placeholderProperty;
 	}
 
 	/**
-	 * Performs the layout children operation.
+	 * Handles the layout children workflow.
 	 */
 	@Override
 	protected void layoutChildren(double x, double y, double w, double h) {

@@ -110,7 +110,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Updates the up code area value.
+	 * Sets up the code area used by the method editor.
 	 */
 	private void setupCodeArea() {
 		final CodeAreaHelper codeAreaHelper = new CodeAreaHelper(executorService);
@@ -136,7 +136,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Performs the reset class node operation.
+	 * Handles the reset class node workflow.
 	 */
 	private void resetClassNode() {
 		// We modify the ClassNode methods in-place after compiling.
@@ -175,7 +175,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Updates the up context menu value.
+	 * Sets up the context menu for compile and modify actions.
 	 */
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();
@@ -335,7 +335,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Performs the replace return operation.
+	 * Handles the replace return workflow.
 	 */
 	private void replaceReturn(MethodNode methodNodeToUpdate, Label goToLabel) {
 		final List<AbstractInsnNode> returns = new ArrayList<>();
@@ -351,7 +351,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Performs the delegate calls operation.
+	 * Handles the delegate calls workflow.
 	 */
 	private void delegateCalls(ClassNode owner, MethodNode updatedMethod) {
 		// Delegate calls to the real class, not the class we compiled against
@@ -475,7 +475,7 @@ public class ModifyMethodController {
 
 
 	/**
-	 * Performs the modify method controller operation.
+	 * Handles the modify method controller workflow.
 	 */
 	public ModifyMethodController(CodeArea code, TextArea output, ComboBox<ModifyType> modifyType, ComboBox<MethodDescriptor> method, Button compileButton, Button modifyButton, ExecutorService executorService, ClientHandler clientHandler, RunningJvm runningJvm, LoadedClass initialClass, List<LoadedClass> classpath, Consumer<Boolean> onClose, byte[] classFile, ClassNode classNode, StringBinding template) {
 		this.code = code;
@@ -496,7 +496,7 @@ public class ModifyMethodController {
 	}
 
 	/**
-	 * Performs the modify method controller operation.
+	 * Handles the modify method controller workflow.
 	 */
 	public ModifyMethodController() {
 	}

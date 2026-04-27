@@ -42,7 +42,7 @@ class PacketResponseHandler<T> {
 	}
 
 	/**
-	 * Performs the interrupt operation.
+	 * Handles the interrupt workflow.
 	 */
 	public synchronized void interrupt() {
 		if (addedInterrupt) {
@@ -55,7 +55,7 @@ class PacketResponseHandler<T> {
 	}
 
 	/**
-	 * Performs the received end operation.
+	 * Handles the received end workflow.
 	 */
 	public synchronized void receivedEnd(int totalItemsSent) {
 		log.debug("Received total item count: {}", totalItemsSent);

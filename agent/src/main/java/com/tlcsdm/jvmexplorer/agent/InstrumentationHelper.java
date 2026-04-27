@@ -94,7 +94,7 @@ public class InstrumentationHelper {
 	}
 
 	/**
-	 * Updates the object value.
+	 * Sets the value identified by the supplied class field path.
 	 */
 	public boolean setObject(ClassLoader classLoader, ClassFieldKey[] classFieldKeys, Object newValue) {
 		Object currentObject = null;
@@ -258,7 +258,7 @@ public class InstrumentationHelper {
 	}
 
 	/**
-	 * Performs the convert to class field operation.
+	 * Handles the convert to class field workflow.
 	 */
 	private ClassField convertToClassField(Class<?> currentClass, Field field, Object fieldValue) {
 		final ClassFieldKey classKey = new ClassFieldKey(currentClass.getName(),
@@ -320,7 +320,7 @@ public class InstrumentationHelper {
 	}
 
 	/**
-	 * Performs the redefine class operation.
+	 * Handles the redefine class workflow.
 	 */
 	public PatchResult redefineClass(Class<?> klass, byte[] bytes) {
 		try {

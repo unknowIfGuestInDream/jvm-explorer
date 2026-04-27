@@ -49,7 +49,7 @@ public class CodeTemplateHelper {
 	}
 
 	/**
-	 * Performs the add package operation.
+	 * Handles the add package workflow.
 	 */
 	private String addPackage(String template, String packageName) {
 		final String packageStatement =
@@ -58,14 +58,14 @@ public class CodeTemplateHelper {
 	}
 
 	/**
-	 * Performs the add class name operation.
+	 * Handles the add class name workflow.
 	 */
 	private String addClassName(String template, String className) {
 		return replace(template, "class-name", className);
 	}
 
 	/**
-	 * Performs the replace operation.
+	 * Handles the replace workflow.
 	 */
 	private String replace(String template, String templateKey, String replacement) {
 		return template.replaceFirst("<" + templateKey + ">", replacement);

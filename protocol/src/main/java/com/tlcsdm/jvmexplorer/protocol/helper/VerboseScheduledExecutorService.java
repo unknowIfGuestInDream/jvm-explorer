@@ -29,7 +29,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the shutdown operation.
+	 * Delegates shutdown to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public void shutdown() {
@@ -37,7 +37,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the shutdown now operation.
+	 * Delegates shutdown now to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public List<Runnable> shutdownNow() {
@@ -61,7 +61,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the await termination operation.
+	 * Delegates await termination to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
@@ -69,7 +69,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the submit operation.
+	 * Delegates submit to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> Future<T> submit(Callable<T> task) {
@@ -77,7 +77,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the submit operation.
+	 * Delegates submit to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> Future<T> submit(Runnable task, T result) {
@@ -85,7 +85,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the submit operation.
+	 * Delegates submit to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public Future<?> submit(Runnable task) {
@@ -93,7 +93,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the invoke all operation.
+	 * Delegates invoke all to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
@@ -101,7 +101,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the invoke all operation.
+	 * Delegates invoke all to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
@@ -110,7 +110,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the invoke any operation.
+	 * Delegates invoke any to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
@@ -118,7 +118,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the invoke any operation.
+	 * Delegates invoke any to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
@@ -127,14 +127,14 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the wrap callables operation.
+	 * Handles the wrap callables workflow.
 	 */
 	private <T> Collection<VerboseCallable<T>> wrapCallables(Collection<? extends Callable<T>> tasks) {
 		return tasks.stream().map(VerboseCallable::new).collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
-	 * Performs the execute operation.
+	 * Delegates execute to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public void execute(Runnable command) {
@@ -142,7 +142,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the schedule operation.
+	 * Delegates schedule to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
@@ -150,7 +150,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the schedule operation.
+	 * Delegates schedule to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit) {
@@ -158,7 +158,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the schedule at fixed rate operation.
+	 * Delegates schedule at fixed rate to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
@@ -166,7 +166,7 @@ public class VerboseScheduledExecutorService implements ScheduledExecutorService
 	}
 
 	/**
-	 * Performs the schedule with fixed delay operation.
+	 * Delegates schedule with fixed delay to the wrapped executor with verbose diagnostics.
 	 */
 	@Override
 	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {

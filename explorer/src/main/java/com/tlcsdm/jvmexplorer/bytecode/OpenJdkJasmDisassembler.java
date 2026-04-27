@@ -19,7 +19,7 @@ public class OpenJdkJasmDisassembler implements Disassembler {
 
 
 	/**
-	 * Performs the process operation.
+	 * Handles the process request.
 	 */
 	@Override
 	public String process(byte[] bytecode) {

@@ -161,14 +161,14 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Updates the up bytecode editor value.
+	 * Sets up the bytecode editor.
 	 */
 	private void setupBytecodeEditor() {
 		setupEditor(bytecode, disassembledClass, allowBytecodeEditing, bytecodeTab, this::onBytecodeSave);
 	}
 
 	/**
-	 * Performs the refresh class operation.
+	 * Handles the refresh class workflow.
 	 */
 	private void refreshClass() {
 		final RunningJvm selectedJvm = currentJvm.get();
@@ -227,7 +227,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Updates the up java editor value.
+	 * Sets up the Java source editor.
 	 */
 	private void setupJavaEditor() {
 		setupEditor(classFile, decompiledClass, allowClassFileEditing, classFileTab, this::onClassFileSave);
@@ -264,7 +264,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Performs the show modify method operation.
+	 * Handles the show modify method workflow.
 	 */
 	private void showModifyMethod() {
 		try {
@@ -427,7 +427,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Performs the open class at cursor operation.
+	 * Opens the class at cursor.
 	 */
 	private void openClassAtCursor(int cursorPosition, String text) {
 		if (Character.isJavaIdentifierPart(text.charAt(cursorPosition))) {
@@ -480,7 +480,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Updates the up title pane text value.
+	 * Sets up title pane text binding.
 	 */
 	private void setupTitlePaneText() {
 		loadedClassTitlePane.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -587,7 +587,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Performs the process operation.
+	 * Handles the process request.
 	 */
 	private String process(BytecodeTextifier bytecodeTextifier, byte[] input) {
 		if (input == null || input.length == 0) {
@@ -604,7 +604,7 @@ public class CurrentClassController {
 	}
 
 	/**
-	 * Updates the up class field tree value.
+	 * Sets up the class field tree.
 	 */
 	private void setupClassFieldTree() {
 		final TreeItem<ClassField> classFieldRoot = new TreeItem<>(null);
@@ -633,7 +633,7 @@ public class CurrentClassController {
 
 	// CodeArea must be in a VBox to replace and insert into VirtualizedScrollPane
 	/**
-	 * Updates the up code area value.
+	 * Sets up a code area editor.
 	 */
 	private void setupCodeArea(CodeArea codeArea) {
 		final Label placeholderLabel = new Label();

@@ -13,7 +13,7 @@ public class MinlogToSlf4j extends Log.Logger {
 
 
 	/**
-	 * Performs the log operation.
+	 * Handles the log workflow.
 	 */
 	@Override
 	public void log(int level, String category, String message, Throwable ex) {

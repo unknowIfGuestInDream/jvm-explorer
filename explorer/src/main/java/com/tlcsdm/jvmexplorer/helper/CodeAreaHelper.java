@@ -101,7 +101,7 @@ public class CodeAreaHelper {
 	}
 
 	/**
-	 * Performs the compute highlighting operation.
+	 * Handles the compute highlighting workflow.
 	 */
 	private Task<HighlightContainer> computeHighlighting(CodeArea codeArea) {
 		final String text = codeArea.getText();
@@ -139,7 +139,7 @@ public class CodeAreaHelper {
 	}
 
 	/**
-	 * Performs the trigger highlight update operation.
+	 * Handles the trigger highlight update workflow.
 	 */
 	public void triggerHighlightUpdate(CodeArea codeArea) {
 		final Task<HighlightContainer> initialTask = computeHighlighting(codeArea);
@@ -179,14 +179,14 @@ public class CodeAreaHelper {
 
 
 	/**
-	 * Performs the code area helper operation.
+	 * Creates a CodeAreaHelper with the specified executor service.
 	 */
 	public CodeAreaHelper(ExecutorService executorService) {
 		this.executorService = executorService;
 	}
 
 	/**
-	 * Performs the code area helper operation.
+	 * Creates a CodeAreaHelper without an executor service.
 	 */
 	public CodeAreaHelper() {
 		this.executorService = null;

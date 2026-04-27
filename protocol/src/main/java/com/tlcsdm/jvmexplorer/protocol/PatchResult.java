@@ -81,7 +81,7 @@ public class PatchResult {
 		private String message;
 
 		/**
-		 * Performs the success operation.
+		 * Sets the success value on this builder.
 		 */
 		public PatchResultBuilder success(boolean success) {
 			this.success = success;
@@ -89,7 +89,7 @@ public class PatchResult {
 		}
 
 		/**
-		 * Performs the message operation.
+		 * Sets the message value on this builder.
 		 */
 		public PatchResultBuilder message(String message) {
 			this.message = message;

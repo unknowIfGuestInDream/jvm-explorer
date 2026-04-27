@@ -17,7 +17,7 @@ public class LaunchPatchAgent {
 	}
 
 	/**
-	 * Starts the standalone application entry point.
+	 * Implements shared launch patch agent initialization logic.
 	 */
 	private static void main(String agentArgs, Instrumentation instrumentation) {
 		final ClassFileTransformer transformer = new LaunchPatchClassFileTransformer();

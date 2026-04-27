@@ -15,7 +15,7 @@ public class CleanupListener extends Listener {
 	private final AgentFileLogger agentFileLogger;
 
 	/**
-	 * Performs the disconnected operation.
+	 * Handles the disconnected callback.
 	 */
 	@Override
 	public void disconnected(Connection connection) {

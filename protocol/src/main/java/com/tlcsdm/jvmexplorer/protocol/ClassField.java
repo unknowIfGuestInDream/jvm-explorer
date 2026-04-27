@@ -62,7 +62,7 @@ public class ClassField {
 	}
 
 	/**
-	 * Performs the with value operation.
+	 * Handles the with value workflow.
 	 */
 	public ClassField withValue(Object value) {
 		return new ClassField(this.classFieldKey, value);

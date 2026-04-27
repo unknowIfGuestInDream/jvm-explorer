@@ -64,7 +64,7 @@ public class RunningJvmsController {
 	}
 
 	/**
-	 * Performs the current jvm property operation.
+	 * Returns the current jvm property.
 	 */
 	public ObjectProperty<RunningJvm> currentJvmProperty() {
 		return currentJvm;
@@ -92,7 +92,7 @@ public class RunningJvmsController {
 	}
 
 	/**
-	 * Performs the bind selected item to jvm property operation.
+	 * Returns the bind selected item to jvm property.
 	 */
 	private void bindSelectedItemToJvmProperty() {
 		// Creates a two-way directional binding
@@ -112,7 +112,7 @@ public class RunningJvmsController {
 	}
 
 	/**
-	 * Updates the up jvm searching value.
+	 * Sets up JVM search filtering.
 	 */
 	private void setupJvmSearching() {
 		final FilteredList<RunningJvm> searchedJvms = new FilteredList<>(runningJvms);
@@ -126,7 +126,7 @@ public class RunningJvmsController {
 	}
 
 	/**
-	 * Updates the up title pane text value.
+	 * Sets up title pane text binding.
 	 */
 	private void setupTitlePaneText() {
 		jvmsTitlePane.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -137,7 +137,7 @@ public class RunningJvmsController {
 	}
 
 	/**
-	 * Performs the schedule running jvm updater operation.
+	 * Handles the schedule running jvm updater workflow.
 	 */
 	private void scheduleRunningJvmUpdater() {
 		executorService.scheduleAtFixedRate(() -> {

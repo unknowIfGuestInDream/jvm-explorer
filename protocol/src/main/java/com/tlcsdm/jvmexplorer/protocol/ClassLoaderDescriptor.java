@@ -105,7 +105,7 @@ public class ClassLoaderDescriptor {
 		private ClassLoaderDescriptor parent;
 
 		/**
-		 * Performs the id operation.
+		 * Sets the id value on this builder.
 		 */
 		public ClassLoaderDescriptorBuilder id(String id) {
 			this.id = id;
@@ -113,7 +113,7 @@ public class ClassLoaderDescriptor {
 		}
 
 		/**
-		 * Performs the simple class name operation.
+		 * Sets the simple class name value on this builder.
 		 */
 		public ClassLoaderDescriptorBuilder simpleClassName(String simpleClassName) {
 			this.simpleClassName = simpleClassName;
@@ -121,7 +121,7 @@ public class ClassLoaderDescriptor {
 		}
 
 		/**
-		 * Performs the description operation.
+		 * Sets the description value on this builder.
 		 */
 		public ClassLoaderDescriptorBuilder description(String description) {
 			this.description = description;
@@ -129,7 +129,7 @@ public class ClassLoaderDescriptor {
 		}
 
 		/**
-		 * Performs the parent operation.
+		 * Sets the parent value on this builder.
 		 */
 		public ClassLoaderDescriptorBuilder parent(ClassLoaderDescriptor parent) {
 			this.parent = parent;

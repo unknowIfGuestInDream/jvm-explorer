@@ -27,14 +27,14 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	private final ClassLoaderDescriptor classLoaderDescriptor;
 
 	/**
-	 * Performs the root operation.
+	 * Handles the root workflow.
 	 */
 	public static ClassTreeNode root() {
 		return new ClassTreeNode(null, null, null);
 	}
 
 	/**
-	 * Performs the to tree item operation.
+	 * Converts this instance to tree item.
 	 */
 	public FilterableTreeItem<ClassTreeNode> toTreeItem() {
 		final FilterableTreeItem<ClassTreeNode> treeItem = new FilterableTreeItem<>(this);
@@ -44,7 +44,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the add package operation.
+	 * Handles the add package workflow.
 	 */
 	public ClassTreeNode addPackage(String name) {
 		final String key = getKeyForPackage(name);
@@ -59,14 +59,14 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the of package operation.
+	 * Handles the of package workflow.
 	 */
 	private static ClassTreeNode ofPackage(String packagePart) {
 		return new ClassTreeNode(null, packagePart, null);
 	}
 
 	/**
-	 * Performs the add class operation.
+	 * Handles the add class workflow.
 	 */
 	public ClassTreeNode addClass(LoadedClass loadedClass) {
 		final String key = getKeyForClass(loadedClass);
@@ -86,14 +86,14 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the of class operation.
+	 * Handles the of class workflow.
 	 */
 	private static ClassTreeNode ofClass(LoadedClass loadedClass) {
 		return new ClassTreeNode(loadedClass, loadedClass.getSimpleName(), null);
 	}
 
 	/**
-	 * Performs the add class loader operation.
+	 * Handles the add class loader workflow.
 	 */
 	public ClassTreeNode addClassLoader(ClassLoaderDescriptor classLoaderDescriptor) {
 		final String key = getKeyForClassLoader(classLoaderDescriptor);
@@ -108,7 +108,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the of class loader operation.
+	 * Handles the of class loader workflow.
 	 */
 	private static ClassTreeNode ofClassLoader(ClassLoaderDescriptor classLoaderDescriptor) {
 		return new ClassTreeNode(null, classLoaderDescriptor.getSimpleClassName(), classLoaderDescriptor);
@@ -116,7 +116,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 
 	// Mainly for debugging purposes
 	/**
-	 * Performs the to detailed string operation.
+	 * Converts this instance to detailed string.
 	 */
 	public String toDetailedString() {
 		return toDetailedString(0);
@@ -127,7 +127,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the to detailed string operation.
+	 * Converts this instance to detailed string.
 	 */
 	private String toDetailedString(int indent) {
 		final String nodeString = getType() + "-" + this;
@@ -148,7 +148,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the compare to operation.
+	 * Handles the compare to workflow.
 	 */
 	@Override
 	public int compareTo(ClassTreeNode o) {
@@ -208,7 +208,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 
 
 	/**
-	 * Performs the class tree node operation.
+	 * Handles the class tree node workflow.
 	 */
 	public ClassTreeNode(LoadedClass loadedClass, String packageSegment, ClassLoaderDescriptor classLoaderDescriptor) {
 		this.loadedClass = loadedClass;
@@ -217,7 +217,7 @@ public class ClassTreeNode implements Comparable<ClassTreeNode> {
 	}
 
 	/**
-	 * Performs the class tree node operation.
+	 * Handles the class tree node workflow.
 	 */
 	public ClassTreeNode() {
 		this.loadedClass = null;

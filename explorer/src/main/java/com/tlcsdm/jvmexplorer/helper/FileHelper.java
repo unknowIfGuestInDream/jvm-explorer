@@ -21,7 +21,7 @@ public class FileHelper {
 	}
 
 	/**
-	 * Performs the open jar operation.
+	 * Opens the jar.
 	 */
 	public File openJar(Window owner, String title) {
 		final File testFile = getTestFile(owner);
@@ -50,7 +50,7 @@ public class FileHelper {
 	}
 
 	/**
-	 * Performs the save jar operation.
+	 * Handles the save jar workflow.
 	 */
 	public File saveJar(Window owner, String title, String initialFileName) {
 		final File testFile = getTestFile(owner);
@@ -67,7 +67,7 @@ public class FileHelper {
 	}
 
 	/**
-	 * Performs the open class operation.
+	 * Opens the class.
 	 */
 	public File openClass(Window owner, String title) {
 		final File testFile = getTestFile(owner);
@@ -81,7 +81,7 @@ public class FileHelper {
 	}
 
 	/**
-	 * Performs the save class operation.
+	 * Handles the save class workflow.
 	 */
 	public File saveClass(Window owner, String title, String initialFileName) {
 		final File testFile = getTestFile(owner);

@@ -52,7 +52,7 @@ public class AgentConfiguration {
 	}
 
 	/**
-	 * Performs the to agent args operation.
+	 * Converts this instance to agent args.
 	 */
 	public String toAgentArgs() {
 		final Properties properties = new Properties();
@@ -175,7 +175,7 @@ public class AgentConfiguration {
 		private String logFilePath;
 
 		/**
-		 * Performs the port operation.
+		 * Sets the port value on this builder.
 		 */
 		public AgentConfigurationBuilder port(int port) {
 			this.port = port;
@@ -183,7 +183,7 @@ public class AgentConfiguration {
 		}
 
 		/**
-		 * Performs the identifier operation.
+		 * Sets the identifier value on this builder.
 		 */
 		public AgentConfigurationBuilder identifier(String identifier) {
 			this.identifier = identifier;
@@ -191,7 +191,7 @@ public class AgentConfiguration {
 		}
 
 		/**
-		 * Performs the host name operation.
+		 * Sets the host name value on this builder.
 		 */
 		public AgentConfigurationBuilder hostName(String hostName) {
 			this.hostName = hostName;
@@ -199,7 +199,7 @@ public class AgentConfiguration {
 		}
 
 		/**
-		 * Performs the log level operation.
+		 * Sets the log level value on this builder.
 		 */
 		public AgentConfigurationBuilder logLevel(int logLevel) {
 			this.logLevel = logLevel;
@@ -207,7 +207,7 @@ public class AgentConfiguration {
 		}
 
 		/**
-		 * Performs the log file path operation.
+		 * Handles the log file path workflow.
 		 */
 		public AgentConfigurationBuilder logFilePath(String logFilePath) {
 			this.logFilePath = logFilePath;

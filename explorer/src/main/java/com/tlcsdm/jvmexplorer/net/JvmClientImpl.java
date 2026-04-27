@@ -52,7 +52,7 @@ public class JvmClientImpl extends Connection implements JvmClient {
 	}
 
 	/**
-	 * Performs the register operation.
+	 * Registers the endpoint.
 	 */
 	@Override
 	public void register(String identifier) {
@@ -88,7 +88,7 @@ public class JvmClientImpl extends Connection implements JvmClient {
 	}
 
 	/**
-	 * Performs the end packet transfer operation.
+	 * Handles the end packet transfer workflow.
 	 */
 	@Override
 	public void endPacketTransfer(PacketType packetType, int packetsSent) {

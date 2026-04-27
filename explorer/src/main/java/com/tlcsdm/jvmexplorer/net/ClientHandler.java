@@ -99,7 +99,7 @@ public class ClientHandler extends Listener {
 	}
 
 	/**
-	 * Performs the replace class operation.
+	 * Handles the replace class workflow.
 	 */
 	public PatchResult replaceClass(RunningJvm runningJvm, LoadedClass loadedClass, byte[] bytes) {
 		return getJvmConnection(runningJvm).map(jvmConnection -> jvmConnection.redefineClass(loadedClass, bytes))
@@ -115,7 +115,7 @@ public class ClientHandler extends Listener {
 	}
 
 	/**
-	 * Performs the connected operation.
+	 * Handles the connected callback.
 	 */
 	@Override
 	public void connected(Connection connection) {
@@ -125,7 +125,7 @@ public class ClientHandler extends Listener {
 	}
 
 	/**
-	 * Performs the disconnected operation.
+	 * Handles the disconnected callback.
 	 */
 	@Override
 	public void disconnected(Connection connection) {

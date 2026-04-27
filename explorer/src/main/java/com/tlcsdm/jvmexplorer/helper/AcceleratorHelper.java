@@ -11,7 +11,7 @@ import javafx.scene.input.KeyEvent;
 public class AcceleratorHelper {
 
 	/**
-	 * Performs the process operation.
+	 * Handles the process request.
 	 */
 	public static void process(Node runOnNode, KeyCodeCombination accelerator, MenuItem delegateTo) {
 		// It seems like menu item accelerators don't trigger in the CodeArea. We have to manually wire it together.

@@ -94,7 +94,7 @@ public class CompileResult {
 		private byte[] classContent;
 
 		/**
-		 * Performs the std out operation.
+		 * Sets the std out value on this builder.
 		 */
 		public CompileResultBuilder stdOut(String stdOut) {
 			this.stdOut = stdOut;
@@ -102,7 +102,7 @@ public class CompileResult {
 		}
 
 		/**
-		 * Performs the success operation.
+		 * Sets the success value on this builder.
 		 */
 		public CompileResultBuilder success(boolean success) {
 			this.success = success;
@@ -110,7 +110,7 @@ public class CompileResult {
 		}
 
 		/**
-		 * Performs the class content operation.
+		 * Sets the class content value on this builder.
 		 */
 		public CompileResultBuilder classContent(byte[] classContent) {
 			this.classContent = classContent;

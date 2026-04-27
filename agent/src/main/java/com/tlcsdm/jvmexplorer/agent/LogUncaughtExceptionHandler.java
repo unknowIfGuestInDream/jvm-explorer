@@ -8,7 +8,7 @@ import com.esotericsoftware.minlog.Log;
 public class LogUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 	/**
-	 * Performs the uncaught exception operation.
+	 * Handles the uncaught exception callback.
 	 */
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {

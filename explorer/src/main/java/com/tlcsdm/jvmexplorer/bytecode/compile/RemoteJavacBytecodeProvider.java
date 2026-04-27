@@ -25,7 +25,7 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 	private final List<LoadedClass> classpath;
 
 	/**
-	 * Performs the list operation.
+	 * Handles the list request.
 	 */
 	@Override
 	public List<JavaFileObject> list(String packageName, boolean recurse) {

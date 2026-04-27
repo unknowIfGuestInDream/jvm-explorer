@@ -92,7 +92,7 @@ public class RunningJvmListCellFactory implements Callback<ListView<RunningJvm>,
 	}
 
 	/**
-	 * Performs the display properties operation.
+	 * Handles the display properties workflow.
 	 */
 	private void displayProperties(RunningJvm jvm) {
 		executorService.submit(() -> {

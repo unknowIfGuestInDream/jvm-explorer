@@ -20,7 +20,7 @@ public class VineflowerDecompiler implements Decompiler {
 
 
 	/**
-	 * Performs the process operation.
+	 * Handles the process request.
 	 */
 	@Override
 	public String process(byte[] bytes) {
@@ -132,7 +132,7 @@ public class VineflowerDecompiler implements Decompiler {
 		public void copyFile(String source, String path, String entryName) {}
 
 		/**
-		 * Performs the save class file operation.
+		 * Handles the save class file workflow.
 		 */
 		@Override
 		public void saveClassFile(String path, String qualifiedName, String entryName, String content, int[] mapping) {

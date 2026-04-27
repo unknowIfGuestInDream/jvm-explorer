@@ -13,7 +13,7 @@ import java.io.StringWriter;
 public class AsmDisassembler implements Disassembler {
 
 	/**
-	 * Performs the process operation.
+	 * Handles the process request.
 	 */
 	@Override
 	public String process(byte[] bytes) {

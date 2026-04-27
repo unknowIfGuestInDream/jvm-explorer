@@ -91,7 +91,7 @@ public class LoadedClassesController {
 	private JvmExplorerSettings settings;
 
 	/**
-	 * Performs the current class property operation.
+	 * Returns the current class property.
 	 */
 	public ObjectProperty<ClassContent> currentClassProperty() {
 		return currentClass;
@@ -123,7 +123,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Updates the up tree searching value.
+	 * Sets up tree search filtering.
 	 */
 	private void setupTreeSearching() {
 		searchClasses.textProperty().addListener((obs, old, newv) -> {
@@ -171,7 +171,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Updates the up agent loader value.
+	 * Sets up agent loading and attachment.
 	 */
 	private void setupAgentLoader() {
 		currentJvm.addListener((obs, old, newv) -> {
@@ -231,7 +231,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Updates the up classes core value.
+	 * Sets up core class tree functionality.
 	 */
 	private void setupClassesCore() {
 		classes.getSelectionModel()
@@ -250,7 +250,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Updates the up title pane text value.
+	 * Sets up title pane text binding.
 	 */
 	private void setupTitlePaneText() {
 		classesTitlePane.textProperty()
@@ -262,7 +262,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Updates the up tree placeholder value.
+	 * Sets up the tree placeholder.
 	 */
 	private void setupTreePlaceholder() {
 		final TreeViewPlaceholderSkin<?> treeViewPlaceholderSkin = new TreeViewPlaceholderSkin<>(classes);
@@ -280,7 +280,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Performs the select operation.
+	 * Handles the select workflow.
 	 */
 	public void select(TreeItem<ClassTreeNode> itemToSelect) {
 		classes.getSelectionModel().select(itemToSelect);
@@ -376,7 +376,7 @@ public class LoadedClassesController {
 	}
 
 	/**
-	 * Performs the do load classes operation.
+	 * Handles the do load classes workflow.
 	 */
 	private void doLoadClasses(RunningJvm runningJvm) {
 		Platform.runLater(() -> loadedClassProgressCount.set(0));

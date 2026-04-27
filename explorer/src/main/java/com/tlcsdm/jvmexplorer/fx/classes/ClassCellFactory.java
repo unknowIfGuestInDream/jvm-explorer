@@ -84,7 +84,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Updates the up image binding value.
+	 * Sets up image property binding.
 	 */
 	private void setupImageBinding(TreeCell<ClassTreeNode> treeCell) {
 		treeCell.graphicProperty().bind(Bindings.createObjectBinding(() -> {
@@ -100,7 +100,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Updates the up text binding value.
+	 * Sets up text property binding.
 	 */
 	private void setupTextBinding(TreeCell<ClassTreeNode> treeCell) {
 		treeCell.textProperty()
@@ -110,7 +110,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Updates the up tooltip binding value.
+	 * Sets up tooltip property binding.
 	 */
 	private void setupTooltipBinding(TreeCell<ClassTreeNode> treeCell) {
 		final Tooltip tooltip = new Tooltip();
@@ -136,7 +136,7 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Updates the up context menu value.
+	 * Sets up the context menu for class tree actions.
 	 */
 	private void setupContextMenu(TreeCell<ClassTreeNode> treeCell, TreeView<ClassTreeNode> classes) {
 		final ContextMenu classesContextMenu = new ContextMenu();
@@ -532,14 +532,14 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Performs the select export jar file operation.
+	 * Handles the select export jar file workflow.
 	 */
 	private File selectExportJarFile(String initialFileName, Window owner) {
 		return fileHelper.saveJar(owner, JvmExplorer.getBundle().getString("ctx.exportClasses"), initialFileName);
 	}
 
 	/**
-	 * Performs the export operation.
+	 * Handles the export workflow.
 	 */
 	private void export(File selectedFile, List<LoadedClass> classes, RunningJvm activeJvm) {
 		final File exportParentFile = selectedFile.getParentFile();
@@ -576,14 +576,14 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Performs the select export class file operation.
+	 * Handles the select export class file workflow.
 	 */
 	private File selectExportClassFile(String initialFileName, Window owner) {
 		return fileHelper.saveClass(owner, JvmExplorer.getBundle().getString("ctx.exportClass"), initialFileName);
 	}
 
 	/**
-	 * Performs the export operation.
+	 * Handles the export workflow.
 	 */
 	private void export(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
 		try {
@@ -596,14 +596,14 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Performs the select import jar file operation.
+	 * Handles the select import jar file workflow.
 	 */
 	private File selectImportJarFile(Window owner) {
 		return fileHelper.openJar(owner, JvmExplorer.getBundle().getString("ctx.replaceClasses"));
 	}
 
 	/**
-	 * Performs the replace classes operation.
+	 * Handles the replace classes workflow.
 	 */
 	private void replaceClasses(File selectedFile, RunningJvm activeJvm, ClassLoaderDescriptor classLoaderDescriptor) {
 		final SimpleIntegerProperty progress = new SimpleIntegerProperty(0);
@@ -637,14 +637,14 @@ public class ClassCellFactory implements Callback<TreeView<ClassTreeNode>, TreeC
 	}
 
 	/**
-	 * Performs the select import class file operation.
+	 * Handles the select import class file workflow.
 	 */
 	private File selectImportClassFile(Window owner) {
 		return fileHelper.openClass(owner, JvmExplorer.getBundle().getString("ctx.replaceClass"));
 	}
 
 	/**
-	 * Performs the replace class operation.
+	 * Handles the replace class workflow.
 	 */
 	private void replaceClass(File selectedFile, LoadedClass loadedClass, RunningJvm activeJvm) {
 		final byte[] contents;

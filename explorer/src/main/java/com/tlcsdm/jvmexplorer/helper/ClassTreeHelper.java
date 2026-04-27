@@ -41,7 +41,7 @@ public class ClassTreeHelper {
 	}
 
 	/**
-	 * Performs the add class loader operation.
+	 * Handles the add class loader workflow.
 	 */
 	private ClassTreeNode addClassLoader(LoadedClass loadedClass, ClassTreeNode treeRoot) {
 		ClassTreeNode classLoaderTree = treeRoot;
@@ -59,7 +59,7 @@ public class ClassTreeHelper {
 	}
 
 	/**
-	 * Performs the add class operation.
+	 * Handles the add class workflow.
 	 */
 	private void addClass(LoadedClass loadedClass, ClassTreeNode classRoot) {
 		final String[] classNameParts = loadedClass.getName().split("\\.");

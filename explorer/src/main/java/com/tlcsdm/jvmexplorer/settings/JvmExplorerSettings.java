@@ -45,7 +45,7 @@ public class JvmExplorerSettings {
 	private final SimpleDoubleProperty y = new SimpleDoubleProperty(Double.NaN);
 
 	/**
-	 * Loads the requested data.
+	 * Loads JVM Explorer settings from the specified file.
 	 */
 	public static JvmExplorerSettings load(File settingsFile) {
 		try {
@@ -66,7 +66,7 @@ public class JvmExplorerSettings {
 	}
 
 	/**
-	 * Performs the properties equals operation.
+	 * Compares all properties with another JvmExplorerSettings instance.
 	 */
 	public boolean propertiesEquals(JvmExplorerSettings other) {
 		final List<Property<?>> ourProperties = properties();
@@ -85,21 +85,21 @@ public class JvmExplorerSettings {
 	}
 
 	/**
-	 * Performs the properties operation.
+	 * Returns all observable properties in this settings instance.
 	 */
 	private List<Property<?>> properties() {
 		return List.of(x, y, width, height, maximized, firstDividerPosition, secondDividerPosition, showClassLoader);
 	}
 
 	/**
-	 * Performs the configure auto saving operation.
+	 * Handles the configure auto saving workflow.
 	 */
 	public void configureAutoSaving(File settingsFile) {
 		properties().forEach(property -> property.addListener((obs, old, newv) -> save(settingsFile)));
 	}
 
 	/**
-	 * Performs the save operation.
+	 * Handles the save workflow.
 	 */
 	public void save(File settingsFile) {
 		try {

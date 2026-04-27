@@ -22,7 +22,7 @@ public class LaunchPatchClassVisitor extends ClassVisitor {
 	}
 
 	/**
-	 * Performs the visit method operation.
+	 * Handles the visit method callback.
 	 */
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {

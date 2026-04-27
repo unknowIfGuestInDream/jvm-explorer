@@ -33,7 +33,7 @@ public class AgentFileLogger extends Log.Logger {
 	}
 
 	/**
-	 * Performs the print operation.
+	 * Writes the log to the agent log.
 	 */
 	@Override
 	protected void print(String message) {
@@ -49,7 +49,7 @@ public class AgentFileLogger extends Log.Logger {
 	}
 
 	/**
-	 * Performs the print message operation.
+	 * Writes the log message to the agent log.
 	 */
 	private void printMessage(String message) {
 		try {
@@ -101,7 +101,7 @@ public class AgentFileLogger extends Log.Logger {
 
 
 	/**
-	 * Performs the agent file logger operation.
+	 * Handles the agent file logger workflow.
 	 */
 	public AgentFileLogger(ExecutorService executorService, File outputFile, boolean append) {
 		this.executorService = executorService;

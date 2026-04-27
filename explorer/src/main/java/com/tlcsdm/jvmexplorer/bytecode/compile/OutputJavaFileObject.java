@@ -28,7 +28,7 @@ public class OutputJavaFileObject extends SimpleJavaFileObject {
 	}
 
 	/**
-	 * Performs the open output stream operation.
+	 * Opens the output stream.
 	 */
 	@Override
 	public OutputStream openOutputStream() {

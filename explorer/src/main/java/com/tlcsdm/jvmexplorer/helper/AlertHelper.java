@@ -17,7 +17,7 @@ public class AlertHelper {
 	private final Stage ownerStage;
 
 	/**
-	 * Performs the show error operation.
+	 * Handles the show error workflow.
 	 */
 	public void showError(String title, String headerText, Exception ex) {
 		final Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -32,7 +32,7 @@ public class AlertHelper {
 	}
 
 	/**
-	 * Performs the show error operation.
+	 * Handles the show error workflow.
 	 */
 	public void showError(String title, String headerText, Exception ex, List<String> list) {
 		final Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -51,7 +51,7 @@ public class AlertHelper {
 	}
 
 	/**
-	 * Performs the show expandable list operation.
+	 * Handles the show expandable list workflow.
 	 */
 	public void showExpandableList(String title, String headerText, String contentText, List<String> list) {
 		final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -67,7 +67,7 @@ public class AlertHelper {
 	}
 
 	/**
-	 * Performs the show observable info operation.
+	 * Handles the show observable info workflow.
 	 */
 	public void showObservableInfo(ObservableValue<String> title, ObservableValue<String> headerText) {
 		final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -80,7 +80,7 @@ public class AlertHelper {
 	}
 
 	/**
-	 * Performs the show operation.
+	 * Handles the show workflow.
 	 */
 	public void show(Alert.AlertType alertType, String titleText, String headerText) {
 		final Alert alert = new Alert(alertType);
@@ -92,7 +92,7 @@ public class AlertHelper {
 	}
 
 	/**
-	 * Performs the show error operation.
+	 * Handles the show error workflow.
 	 */
 	public void showError(String titleText, String headerText) {
 		if (headerText != null && headerText.length() > 500) {

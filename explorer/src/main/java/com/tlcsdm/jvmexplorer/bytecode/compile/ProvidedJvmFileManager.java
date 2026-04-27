@@ -56,7 +56,7 @@ public class ProvidedJvmFileManager extends ForwardingJavaFileManager<StandardJa
 	}
 
 	/**
-	 * Performs the infer binary name operation.
+	 * Handles the infer binary name workflow.
 	 */
 	@Override
 	public String inferBinaryName(Location location, JavaFileObject file) {

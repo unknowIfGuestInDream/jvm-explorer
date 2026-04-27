@@ -32,7 +32,7 @@ public class LoadedClass implements Comparable<LoadedClass> {
 	}
 
 	/**
-	 * Performs the compare to operation.
+	 * Handles the compare to workflow.
 	 */
 	@Override
 	public int compareTo(LoadedClass o) {

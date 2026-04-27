@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadFactory;
 public class LogUncaughtExceptionThreadFactory implements ThreadFactory {
 
 	/**
-	 * Performs the new thread operation.
+	 * Creates a new thread.
 	 */
 	@Override
 	public Thread newThread(Runnable r) {

@@ -17,7 +17,7 @@ public class ClientListener extends Listener {
 	private final JvmClient jvmClient;
 
 	/**
-	 * Performs the connected operation.
+	 * Handles the connected callback.
 	 */
 	@Override
 	public void connected(Connection connection) {
@@ -51,7 +51,7 @@ public class ClientListener extends Listener {
 
 
 	/**
-	 * Performs the client listener operation.
+	 * Handles the client listener workflow.
 	 */
 	public ClientListener(ExecutorService executorService, String identifier, JvmClient jvmClient) {
 		this.executorService = executorService;

@@ -55,7 +55,7 @@ public class EditorHelper {
 	}
 
 	/**
-	 * Performs the edit operation.
+	 * Handles the edit request.
 	 */
 	public Object edit(String type, String newValue) {
 		try {

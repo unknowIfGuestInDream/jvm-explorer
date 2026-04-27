@@ -14,7 +14,7 @@ public class RunningJvmLoader {
 	private static final String THIS_PID = ManagementFactory.getRuntimeMXBean().getPid() + "";
 
 	/**
-	 * Performs the list operation.
+	 * Handles the list request.
 	 */
 	public List<RunningJvm> list() {
 		return VirtualMachine.list()

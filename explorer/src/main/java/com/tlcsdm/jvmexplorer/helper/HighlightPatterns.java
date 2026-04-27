@@ -124,7 +124,7 @@ class HighlightPatterns {
 	}
 
 	/**
-	 * Performs the of operation.
+	 * Handles the of workflow.
 	 */
 	static HighlightHelper.HighlightContext of(Map<String, String> patterns) {
 		final Pattern pattern = compilePattern(patterns);

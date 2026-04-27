@@ -15,7 +15,7 @@ import javafx.stage.Window;
 public class DialogHelper {
 
 	/**
-	 * Performs the init custom dialog operation.
+	 * Handles the init custom dialog workflow.
 	 */
 	public static void initCustomDialog(Dialog<?> dialog, ObjectProperty<RunningJvm> currentJvm) {
 		dialog.initModality(Modality.NONE);

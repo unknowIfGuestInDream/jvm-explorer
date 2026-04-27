@@ -81,7 +81,7 @@ public class ExecutionResult {
 		private String message;
 
 		/**
-		 * Performs the success operation.
+		 * Sets the success value on this builder.
 		 */
 		public ExecutionResultBuilder success(boolean success) {
 			this.success = success;
@@ -89,7 +89,7 @@ public class ExecutionResult {
 		}
 
 		/**
-		 * Performs the message operation.
+		 * Sets the message value on this builder.
 		 */
 		public ExecutionResultBuilder message(String message) {
 			this.message = message;

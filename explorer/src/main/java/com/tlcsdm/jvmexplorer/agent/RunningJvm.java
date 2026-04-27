@@ -116,7 +116,7 @@ public class RunningJvm {
 	}
 
 	/**
-	 * Performs the to identifier operation.
+	 * Converts this instance to identifier.
 	 */
 	public String toIdentifier() {
 		return getId() + ":" + getName();

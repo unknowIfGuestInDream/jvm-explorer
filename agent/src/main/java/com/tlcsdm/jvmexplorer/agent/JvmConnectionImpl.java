@@ -98,7 +98,7 @@ public class JvmConnectionImpl implements JvmConnection {
 	}
 
 	/**
-	 * Performs the request packets operation.
+	 * Handles the request packets workflow.
 	 */
 	@Override
 	public void requestPackets(PacketType packetType) {
@@ -106,7 +106,7 @@ public class JvmConnectionImpl implements JvmConnection {
 	}
 
 	/**
-	 * Performs the redefine class operation.
+	 * Handles the redefine class workflow.
 	 */
 	@Override
 	public PatchResult redefineClass(LoadedClass loadedClass, byte[] bytes) {
@@ -139,7 +139,7 @@ public class JvmConnectionImpl implements JvmConnection {
 	}
 
 	/**
-	 * Performs the process loaded class packets operation.
+	 * Handles the process loaded class packets workflow.
 	 */
 	private void processLoadedClassPackets(PacketType packetType) {
 		final List<Class<?>> applicationClasses = instrumentationHelper.getApplicationClasses();
@@ -213,7 +213,7 @@ public class JvmConnectionImpl implements JvmConnection {
 
 
 	/**
-	 * Performs the jvm connection impl operation.
+	 * Handles the jvm connection impl workflow.
 	 */
 	public JvmConnectionImpl(JvmClient jvmClient, InstrumentationHelper instrumentationHelper, Client client, ExecutorService executorService, ClassLoaderStore classLoaderStore) {
 		this.jvmClient = jvmClient;

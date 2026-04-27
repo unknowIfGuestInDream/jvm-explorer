@@ -21,7 +21,7 @@ public class ClassLoaderStore {
 	private final Map<ClassLoaderDescriptor, WeakReference<ClassLoader>> classLoaders = new HashMap<>();
 
 	/**
-	 * Performs the store operation.
+	 * Handles the store workflow.
 	 */
 	public synchronized ClassLoaderDescriptor store(ClassLoader classLoader) {
 		final ClassLoaderDescriptor savedClassLoaderDescriptor = classLoaderDescriptors.get(classLoader);
@@ -43,7 +43,7 @@ public class ClassLoaderStore {
 	}
 
 	/**
-	 * Performs the lookup operation.
+	 * Handles the lookup request.
 	 */
 	public synchronized ClassLoader lookup(ClassLoaderDescriptor classLoaderDescriptor) {
 		if (classLoaderDescriptor == null) {
@@ -82,7 +82,7 @@ public class ClassLoaderStore {
 
 	// Exposed for testing, simulates a garbage collection
 	/**
-	 * Performs the remove class loader operation.
+	 * Handles the remove class loader workflow.
 	 */
 	synchronized void removeClassLoader(ClassLoader classLoader) {
 		final ClassLoaderDescriptor classLoaderDescriptor = classLoaderDescriptors.remove(classLoader);
@@ -95,7 +95,7 @@ public class ClassLoaderStore {
 
 	// Exposed for testing, to ensure clean works
 	/**
-	 * Performs the contains descriptor operation.
+	 * Handles the contains descriptor workflow.
 	 */
 	synchronized boolean containsDescriptor(ClassLoaderDescriptor classLoaderDescriptor) {
 		return classLoaders.containsKey(classLoaderDescriptor);

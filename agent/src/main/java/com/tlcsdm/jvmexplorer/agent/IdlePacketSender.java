@@ -26,7 +26,7 @@ public class IdlePacketSender<T> extends Listener {
 	// Sending too many objects at once overflows a buffer. Not sure why kryonet can't automatically handle it but
 	// this works around that by only sending when the buffer isn't too full
 	/**
-	 * Performs the idle operation.
+	 * Handles the idle workflow.
 	 */
 	@Override
 	public void idle(Connection connection) {
@@ -57,7 +57,7 @@ public class IdlePacketSender<T> extends Listener {
 	}
 
 	/**
-	 * Performs the end operation.
+	 * Handles the end workflow.
 	 */
 	public void end() {
 		this.end = true;

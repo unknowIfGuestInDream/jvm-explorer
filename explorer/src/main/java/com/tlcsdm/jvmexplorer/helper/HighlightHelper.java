@@ -26,14 +26,14 @@ public class HighlightHelper {
 			HighlightPatterns.of(HighlightPatterns.getStaticPatterns());
 
 	/**
-	 * Performs the compute highlighting operation.
+	 * Handles the compute highlighting workflow.
 	 */
 	public static StyleSpans<Collection<String>> computeHighlighting(String text) {
 		return computeHighlighting(text, DEFAULT_CONTEXT);
 	}
 
 	/**
-	 * Performs the compute highlighting operation.
+	 * Handles the compute highlighting workflow.
 	 */
 	public static StyleSpans<Collection<String>> computeHighlighting(String text, HighlightContext highlightContext) {
 		final Matcher matcher = highlightContext.getPattern().matcher(text);

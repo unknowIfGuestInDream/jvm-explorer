@@ -80,7 +80,7 @@ public class RemoteCodeExecutorController {
 	}
 
 	/**
-	 * Updates the up context menu value.
+	 * Sets up the context menu for remote code execution.
 	 */
 	private void setupContextMenu() {
 		final ContextMenu contextMenu = new ContextMenu();

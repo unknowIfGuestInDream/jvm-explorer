@@ -25,7 +25,7 @@ public class ProvidedJavaFileObject extends SimpleJavaFileObject {
 	}
 
 	/**
-	 * Performs the open input stream operation.
+	 * Opens the input stream.
 	 */
 	@Override
 	public InputStream openInputStream() {
