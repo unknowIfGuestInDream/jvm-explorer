@@ -1,54 +1,42 @@
-/* Extra Doxygen styling for JVM Explorer. */
+/* Minimal, light Doxygen styling for JVM Explorer. */
 :root {
     --primary-color: #2563eb;
     --primary-dark-color: #1d4ed8;
-    --primary-light-color: #dbeafe;
-    --side-nav-background: #f8fafc;
+    --primary-light-color: #eff6ff;
     --page-background-color: #ffffff;
-    --fragment-background: #0f172a;
-    --fragment-foreground: #e2e8f0;
-}
-
-html {
-    scroll-behavior: smooth;
+    --fragment-background: #f8fafc;
+    --fragment-foreground: #1e293b;
 }
 
 body {
     font-family: "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937;
+    background: #ffffff;
 }
 
 #titlearea {
-    border-bottom: 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #38bdf8 100%);
-    color: #ffffff;
-}
-
-#projectname,
-#projectbrief {
-    color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
 }
 
 #projectname {
-    font-weight: 700;
-    letter-spacing: .02em;
+    color: #111827;
+    font-weight: 650;
+    letter-spacing: .01em;
 }
 
 #projectbrief {
-    opacity: .9;
+    color: #64748b;
 }
 
-#nav-tree,
-#side-nav,
-#nav-sync {
-    background: var(--side-nav-background);
+#main-menu,
+#nav-path {
+    background: #f8fafc;
+    border-color: #e5e7eb;
 }
 
-#nav-tree .selected {
-    background: var(--primary-color);
-    color: #ffffff;
-    text-shadow: none;
-}
-
+#main-menu a,
+#main-menu a:visited,
 a,
 a:visited,
 a.el,
@@ -56,19 +44,27 @@ a.elRef {
     color: var(--primary-dark-color);
 }
 
+#main-menu a:hover,
 a:hover {
-    color: #0f172a;
-    text-decoration: underline;
+    color: #111827;
+    text-decoration: none;
 }
 
 .contents {
-    max-width: 1180px;
+    max-width: 1120px;
 }
 
 .contents h1,
 .contents h2,
 .contents h3 {
-    color: #0f172a;
+    color: #111827;
+    font-weight: 650;
+}
+
+.contents img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
 }
 
 .memitem,
@@ -78,52 +74,67 @@ a:hover {
 .directory,
 .classindex dl,
 .contents > table {
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 .memproto,
 .fieldtable th,
 .directory .levels {
-    background: #eff6ff;
-    border-color: #bfdbfe;
+    background: var(--primary-light-color);
+    border-color: #dbeafe;
 }
 
 .memdoc,
 .fieldtable td,
 .directory {
-    border-color: #dbeafe;
+    border-color: #e5e7eb;
 }
 
 div.fragment {
-    border-radius: 10px;
-    border: 1px solid #1e293b;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
     background: var(--fragment-background);
     color: var(--fragment-foreground);
 }
 
-div.line {
+div.line,
+.fragment .line,
+.fragment .keyword,
+.fragment .keywordtype,
+.fragment .keywordflow,
+.fragment .stringliteral,
+.fragment .comment {
     color: var(--fragment-foreground);
+}
+
+.fragment .stringliteral {
+    color: #047857;
+}
+
+.fragment .keyword,
+.fragment .keywordtype,
+.fragment .keywordflow {
+    color: #7c3aed;
+}
+
+.fragment .comment {
+    color: #64748b;
 }
 
 .ttc,
 .ttd,
 .ttdoc,
 .ttname {
-    border-radius: 8px;
-}
-
-.ah,
-.icona,
-.icon {
     border-radius: 6px;
 }
 
-.summary {
+.summary,
+.textblock {
     color: #475569;
 }
 
 .paramname,
 .retval,
 .exception {
-    color: #1d4ed8;
+    color: var(--primary-dark-color);
 }
