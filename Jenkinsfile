@@ -176,10 +176,6 @@ pipeline {
                     sh 'doxygen --version'
                     sh 'rm -rf docs-gen'
                     sh '''
-                        if [ ! -f "$PLANTUML_JAR_PATH" ] && command -v apt-get >/dev/null 2>&1 && command -v sudo >/dev/null 2>&1; then
-                            sudo apt-get update -qq
-                            sudo apt-get install -y -qq plantuml
-                        fi
                         if [ ! -f "$PLANTUML_JAR_PATH" ]; then
                             echo "PlantUML jar not found; running Doxygen without PlantUML diagrams."
                             unset PLANTUML_JAR_PATH
