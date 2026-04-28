@@ -5,6 +5,7 @@ pipeline {
     }
     environment {
         USER_NAME = 'Jenkins'
+        PLANTUML_JAR_PATH = '/usr/share/plantuml/plantuml.jar'
     }
     tools {
         jdk "jdk21"
@@ -174,7 +175,17 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     sh 'doxygen --version'
                     sh 'rm -rf docs-gen'
-                    sh 'doxygen doxygen/Doxyfile'
+                    sh '''
+                        if [ ! -f "$PLANTUML_JAR_PATH" ] && command -v apt-get >/dev/null 2>&1 && command -v sudo >/dev/null 2>&1; then
+                            sudo apt-get update -qq
+                            sudo apt-get install -y -qq plantuml
+                        fi
+                        if [ ! -f "$PLANTUML_JAR_PATH" ]; then
+                            echo "PlantUML jar not found; running Doxygen without PlantUML diagrams."
+                            unset PLANTUML_JAR_PATH
+                        fi
+                        doxygen doxygen/Doxyfile
+                    '''
                     sh 'cd docs-gen && zip -qr ../doxygen-docs.zip html'
                 }
             }

@@ -5,6 +5,8 @@ import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 
 /**
+ * @ingroup Launch_Agent_Module
+ *
  * Provides the launch patch agent implementation used by the com.tlcsdm.jvmexplorer.agent.launch package.
  */
 public class LaunchPatchAgent {

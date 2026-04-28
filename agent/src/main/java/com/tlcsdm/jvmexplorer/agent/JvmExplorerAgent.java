@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
+ * @ingroup Agent_Module
+ *
  * Provides the jvm explorer agent implementation used by the com.tlcsdm.jvmexplorer.agent package.
  */
 public class JvmExplorerAgent {
