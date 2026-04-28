@@ -20,14 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @startuml
  * start
  * :loadAgentOnFileSystem(resourcePath);
- * if (resource already cached?) then (yes)
+ * if (path cached?) then (yes)
  *   :return cached absolute path;
  * else (no)
- *   if (resourcePath exists locally?) then (yes)
+ *   if (resource exists in working directory?) then (yes)
  *     :cache and return local file;
  *   else (no)
- *     :create application agents directory;
- *     :copy bundled agent resource;
+ *     :create app agents directory;
+ *     :read agent resource bytes;
  *     :overwrite stable agent file;
  *     :cache and return extracted path;
  *   endif

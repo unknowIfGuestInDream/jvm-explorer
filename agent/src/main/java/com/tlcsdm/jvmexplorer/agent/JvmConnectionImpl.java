@@ -29,18 +29,18 @@ import java.util.concurrent.ExecutorService;
  * @startuml
  * actor Explorer
  * participant "JvmConnectionImpl" as Connection
- * participant "ClassLoaderStore" as Loaders
- * participant "InstrumentationHelper" as Instrumentation
- * participant "Target JVM classes" as Target
+ * participant "ClassLoaderStore" as LoaderStore
+ * participant "InstrumentationHelper" as Helper
+ * participant "Target JVM" as Target
  *
- * Explorer -> Connection: request class content / fields / patch
- * Connection -> Loaders: resolve ClassLoaderDescriptor
- * Loaders --> Connection: selected ClassLoader
- * Connection -> Instrumentation: locate class and execute operation
- * Instrumentation -> Target: read bytes, inspect fields, execute or redefine
- * Target --> Instrumentation: runtime result
- * Instrumentation --> Connection: protocol object
- * Connection --> Explorer: ClassContent, ClassFields, ExecutionResult or PatchResult
+ * Explorer -> Connection: getClassContent/getFields/redefineClass/executeCallable
+ * Connection -> LoaderStore: lookup(classLoaderDescriptor)
+ * LoaderStore --> Connection: classLoader
+ * Connection -> Helper: run operation with classLoader context
+ * Helper -> Target: inspect class, fields, execute, redefine
+ * Target --> Helper: operation result
+ * Helper --> Connection: protocol result object
+ * Connection --> Explorer: ClassContent/ClassFields/PatchResult/ExecutionResult
  * @enduml
  */
 public class JvmConnectionImpl implements JvmConnection {

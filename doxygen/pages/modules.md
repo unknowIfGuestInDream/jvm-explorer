@@ -82,80 +82,6 @@ digraph "JVM Explorer module relationships" {
 }
 @enddot
 
-The generated package and class navigation should mirror this reactor layout.
-Classes under `agent/src/main/java` describe target-JVM behavior, classes under
-`explorer/src/main/java` describe the desktop client, `protocol/src/main/java`
-contains only shared contracts, and `launch-agent/src/main/java` is limited to
-startup patching. External JDK, JavaFX, KryoNet and ASM types are intentionally
-kept out of the documented class list so the reference stays focused on project
-code.
-
-@startuml
-skinparam componentStyle rectangle
-skinparam shadowing false
-skinparam packageStyle rectangle
-
-package "explorer" #EFF6FF {
-  [JvmExplorer] as app
-  [JvmExplorerController] as controller
-  [RunningJvmsController] as jvms
-  [LoadedClassesController] as classes
-  [ClientHandler] as clientHandler
-  [AgentPreparer] as preparer
-  [Compiler / Assembler / Decompiler] as editors
-  [PatchHelper / ExportHelper] as helpers
-}
-
-package "protocol" #ECFEFF {
-  [Protocol.register(Kryo)] as register
-  [JvmClient] as jvmClient
-  [JvmConnection] as jvmConnection
-  [LoadedClass / ClassContent] as classDtos
-  [ClassFields / PatchResult] as resultDtos
-}
-
-package "agent" #F0FDF4 {
-  [JvmExplorerAgent] as agentMain
-  [ClientLauncher] as launcher
-  [JvmConnectionImpl] as connectionImpl
-  [InstrumentationHelper] as instrumentation
-  [ClassLoaderStore] as loaderStore
-}
-
-package "launch-agent" #FFFBEB {
-  [LaunchPatchAgent] as launchMain
-  [LaunchPatchClassFileTransformer] as transformer
-}
-
-package "target JVM" #F8FAFC {
-  [Application classes] as targetClasses
-  [Class loaders] as targetLoaders
-  [Instrumentation API] as jvmti
-}
-
-app --> controller
-controller --> jvms
-controller --> classes
-jvms --> preparer : attach selected JVM
-classes --> clientHandler : request data
-classes --> editors : view or edit bytes
-helpers --> clientHandler : patch/export requests
-clientHandler --> jvmClient
-clientHandler --> jvmConnection
-register ..> jvmClient
-register ..> jvmConnection
-jvmConnection <|.. connectionImpl
-agentMain --> launcher
-launcher --> connectionImpl
-connectionImpl --> loaderStore
-connectionImpl --> instrumentation
-instrumentation --> jvmti
-instrumentation --> targetClasses
-loaderStore --> targetLoaders
-launchMain --> transformer
-transformer --> targetClasses : remove attach blockers
-@enduml
-
 ## protocol
 
 Shared packet, model and protocol helper classes used by both the desktop UI and
@@ -168,16 +94,6 @@ Typical consumers:
 - `explorer`, which sends commands and renders responses.
 - `agent`, which receives commands from the desktop process and returns runtime
   information from the target JVM.
-
-Key documentation entry points:
-
-- `Protocol` centralizes Kryo registration so both endpoints share the same
-  packet and RMI contract.
-- `JvmClient` models callbacks from the agent to the desktop process.
-- `JvmConnection` models operations requested by the desktop process and
-  executed inside the target JVM.
-- `LoadedClass`, `ClassContent`, `ClassFields` and `PatchResult` are the main
-  data carriers shown by UI workflows.
 
 ## agent
 
@@ -194,11 +110,6 @@ The agent is responsible for:
 - Reporting errors back through protocol packets instead of leaking UI concepts
   into the target process.
 
-Important classes include `JvmExplorerAgent` for attach bootstrap,
-`ClientLauncher` for outbound connection startup, `JvmConnectionImpl` for
-protocol operations, `InstrumentationHelper` for JVM inspection/redefinition and
-`ClassLoaderStore` for stable class-loader identity.
-
 ## launch-agent
 
 Helper launcher code used when starting Java processes with the required agent
@@ -208,11 +119,6 @@ Explorer can start child JVMs without attach-blocking flags like
 
 This module is intentionally small and separate from the runtime agent because it
 executes before the normal attach connection exists.
-
-Its documentation is intentionally focused on the transformer path:
-`LaunchPatchAgent` installs the transformer, `LaunchPatchClassFileTransformer`
-selects the classes to patch and `LaunchPatchClassVisitor` /
-`LaunchPatchMethodVisitor` rewrite launch arguments.
 
 ## explorer
 
@@ -228,17 +134,6 @@ The explorer module coordinates the user-facing workflow:
 - Display source, bytecode, disassembly and decompiled views.
 - Compile or assemble user edits and send the resulting bytecode back to the
   target JVM.
-
-Important package groups:
-
-- `agent`: local attach helpers such as `RunningJvm`, `RunningJvmLoader`,
-  `AgentPreparer` and `JdkPatcher`.
-- `net`: KryoNet server, connection tracking and packet stream coordination.
-- `fx`: JavaFX controllers and cells for JVM, class and field views.
-- `bytecode`: decompiler, disassembler, assembler and in-memory compiler
-  support.
-- `helper`: UI workflow helpers for dialogs, export, patching and class/field
-  tree construction.
 
 The UI keeps long-running attach, compile and network operations outside the
 JavaFX application thread so generated documentation should be read with the
