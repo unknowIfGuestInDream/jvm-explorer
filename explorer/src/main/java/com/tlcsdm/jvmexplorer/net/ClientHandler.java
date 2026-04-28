@@ -25,6 +25,24 @@ import java.util.stream.Collectors;
 
 /**
  * Provides the client handler implementation used by the com.tlcsdm.jvmexplorer.net package.
+ *
+ * @startuml
+ * participant "KryoNet Server" as Server
+ * participant "ClientHandler" as Handler
+ * participant "JvmClientImpl" as Client
+ * participant "JavaFX workflow" as UI
+ *
+ * Server -> Handler: connected(connection)
+ * Handler -> Client: track connection and install onRegister callback
+ * Client -> Handler: register(RunningJvm)
+ * Handler -> UI: onConnect(runningJvm, connection)
+ * UI -> Handler: getLoadedClasses / getClassContent / replaceClass
+ * Handler -> Client: find registered client for RunningJvm
+ * Client --> Handler: JvmConnection or packet stream
+ * Handler --> UI: protocol result
+ * Server -> Handler: disconnected(connection)
+ * Handler -> UI: onDisconnect(runningJvm)
+ * @enduml
  */
 public class ClientHandler extends Listener {
 

@@ -16,6 +16,24 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides the agent preparer implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ *
+ * @startuml
+ * start
+ * :loadAgentOnFileSystem(resourcePath);
+ * if (resource already cached?) then (yes)
+ *   :return cached absolute path;
+ * else (no)
+ *   if (resourcePath exists locally?) then (yes)
+ *     :cache and return local file;
+ *   else (no)
+ *     :create application agents directory;
+ *     :copy bundled agent resource;
+ *     :overwrite stable agent file;
+ *     :cache and return extracted path;
+ *   endif
+ * endif
+ * stop
+ * @enduml
  */
 public class AgentPreparer {
 

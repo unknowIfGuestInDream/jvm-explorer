@@ -25,6 +25,23 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Provides the jvm connection impl implementation used by the com.tlcsdm.jvmexplorer.agent package.
+ *
+ * @startuml
+ * actor Explorer
+ * participant "JvmConnectionImpl" as Connection
+ * participant "ClassLoaderStore" as Loaders
+ * participant "InstrumentationHelper" as Instrumentation
+ * participant "Target JVM classes" as Target
+ *
+ * Explorer -> Connection: request class content / fields / patch
+ * Connection -> Loaders: resolve ClassLoaderDescriptor
+ * Loaders --> Connection: selected ClassLoader
+ * Connection -> Instrumentation: locate class and execute operation
+ * Instrumentation -> Target: read bytes, inspect fields, execute or redefine
+ * Target --> Instrumentation: runtime result
+ * Instrumentation --> Connection: protocol object
+ * Connection --> Explorer: ClassContent, ClassFields, ExecutionResult or PatchResult
+ * @enduml
  */
 public class JvmConnectionImpl implements JvmConnection {
 

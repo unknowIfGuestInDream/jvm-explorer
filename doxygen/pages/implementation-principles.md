@@ -130,6 +130,32 @@ to that port as a client. This lets the desktop process own connection tracking,
 UI updates and reconnect/cleanup behavior while the target JVM only maintains
 the client connection required for the active session.
 
+@startuml
+skinparam sequenceMessageAlign center
+actor User
+participant "JavaFX controllers" as UI
+participant "RunningJvmLoader" as Loader
+participant "AgentPreparer" as Preparer
+participant "JvmExplorerServer" as Server
+participant "Attach API" as Attach
+participant "JvmExplorerAgent" as Agent
+participant "ClientLauncher" as Launcher
+participant "ClientHandler" as Handler
+
+User -> UI: select local JVM
+UI -> Loader: list RunningJvm descriptors
+UI -> Server: start on open local port
+UI -> Preparer: loadAgentOnFileSystem(agent.jar)
+Preparer --> UI: stable agent path
+UI -> Attach: loadAgent(path, port/config)
+Attach -> Agent: agentmain(args, instrumentation)
+Agent -> Launcher: launch executor + client
+Launcher -> Server: connect back over KryoNet
+Server -> Handler: connected(connection)
+Launcher -> Handler: register(identifier)
+Handler --> UI: onConnect(RunningJvm, connection)
+@enduml
+
 ## Client and agent responsibilities
 
 - The desktop client owns JavaFX views, user actions, bytecode display,
@@ -226,6 +252,36 @@ Patch results should include a success flag and a message that can be shown
 directly in the UI because failures often depend on JVM constraints such as
 schema changes, missing classes or unmodifiable targets.
 
+@startuml
+skinparam activity {
+  BackgroundColor #EFF6FF
+  BorderColor #93C5FD
+}
+start
+:User opens a LoadedClass;
+:Explorer requests original class bytes;
+if (Edit mode?) then (Java source)
+  :Decompiler renders Java source;
+  :User edits source;
+  :Javac compiles in memory;
+  :RemoteJavacBytecodeProvider resolves\nmissing target classes through the agent;
+else (Bytecode text)
+  :Disassembler renders bytecode text;
+  :User edits bytecode;
+  :Assembler produces replacement bytes;
+endif
+:PatchHelper sends LoadedClass + bytes;
+:JvmConnectionImpl resolves class loader and class;
+if (class found and redefinable?) then (yes)
+  :InstrumentationHelper.redefineClass;
+  :Return successful PatchResult;
+  :Refresh class content and fields;
+else (no)
+  :Return failed PatchResult with JVM message;
+endif
+stop
+@enduml
+
 Export and bulk patch workflows reuse the same lower-level primitives. Exporting
 asks the agent for original class bytes and writes them from the desktop process.
 Bulk replacement reads class entries from a user-provided JAR, maps paths back
@@ -253,6 +309,33 @@ objects to be modified without bringing those objects into the desktop process.
 Because JVM access rules and final-field behavior differ by runtime, write
 failures should be reported as normal operation results rather than treated as
 desktop UI failures.
+
+@startuml
+skinparam sequenceMessageAlign center
+participant "CurrentClassController" as UI
+participant "FieldTreeHelper" as Tree
+participant "ClientHandler" as Client
+participant "JvmConnectionImpl" as Connection
+participant "ClassLoaderStore" as Store
+participant "InstrumentationHelper" as Helper
+participant "Target objects" as Target
+
+UI -> Tree: expand field node
+Tree -> Client: getFields(RunningJvm, ClassFieldPath)
+Client -> Connection: getFields(path)
+Connection -> Store: lookup(path.classLoaderDescriptor)
+Store --> Connection: ClassLoader
+Connection -> Helper: getClassFields(loader, fieldKeys)
+Helper -> Target: reflect class/static/nested field path
+Target --> Helper: field descriptors
+Helper --> Connection: ClassFields
+Connection --> Client: ClassFields
+Client --> Tree: render child field nodes
+UI -> Client: setField(path, newValue)
+Client -> Connection: setField(path, newValue)
+Connection -> Helper: setObject(loader, fieldKeys, newValue)
+Helper -> Target: update final field in path
+@enduml
 
 ## Launch-time patching
 
@@ -303,7 +386,7 @@ need to trace implementation details across the client, agent and shared
 protocol modules.
 
 Class pages should document APIs and relationships without embedding complete
-Java source listings inline. Source browsing may remain available through
-dedicated source pages, but the class reference should stay focused on
-navigation, member summaries, inheritance, collaboration diagrams and concise
-implementation notes.
+Java source listings inline. File/source list pages are disabled so generated
+navigation stays focused on project packages, classes, topics, module diagrams,
+member summaries, inheritance, collaboration diagrams and concise implementation
+notes instead of documentation helper files or copied Java source.

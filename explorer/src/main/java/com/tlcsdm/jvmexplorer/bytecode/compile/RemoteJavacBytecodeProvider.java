@@ -13,6 +13,23 @@ import java.util.stream.Collectors;
 
 /**
  * Provides the remote javac bytecode provider implementation used by the com.tlcsdm.jvmexplorer.bytecode.compile package.
+ *
+ * @startuml
+ * participant "Javac file manager" as Javac
+ * participant "RemoteJavacBytecodeProvider" as Provider
+ * participant "ClientHandler" as Client
+ * participant "Agent" as Agent
+ *
+ * Javac -> Provider: list(packageName, recurse)
+ * Provider -> Provider: filter loaded classpath by package
+ * loop for each matching LoadedClass
+ *   Provider -> Client: getClassBytes(runningJvm, loadedClass)
+ *   Client -> Agent: request class bytes through protocol
+ *   Agent --> Client: byte[]
+ *   Client --> Provider: byte[]
+ *   Provider --> Javac: ProvidedJavaFileObject
+ * end
+ * @enduml
  */
 public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 
