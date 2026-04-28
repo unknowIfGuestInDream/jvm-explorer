@@ -14,20 +14,43 @@ outside of the target JVM.
 
 @dot
 digraph architecture {
-  graph [rankdir=LR, bgcolor="transparent", fontname="Helvetica"];
-  node [shape=box, style="rounded,filled", fontname="Helvetica", color="#bfdbfe", fillcolor="#eff6ff"];
-  edge [fontname="Helvetica", color="#2563eb"];
+  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica", compound=true, nodesep=0.35, ranksep=0.55];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="#bfdbfe", fillcolor="#eff6ff", margin="0.16,0.10"];
+  edge [fontname="Helvetica", fontsize=10, color="#2563eb", arrowsize=0.75];
 
-  explorer [label="explorer\nJavaFX desktop client"];
-  protocolClient [label="protocol\nshared packets"];
-  agent [label="agent\nruntime JVM operations"];
-  target [label="target JVM\nloaded classes and fields"];
-  launch [label="launch-agent\nstartup patching"];
+  subgraph cluster_desktop {
+    label="explorer desktop process";
+    color="#93c5fd";
+    style="rounded,dashed";
+    ui [label="JavaFX UI\nJVM tree, class tabs, field editor"];
+    tools [label="local tools\ndecompile, compile, assemble, export"];
+    server [label="KryoNet server\nconnection registry + progress"];
+    prepare [label="agent preparation\nstable JAR + port/log arguments"];
+  }
 
-  explorer -> protocolClient [label="request / response"];
-  protocolClient -> agent [label="KryoNet packets"];
-  agent -> target [label="Instrumentation API"];
-  launch -> target [label="optional startup patch"];
+  protocol [label="protocol module\nserializable DTOs + RMI interfaces\nJvmClient / JvmConnection", fillcolor="#ecfeff", color="#67e8f9"];
+
+  subgraph cluster_target {
+    label="selected target JVM";
+    color="#cbd5e1";
+    style="rounded,dashed";
+    agent [label="agent module\nexecutor, packet processor, client connection"];
+    inspect [label="Instrumentation + reflection\nclass bytes, fields, execute, redefine"];
+    runtime [label="application runtime\nclass loaders, loaded classes, fields", fillcolor="#f8fafc", color="#cbd5e1"];
+  }
+
+  launch [label="launch-agent\npatch ProcessBuilder startup\nremove DisableAttachMechanism", fillcolor="#fffbeb", color="#f59e0b"];
+
+  ui -> server [label="user operations"];
+  ui -> tools [label="source / bytecode edits"];
+  prepare -> agent [label="Attach API loads agentmain"];
+  server -> protocol [label="registers Kryo types"];
+  protocol -> agent [label="requests"];
+  agent -> protocol [label="responses / streams"];
+  agent -> inspect [label="delegates operations"];
+  inspect -> runtime [label="inspect / execute / redefine"];
+  tools -> protocol [label="replacement bytes"];
+  launch -> runtime [label="optional startup patch"];
 }
 @enddot
 
@@ -39,6 +62,13 @@ digraph architecture {
 | `agent` | Target JVM process | Runtime inspection, class byte access, method execution and class redefinition. |
 | `launch-agent` | JVM startup helper | Compatibility setup for JVMs that must be patched during launch. |
 | `protocol` | Shared library | Request/response packets, descriptors and configuration models used by both sides. |
+
+Each module has a narrow dependency direction. The desktop module may depend on
+editor, compiler, JavaFX and attach APIs because it runs in the user's process.
+The runtime agent should stay small and avoid UI dependencies because every class
+it loads becomes part of the target JVM. The protocol module is deliberately
+plain Java data and service interfaces so both sides can register the same Kryo
+types without loading desktop-only or agent-only implementation classes.
 
 ## Runtime attachment flow
 
@@ -58,19 +88,47 @@ The attachment flow is intentionally staged:
 
 @dot
 digraph attach_flow {
-  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica"];
-  node [shape=box, style="rounded,filled", fontname="Helvetica", color="#cbd5e1", fillcolor="#f8fafc"];
-  edge [fontname="Helvetica", color="#475569"];
+  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica", nodesep=0.45, ranksep=0.55];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#cbd5e1", fillcolor="#f8fafc"];
+  edge [fontname="Helvetica", fontsize=9, color="#475569", arrowsize=0.75];
 
-  discover [label="Discover local JVMs"];
-  prepare [label="Prepare agent configuration"];
-  attach [label="Attach through Java Attach API"];
-  connect [label="Agent connects to explorer server"];
-  inspect [label="Inspect, execute or patch classes"];
+  discover [label="1. Discover local JVMs\nVirtualMachine descriptors"];
+  select [label="2. User selects target\nRunningJvm context"];
+  server [label="3. Start explorer server\nchoose open port"];
+  prepare [label="4. Prepare agent artifact\nstable JAR path + log file"];
+  attach [label="5. Attach API loadAgent\nport and config arguments"];
+  bootstrap [label="6. agentmain bootstrap\nlogger + executor service"];
+  connect [label="7. Agent connects back\nregister JvmClient/JvmConnection"];
+  operate [label="8. Runtime operations\nclass list, bytes, fields, execute"];
+  patch [label="9. Optional redefinition\ncompile/assemble result bytes"];
+  cleanup [label="10. Disconnect cleanup\nUI state + agent resources"];
 
-  discover -> prepare -> attach -> connect -> inspect;
+  discover -> select -> server -> prepare -> attach -> bootstrap -> connect -> operate;
+  operate -> patch [label="when user saves changes"];
+  operate -> cleanup [label="connection closes"];
+  patch -> operate [label="refresh affected class"];
 }
 @enddot
+
+The explorer side prepares the agent JAR on the local filesystem before attach.
+It prefers a stable application-owned location for extracted agent artifacts so
+the file path is predictable and the same binary can be reused across repeated
+attach attempts. The attach arguments carry the explorer server port, logging
+configuration and any other runtime settings the agent needs before it can
+connect back.
+
+After `agentmain` is invoked, the agent parses the configuration, installs a
+file-backed logger and creates a small scheduled executor. Network startup,
+packet processing and periodic housekeeping are run through that executor rather
+than on JVM attach threads. If agent startup fails, the agent closes its logger
+and shuts the executor down so a failed attach does not leave avoidable
+resources in the target process.
+
+The network direction is intentionally reversed after attach: the explorer opens
+a local KryoNet server on an available port and the newly loaded agent connects
+to that port as a client. This lets the desktop process own connection tracking,
+UI updates and reconnect/cleanup behavior while the target JVM only maintains
+the client connection required for the active session.
 
 ## Client and agent responsibilities
 
@@ -86,6 +144,19 @@ independent from JavaFX. New features should place presentation and workflow
 logic in `explorer`, target-JVM operations in `agent`, startup instrumentation
 in `launch-agent` and shared data contracts in `protocol`.
 
+In practice this means that UI controllers should call helper or network classes
+instead of using instrumentation directly. The `explorer` module should convert
+user actions into high-level operations such as "load class content", "replace
+class" or "set field". The `agent` module should implement those operations
+against `Instrumentation`, reflection and class loaders, then return compact
+protocol objects that the UI can render.
+
+Target-JVM code should be conservative about class loading. Class lookup first
+uses the selected class loader context, then falls back to already loaded classes
+reported by `Instrumentation`. This avoids forcing new application classes to
+initialize merely because they appeared in the UI and keeps class-loader-specific
+views accurate.
+
 ## Protocol boundary
 
 The protocol module contains shared request, response and descriptor classes.
@@ -98,6 +169,25 @@ small serializable data carriers that describe the requested operation and its
 result. Keeping protocol objects simple makes the agent easier to load in
 different JVMs and prevents JavaFX or editor implementation details from leaking
 into the target process.
+
+Kryo registration is centralized in the protocol module. When adding a request,
+response or descriptor type, register it in one place and keep registration order
+stable for both endpoints. Prefer explicit value objects and primitive arrays
+over arbitrary object graphs because the write and object buffers are finite and
+large target classes or field values can otherwise exceed transport limits.
+
+The bidirectional API is split by responsibility:
+
+- `JvmClient` represents callbacks from the target JVM to the explorer, such as
+  registration and packet stream completion.
+- `JvmConnection` represents operations the explorer can request from the
+  target JVM, such as reading class bytes, enumerating loaded classes, changing
+  fields, executing a compiled callable or redefining class bytes.
+
+Large result sets should be streamed in bounded packets instead of sent as one
+object. Loaded class enumeration, for example, batches classes before sending
+them to the client so the UI can receive progress updates and the transport does
+not need to allocate one very large message.
 
 ## Bytecode and source editing flow
 
@@ -119,6 +209,60 @@ The editing pipeline is intentionally client-heavy:
 Keeping compilation, assembly and decompilation in the client avoids loading
 editor-only dependencies into the target JVM.
 
+The client has two editing pipelines:
+
+- Java source is decompiled for display, edited by the user and compiled through
+  the JDK compiler API. A custom file manager can ask the attached JVM for class
+  bytes so the compiler can resolve types that are already loaded in the target
+  process.
+- Bytecode text is produced and consumed by assembler/disassembler helpers. This
+  path bypasses Java source reconstruction and is useful when decompiled source
+  cannot be compiled back into an equivalent class.
+
+Both pipelines converge on the same patch step. The explorer sends replacement
+bytes with the selected `LoadedClass` descriptor. The agent resolves the class in
+the matching class loader and delegates to `Instrumentation.redefineClasses`.
+Patch results should include a success flag and a message that can be shown
+directly in the UI because failures often depend on JVM constraints such as
+schema changes, missing classes or unmodifiable targets.
+
+Export and bulk patch workflows reuse the same lower-level primitives. Exporting
+asks the agent for original class bytes and writes them from the desktop process.
+Bulk replacement reads class entries from a user-provided JAR, maps paths back
+to binary class names and applies replacement requests one class at a time so
+errors can identify the class that failed.
+
+## Class and field inspection details
+
+The agent filters loaded classes before sending them to the UI. Arrays,
+primitive pseudo-classes, unmodifiable classes and classes loaded from the agent
+artifact are skipped so the class tree focuses on application classes that can be
+inspected or patched. Each remaining class is paired with a class-loader
+descriptor so two classes with the same binary name can still be distinguished.
+
+Field inspection is path-based. The UI represents nested field navigation as a
+sequence of class and field keys. The agent walks that path with reflection,
+using `setAccessible(true)` where possible, and returns compact field
+descriptors instead of arbitrary live objects. Large arrays and long string
+representations are capped before they cross the protocol boundary to reduce
+the chance of exhausting network buffers or making the UI unresponsive.
+
+Field writes follow the same path resolution. The final field in the path is
+updated inside the target JVM, allowing static values and reachable nested
+objects to be modified without bringing those objects into the desktop process.
+Because JVM access rules and final-field behavior differ by runtime, write
+failures should be reported as normal operation results rather than treated as
+desktop UI failures.
+
+## Launch-time patching
+
+The launch agent exists for cases where attach must be enabled before the target
+application is fully running. It installs a transformer around `ProcessBuilder`
+startup behavior so child Java commands can remove attach-blocking flags such as
+`-XX:+DisableAttachMechanism`. Keep this module isolated from the runtime agent:
+launch-time patching is about making future JVMs attachable, while the runtime
+agent is about inspecting and modifying an already selected JVM.
+
 ## UI responsiveness and diagnostics
 
 JavaFX controllers should keep blocking work off the application thread. JVM
@@ -132,9 +276,34 @@ surface actionable messages in the UI when user action is required. Logs should
 preserve the selected JVM, class name and requested operation so issues can be
 traced without changing protocol contracts.
 
+Connection state should be owned by the explorer server. When an agent connects,
+the client handler associates the connection with a `RunningJvm`; when it
+disconnects, UI state for that JVM should be cleared or marked inactive. Long
+operations should expose progress callbacks where possible, especially class
+enumeration and bulk patch/export flows.
+
+Diagnostics should distinguish between three failure scopes:
+
+- Desktop failures: missing local JDK tools, compiler errors, unreadable JARs or
+  JavaFX workflow problems.
+- Transport failures: closed KryoNet connections, packet streams ending early or
+  serialization errors.
+- Target JVM failures: class-loader mismatches, inaccessible fields, linkage
+  errors, unmodifiable classes or redefine limitations.
+
+Keeping these scopes visible in logs and result messages helps users understand
+whether they should change the edited class, reconnect to the JVM or inspect the
+desktop environment.
+
 ## Documentation expectations
 
 The Doxygen output intentionally includes public, protected, package-private and
 private members. This makes the generated reference useful for maintainers who
 need to trace implementation details across the client, agent and shared
 protocol modules.
+
+Class pages should document APIs and relationships without embedding complete
+Java source listings inline. Source browsing may remain available through
+dedicated source pages, but the class reference should stay focused on
+navigation, member summaries, inheritance, collaboration diagrams and concise
+implementation notes.

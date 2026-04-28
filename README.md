@@ -187,4 +187,4 @@ Note: this uses the Java Attach API so any limitations will apply here.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](https://github.com/unknowIfGuestInDream/jvm-explorer/blob/master/LICENSE).
