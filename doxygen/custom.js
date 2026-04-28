@@ -1,4 +1,61 @@
 (function () {
+    function hideTopicsNavigation() {
+        document.querySelectorAll("#main-nav a, #nav-tree a").forEach((anchor) => {
+            if (anchor.textContent.trim() !== "Topics") {
+                return;
+            }
+            const removable = anchor.closest("li") || anchor.closest(".item");
+            if (removable) {
+                removable.remove();
+            }
+        });
+    }
+
+    function watchTopicsNavigation() {
+        const targets = [document.getElementById("main-nav"), document.getElementById("nav-tree")]
+            .filter(Boolean);
+        targets.forEach((target) => {
+            const observer = new MutationObserver(() => hideTopicsNavigation());
+            observer.observe(target, { childList: true, subtree: true });
+        });
+        hideTopicsNavigation();
+    }
+
+    function renderPlantUmlAsImages() {
+        document.querySelectorAll(".plantumlgraph object[data$='.svg']").forEach((object) => {
+            const source = object.getAttribute("data");
+            if (!source) {
+                return;
+            }
+            const image = document.createElement("img");
+            image.src = source;
+            image.alt = "PlantUML diagram";
+            image.loading = "lazy";
+            image.style.maxWidth = "100%";
+            image.style.height = "auto";
+            object.replaceWith(image);
+        });
+    }
+
+    function makeFileListNamesClickable() {
+        document.querySelectorAll("table.directory td.entry").forEach((entryCell) => {
+            const iconLink = entryCell.querySelector(":scope > a[href] > span.icondoc");
+            const fileNameElement = entryCell.querySelector(":scope > b");
+            if (!iconLink || !fileNameElement) {
+                return;
+            }
+            const href = iconLink.parentElement.getAttribute("href");
+            if (!href) {
+                return;
+            }
+            const linkedName = document.createElement("a");
+            linkedName.className = "el";
+            linkedName.href = href;
+            linkedName.textContent = fileNameElement.textContent;
+            fileNameElement.replaceChildren(linkedName);
+        });
+    }
+
     function addSidebarToggle() {
         const sideNav = document.getElementById("side-nav");
         const docContent = document.getElementById("doc-content");
@@ -57,6 +114,9 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+        watchTopicsNavigation();
+        renderPlantUmlAsImages();
+        makeFileListNamesClickable();
         addSidebarToggle();
     });
 }());
