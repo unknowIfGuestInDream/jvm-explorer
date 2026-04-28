@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * participant "Target JVM agent" as Agent
  *
  * Javac -> Provider: list(packageName, recurse)
- * loop each matched LoadedClass
+ * loop for each matched LoadedClass
  *   Provider -> Client: getClassBytes(runningJvm, loadedClass)
  *   Client -> Agent: request class bytes
  *   Agent --> Client: byte[]

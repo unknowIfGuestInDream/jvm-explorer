@@ -34,14 +34,14 @@ import java.util.stream.Collectors;
  *
  * Server -> Handler: connected(connection)
  * Handler -> Client: track connection + set onRegister
- * Client -> Handler: register(runningJvm)
- * Handler -> UI: onConnect(runningJvm, connection)
+ * Client -> Handler: register(RunningJvm)
+ * Handler -> UI: onConnect(RunningJvm, connection)
  * UI -> Handler: getLoadedClasses/getClassContent/replaceClass
  * Handler -> Client: route request by RunningJvm
  * Client --> Handler: JvmConnection result/packet stream
  * Handler --> UI: protocol response
  * Server -> Handler: disconnected(connection)
- * Handler -> UI: onDisconnect(runningJvm)
+ * Handler -> UI: onDisconnect(RunningJvm)
  * @enduml
  */
 public class ClientHandler extends Listener {
