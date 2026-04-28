@@ -8,10 +8,11 @@ patching support and shared wire protocol can evolve independently.
 digraph "JVM Explorer module relationships" {
     graph [
         bgcolor="transparent",
-        rankdir=LR,
-        nodesep=0.6,
-        ranksep=0.8,
-        fontname="Inter"
+        rankdir=TB,
+        nodesep=0.35,
+        ranksep=0.55,
+        fontname="Inter",
+        compound=true
     ];
     node [
         shape=box,
@@ -20,39 +21,64 @@ digraph "JVM Explorer module relationships" {
         fillcolor="#eff6ff",
         fontname="Inter",
         fontsize=11,
-        margin="0.14,0.10"
+        margin="0.16,0.10"
     ];
     edge [
         color="#64748b",
         fontname="Inter",
         fontsize=10,
-        arrowsize=0.8
+        arrowsize=0.75
     ];
 
-    explorer [
-        label="explorer\nJavaFX desktop UI"
-    ];
+    subgraph cluster_desktop {
+        label="explorer module - desktop process";
+        color="#93c5fd";
+        fontname="Inter";
+        style="rounded,dashed";
+        explorer_ui [label="JavaFX controllers\nJVM list, class tree, field views"];
+        editor_tools [label="local editing tools\ndecompiler, compiler, assembler, export"];
+        server [label="KryoNet server\nconnections, packet streams, progress"];
+        agent_preparer [label="AgentPreparer\nextracts stable agent JAR + attach args"];
+    }
+
     protocol [
-        label="protocol\nshared packets and models"
-    ];
-    agent [
-        label="agent\nruntime JVM instrumentation"
-    ];
-    launch_agent [
-        label="launch-agent\nProcessBuilder launch patch"
-    ];
-    target [
-        label="target JVM\nloaded classes and fields",
-        fillcolor="#f8fafc",
-        color="#cbd5e1"
+        label="protocol module\nshared DTOs + RMI interfaces\nLoadedClass, ClassFields, PatchResult",
+        fillcolor="#ecfeff",
+        color="#67e8f9"
     ];
 
-    explorer -> protocol [label="serializes requests"];
-    agent -> protocol [label="serializes responses"];
-    explorer -> agent [label="attaches and connects"];
-    agent -> target [label="inspects / patches"];
-    explorer -> launch_agent [label="packages patch agent"];
-    launch_agent -> target [label="removes disabled attach flags"];
+    subgraph cluster_target {
+        label="target JVM process";
+        color="#cbd5e1";
+        fontname="Inter";
+        style="rounded,dashed";
+        agent [label="agent module\nagentmain, ClientLauncher, packet handlers"];
+        classloaders [label="ClassLoaderStore\nkeeps class-loader identity stable"];
+        instrumentation [label="InstrumentationHelper\nclass bytes, fields, execute, redefine"];
+        target [label="loaded application classes\nbytecode, static fields, runtime state", fillcolor="#f8fafc", color="#cbd5e1"];
+    }
+
+    subgraph cluster_launch {
+        label="launch-agent module - startup helper";
+        color="#fde68a";
+        fontname="Inter";
+        style="rounded,dashed";
+        launch_agent [label="ProcessBuilder transformer\nremoves attach-blocking flags", fillcolor="#fffbeb", color="#f59e0b"];
+    }
+
+    explorer_ui -> server [label="requests + progress callbacks"];
+    explorer_ui -> editor_tools [label="view, edit, compile, export"];
+    explorer_ui -> agent_preparer [label="select JVM and attach"];
+    server -> protocol [label="registers packet types"];
+    protocol -> agent [label="KryoNet packets / RMI calls"];
+    agent -> protocol [label="responses and packet streams"];
+    agent_preparer -> agent [label="Attach API loads agentmain"];
+    agent -> classloaders [label="stores selected loaders"];
+    agent -> instrumentation [label="delegates target operations"];
+    classloaders -> instrumentation [label="loader descriptors"];
+    instrumentation -> target [label="inspect / execute / redefine"];
+    editor_tools -> protocol [label="replacement bytes"];
+    launch_agent -> target [label="startup patch before attach"];
 }
 @enddot
 

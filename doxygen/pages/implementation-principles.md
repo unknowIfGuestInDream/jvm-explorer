@@ -14,20 +14,43 @@ outside of the target JVM.
 
 @dot
 digraph architecture {
-  graph [rankdir=LR, bgcolor="transparent", fontname="Helvetica"];
-  node [shape=box, style="rounded,filled", fontname="Helvetica", color="#bfdbfe", fillcolor="#eff6ff"];
-  edge [fontname="Helvetica", color="#2563eb"];
+  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica", compound=true, nodesep=0.35, ranksep=0.55];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="#bfdbfe", fillcolor="#eff6ff", margin="0.16,0.10"];
+  edge [fontname="Helvetica", fontsize=10, color="#2563eb", arrowsize=0.75];
 
-  explorer [label="explorer\nJavaFX desktop client"];
-  protocolClient [label="protocol\nshared packets"];
-  agent [label="agent\nruntime JVM operations"];
-  target [label="target JVM\nloaded classes and fields"];
-  launch [label="launch-agent\nstartup patching"];
+  subgraph cluster_desktop {
+    label="explorer desktop process";
+    color="#93c5fd";
+    style="rounded,dashed";
+    ui [label="JavaFX UI\nJVM tree, class tabs, field editor"];
+    tools [label="local tools\ndecompile, compile, assemble, export"];
+    server [label="KryoNet server\nconnection registry + progress"];
+    prepare [label="agent preparation\nstable JAR + port/log arguments"];
+  }
 
-  explorer -> protocolClient [label="request / response"];
-  protocolClient -> agent [label="KryoNet packets"];
-  agent -> target [label="Instrumentation API"];
-  launch -> target [label="optional startup patch"];
+  protocol [label="protocol module\nserializable DTOs + RMI interfaces\nJvmClient / JvmConnection", fillcolor="#ecfeff", color="#67e8f9"];
+
+  subgraph cluster_target {
+    label="selected target JVM";
+    color="#cbd5e1";
+    style="rounded,dashed";
+    agent [label="agent module\nexecutor, packet processor, client connection"];
+    inspect [label="Instrumentation + reflection\nclass bytes, fields, execute, redefine"];
+    runtime [label="application runtime\nclass loaders, loaded classes, fields", fillcolor="#f8fafc", color="#cbd5e1"];
+  }
+
+  launch [label="launch-agent\npatch ProcessBuilder startup\nremove DisableAttachMechanism", fillcolor="#fffbeb", color="#f59e0b"];
+
+  ui -> server [label="user operations"];
+  ui -> tools [label="source / bytecode edits"];
+  prepare -> agent [label="Attach API loads agentmain"];
+  server -> protocol [label="registers Kryo types"];
+  protocol -> agent [label="requests"];
+  agent -> protocol [label="responses / streams"];
+  agent -> inspect [label="delegates operations"];
+  inspect -> runtime [label="inspect / execute / redefine"];
+  tools -> protocol [label="replacement bytes"];
+  launch -> runtime [label="optional startup patch"];
 }
 @enddot
 
@@ -65,17 +88,25 @@ The attachment flow is intentionally staged:
 
 @dot
 digraph attach_flow {
-  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica"];
-  node [shape=box, style="rounded,filled", fontname="Helvetica", color="#cbd5e1", fillcolor="#f8fafc"];
-  edge [fontname="Helvetica", color="#475569"];
+  graph [rankdir=TB, bgcolor="transparent", fontname="Helvetica", nodesep=0.45, ranksep=0.55];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="#cbd5e1", fillcolor="#f8fafc"];
+  edge [fontname="Helvetica", fontsize=9, color="#475569", arrowsize=0.75];
 
-  discover [label="Discover local JVMs"];
-  prepare [label="Prepare agent configuration"];
-  attach [label="Attach through Java Attach API"];
-  connect [label="Agent connects to explorer server"];
-  inspect [label="Inspect, execute or patch classes"];
+  discover [label="1. Discover local JVMs\nVirtualMachine descriptors"];
+  select [label="2. User selects target\nRunningJvm context"];
+  server [label="3. Start explorer server\nchoose open port"];
+  prepare [label="4. Prepare agent artifact\nstable JAR path + log file"];
+  attach [label="5. Attach API loadAgent\nport and config arguments"];
+  bootstrap [label="6. agentmain bootstrap\nlogger + executor service"];
+  connect [label="7. Agent connects back\nregister JvmClient/JvmConnection"];
+  operate [label="8. Runtime operations\nclass list, bytes, fields, execute"];
+  patch [label="9. Optional redefinition\ncompile/assemble result bytes"];
+  cleanup [label="10. Disconnect cleanup\nUI state + agent resources"];
 
-  discover -> prepare -> attach -> connect -> inspect;
+  discover -> select -> server -> prepare -> attach -> bootstrap -> connect -> operate;
+  operate -> patch [label="when user saves changes"];
+  operate -> cleanup [label="connection closes"];
+  patch -> operate [label="refresh affected class"];
 }
 @enddot
 
