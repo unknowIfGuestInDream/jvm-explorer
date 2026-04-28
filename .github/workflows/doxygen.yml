@@ -28,6 +28,10 @@ jobs:
       - name: Generate documentation
         run: doxygen doxygen/Doxyfile
 
+      - name: Show generated PlantUML diagrams
+        run: |
+          find docs-gen/html -maxdepth 1 -name 'inline_umlgraph_*.svg' -print || true
+
       - name: Upload documentation
         uses: actions/upload-artifact@v4
         with:

@@ -181,6 +181,7 @@ pipeline {
                             unset PLANTUML_JAR_PATH
                         fi
                         doxygen doxygen/Doxyfile
+                        find docs-gen/html -maxdepth 1 -name 'inline_umlgraph_*.svg' -print || true
                     '''
                     sh 'cd docs-gen && zip -qr ../doxygen-docs.zip html'
                 }
