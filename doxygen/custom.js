@@ -11,9 +11,12 @@
         });
     }
 
+    function getNavigationRoots() {
+        return [document.getElementById("main-nav"), document.getElementById("nav-tree")].filter(Boolean);
+    }
+
     function watchTopicsNavigation() {
-        const targets = [document.getElementById("main-nav"), document.getElementById("nav-tree")]
-            .filter(Boolean);
+        const targets = getNavigationRoots();
         targets.forEach((target) => {
             const observer = new MutationObserver(() => hideTopicsNavigation());
             observer.observe(target, { childList: true, subtree: true });
@@ -22,6 +25,7 @@
     }
 
     function renderPlantUmlAsImages() {
+        // Doxygen titles typically look like "Project: Page Title", so strip the project prefix when present.
         const pageTitle = document.querySelector(".headertitle .title")?.textContent?.trim()
             || document.title.replace(/^.*:\s*/, "").trim()
             || "current page";
