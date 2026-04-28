@@ -1,9 +1,6 @@
 (function () {
     function hideTopicsNavigation() {
-        document.querySelectorAll("#main-nav a, #nav-tree a").forEach((anchor) => {
-            if (anchor.textContent.trim() !== "Topics") {
-                return;
-            }
+        document.querySelectorAll("#main-nav a[href='topics.html'], #nav-tree a[href$='topics.html']").forEach((anchor) => {
             const removable = anchor.closest("li") || anchor.closest(".item");
             if (removable) {
                 removable.remove();
@@ -28,7 +25,7 @@
         // Doxygen titles typically look like "Project: Page Title", so strip the project prefix when present.
         const pageTitle = document.querySelector(".headertitle .title")?.textContent?.trim()
             || document.title.replace(/^.*:\s*/, "").trim()
-            || "current page";
+            || "this documentation page";
         document.querySelectorAll(".plantumlgraph object[data$='.svg']").forEach((object) => {
             const source = object.getAttribute("data");
             if (!source) {
