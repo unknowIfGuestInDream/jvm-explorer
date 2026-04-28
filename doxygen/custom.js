@@ -22,6 +22,9 @@
     }
 
     function renderPlantUmlAsImages() {
+        const pageTitle = document.querySelector(".headertitle .title")?.textContent?.trim()
+            || document.title.replace(/^.*:\s*/, "").trim()
+            || "current page";
         document.querySelectorAll(".plantumlgraph object[data$='.svg']").forEach((object) => {
             const source = object.getAttribute("data");
             if (!source) {
@@ -29,7 +32,7 @@
             }
             const image = document.createElement("img");
             image.src = source;
-            image.alt = "PlantUML diagram";
+            image.alt = `PlantUML diagram for ${pageTitle}`;
             image.loading = "lazy";
             image.style.maxWidth = "100%";
             image.style.height = "auto";
@@ -39,6 +42,8 @@
 
     function makeFileListNamesClickable() {
         document.querySelectorAll("table.directory td.entry").forEach((entryCell) => {
+            // Doxygen renders file rows as an icon link followed by a bold file name.
+            // Reuse the generated source-page href so the visible file name is clickable too.
             const iconLink = entryCell.querySelector(":scope > a[href] > span.icondoc");
             const fileNameElement = entryCell.querySelector(":scope > b");
             if (!iconLink || !fileNameElement) {
