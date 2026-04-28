@@ -25,23 +25,6 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Provides the jvm connection impl implementation used by the com.tlcsdm.jvmexplorer.agent package.
- *
- * @startuml
- * actor Explorer
- * participant "JvmConnectionImpl" as Connection
- * participant "ClassLoaderStore" as LoaderStore
- * participant "InstrumentationHelper" as Helper
- * participant "Target JVM" as Target
- *
- * Explorer -> Connection: getClassContent/getFields/redefineClass/executeCallable
- * Connection -> LoaderStore: lookup(classLoaderDescriptor)
- * LoaderStore --> Connection: classLoader
- * Connection -> Helper: run operation with classLoader context
- * Helper -> Target: inspect class, fields, execute, redefine
- * Target --> Helper: operation result
- * Helper --> Connection: protocol result object
- * Connection --> Explorer: ClassContent/ClassFields/PatchResult/ExecutionResult
- * @enduml
  */
 public class JvmConnectionImpl implements JvmConnection {
 
@@ -53,6 +36,28 @@ public class JvmConnectionImpl implements JvmConnection {
 
 	/**
 	 * Returns the class content value.
+	 *
+	 * The diagram below is specific to the {@code getClassContent} workflow.
+	 *
+	 * @startuml
+	 * title getClassContent flow
+	 * actor Explorer
+	 * participant "JvmConnectionImpl" as Connection
+	 * participant "ClassLoaderStore" as LoaderStore
+	 * participant "InstrumentationHelper" as Helper
+	 * participant "Target JVM" as Target
+	 *
+	 * Explorer -> Connection: getClassContent(loadedClass)
+	 * Connection -> LoaderStore: lookup(classLoaderDescriptor)
+	 * LoaderStore --> Connection: classLoader
+	 * Connection -> Helper: getClassByName(name, classLoader)
+	 * Helper -> Target: resolve target class
+	 * Target --> Helper: Class
+	 * Connection -> Helper: getClassBytes(klass)
+	 * Connection -> Helper: getClassFields(klass, null)
+	 * Helper --> Connection: bytecode and fields
+	 * Connection --> Explorer: ClassContent
+	 * @enduml
 	 */
 	@Override
 	public ClassContent getClassContent(LoadedClass loadedClass) {

@@ -1,46 +1,4 @@
 (function () {
-    function hideTopicsNavigation() {
-        document.querySelectorAll("#main-nav a[href='topics.html'], #nav-tree a[href$='topics.html']").forEach((anchor) => {
-            const removable = anchor.closest("li") || anchor.closest(".item");
-            if (removable) {
-                removable.remove();
-            }
-        });
-    }
-
-    function getNavigationRoots() {
-        return [document.getElementById("main-nav"), document.getElementById("nav-tree")].filter(Boolean);
-    }
-
-    function watchTopicsNavigation() {
-        const targets = getNavigationRoots();
-        targets.forEach((target) => {
-            const observer = new MutationObserver(() => hideTopicsNavigation());
-            observer.observe(target, { childList: true, subtree: true });
-        });
-        hideTopicsNavigation();
-    }
-
-    function renderPlantUmlAsImages() {
-        // Doxygen titles typically look like "Project: Page Title", so strip the project prefix when present.
-        const pageTitle = document.querySelector(".headertitle .title")?.textContent?.trim()
-            || document.title.replace(/^.*:\s*/, "").trim()
-            || "this documentation page";
-        document.querySelectorAll(".plantumlgraph object[data$='.svg']").forEach((object) => {
-            const source = object.getAttribute("data");
-            if (!source) {
-                return;
-            }
-            const image = document.createElement("img");
-            image.src = source;
-            image.alt = `PlantUML diagram for ${pageTitle}`;
-            image.loading = "lazy";
-            image.style.maxWidth = "100%";
-            image.style.height = "auto";
-            object.replaceWith(image);
-        });
-    }
-
     function makeFileListNamesClickable() {
         document.querySelectorAll("table.directory td.entry").forEach((entryCell) => {
             // Doxygen renders file rows as an icon link followed by a bold file name.
@@ -120,8 +78,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        watchTopicsNavigation();
-        renderPlantUmlAsImages();
         makeFileListNamesClickable();
         addSidebarToggle();
     });

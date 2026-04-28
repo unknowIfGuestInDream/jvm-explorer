@@ -7,8 +7,6 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
 import java.lang.reflect.Array;
 
 /**
- * @ingroup Protocol_Module
- *
  * Provides the protocol implementation used by the com.tlcsdm.jvmexplorer.protocol package.
  */
 public class Protocol {

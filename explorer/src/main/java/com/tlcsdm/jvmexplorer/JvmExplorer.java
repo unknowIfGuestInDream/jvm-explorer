@@ -23,8 +23,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * @ingroup Explorer_Module
- *
  * Provides the jvm explorer implementation used by the com.tlcsdm.jvmexplorer package.
  */
 public class JvmExplorer extends Application {
