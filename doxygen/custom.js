@@ -1,40 +1,4 @@
 (function () {
-    function renderPlantUmlAsImages() {
-        document.querySelectorAll(".plantumlgraph object[data$='.svg']").forEach((object) => {
-            const source = object.getAttribute("data");
-            if (!source) {
-                return;
-            }
-            const image = document.createElement("img");
-            image.src = source;
-            image.alt = "PlantUML diagram";
-            image.loading = "lazy";
-            image.style.maxWidth = "100%";
-            image.style.height = "auto";
-            object.replaceWith(image);
-        });
-    }
-
-    function makeFileListNamesClickable() {
-        document.querySelectorAll("table.directory td.entry").forEach((entryCell) => {
-            // Doxygen renders file rows as an icon link followed by a bold file name.
-            // Reuse the generated source-page href so the visible file name is clickable too.
-            const iconLink = entryCell.querySelector(":scope > a[href] > span.icondoc");
-            const fileNameElement = entryCell.querySelector(":scope > b");
-            if (!iconLink || !fileNameElement) {
-                return;
-            }
-            const href = iconLink.parentElement.getAttribute("href");
-            if (!href) {
-                return;
-            }
-            const linkedName = document.createElement("a");
-            linkedName.className = "el";
-            linkedName.href = href;
-            linkedName.textContent = fileNameElement.textContent;
-            fileNameElement.replaceChildren(linkedName);
-        });
-    }
 
     function addSidebarToggle() {
         const sideNav = document.getElementById("side-nav");
@@ -94,8 +58,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        renderPlantUmlAsImages();
-        makeFileListNamesClickable();
         addSidebarToggle();
     });
 }());

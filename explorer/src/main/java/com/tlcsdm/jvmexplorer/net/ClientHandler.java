@@ -116,23 +116,6 @@ public class ClientHandler extends Listener {
 
 	/**
 	 * Handles the connected callback.
-	 *
-	 * @startuml
-	 * participant "KryoNet server" as Server
-	 * participant "ClientHandler" as Handler
-	 * participant "JvmClientImpl" as Client
-	 * participant "Explorer workflow" as UI
-	 *
-	 * Server -> Handler: connected(connection)
-	 * Handler -> Client: track connection
-	 * Handler -> Client: set onRegister callback
-	 * Client -> Handler: register(RunningJvm)
-	 * Handler -> UI: onConnect(RunningJvm, connection)
-	 * UI -> Handler: getLoadedClasses/getClassContent/replaceClass
-	 * Handler -> Client: route request by RunningJvm
-	 * Client --> Handler: JvmConnection result/packet stream
-	 * Handler --> UI: protocol response
-	 * @enduml
 	 */
 	@Override
 	public void connected(Connection connection) {

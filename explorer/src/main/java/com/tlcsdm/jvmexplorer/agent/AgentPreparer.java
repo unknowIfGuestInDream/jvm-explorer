@@ -27,24 +27,6 @@ public class AgentPreparer {
 
 	/**
 	 * Loads agent on file system.
-	 *
-	 * @startuml
-	 * start
-	 * :loadAgentOnFileSystem(resourcePath);
-	 * if (path cached?) then (yes)
-	 *   :return cached absolute path;
-	 * else (no)
-	 *   if (resource exists in working directory?) then (yes)
-	 *     :cache and return local file;
-	 *   else (no)
-	 *     :create app agents directory;
-	 *     :read agent resource bytes;
-	 *     :overwrite stable agent file;
-	 *     :cache and return extracted path;
-	 *   endif
-	 * endif
-	 * stop
-	 * @enduml
 	 */
 	public String loadAgentOnFileSystem(String agentResourcePath) {
 		return loadedAgentFiles.computeIfAbsent(agentResourcePath, k -> {

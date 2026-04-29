@@ -26,22 +26,6 @@ public class RemoteJavacBytecodeProvider implements JavacBytecodeProvider {
 
 	/**
 	 * Handles the list request.
-	 *
-	 * @startuml
-	 * participant "Javac compiler" as Javac
-	 * participant "RemoteJavacBytecodeProvider" as Provider
-	 * participant "ClientHandler" as Client
-	 * participant "Target JVM agent" as Agent
-	 *
-	 * Javac -> Provider: list(packageName, recurse)
-	 * loop for each matched LoadedClass
-	 *   Provider -> Client: getClassBytes(runningJvm, loadedClass)
-	 *   Client -> Agent: request class bytes
-	 *   Agent --> Client: byte[]
-	 *   Client --> Provider: byte[]
-	 *   Provider --> Javac: ProvidedJavaFileObject
-	 * end
-	 * @enduml
 	 */
 	@Override
 	public List<JavaFileObject> list(String packageName, boolean recurse) {
