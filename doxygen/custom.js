@@ -1,4 +1,5 @@
 (function () {
+
     function addSidebarToggle() {
         const sideNav = document.getElementById("side-nav");
         const docContent = document.getElementById("doc-content");
