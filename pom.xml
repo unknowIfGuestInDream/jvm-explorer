@@ -47,7 +47,7 @@
         <javafx.version>21.0.11</javafx.version>
         <kryonet.version>2.22.0-RC1</kryonet.version>
         <slf4j.version>2.0.18</slf4j.version>
-        <logback.version>1.5.34</logback.version>
+        <logback.version>1.5.37</logback.version>
         <junit.version>6.1.0</junit.version>
         <mockito.version>5.23.0</mockito.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
