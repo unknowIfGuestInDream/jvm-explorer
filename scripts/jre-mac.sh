@@ -37,12 +37,12 @@ else
   macArch="x64"
 fi
 
-macApi="https://api.adoptium.net/v3/binary/version/jdk-21.0.10%2B7/mac/${macArch}/jdk/hotspot/normal/eclipse?project=jdk"
+macApi="https://api.adoptium.net/v3/binary/version/jdk-21.0.12.1%2B1/mac/${macArch}/jdk/hotspot/normal/eclipse?project=jdk"
 curl -L -o jdk.tar.gz "$macApi"
 tar -xzf jdk.tar.gz
 
 # On macOS the Adoptium JDK archive extracts to jdk-VERSION/Contents/Home/
-jdkHome="jdk-21.0.10+7/Contents/Home"
+jdkHome="jdk-21.0.12.1+1/Contents/Home"
 
 # Create a custom minimal runtime using jlink instead of shipping the full JDK
 "$jdkHome/bin/jlink" \
@@ -56,4 +56,4 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-rm -rf jdk-21.0.10+7 jdk.tar.gz
+rm -rf jdk-21.0.12.1+1 jdk.tar.gz
