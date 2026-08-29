@@ -71,6 +71,14 @@ jobs:
           & ..\scripts\jre.ps1
           Pop-Location
 
+      - name: Package jpackage artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & .\scripts\jpackage.ps1
+          Move-Item -Path "dist/jvm-explorer-windows-$env:APP_VERSION.zip" -Destination "dist/jvm-explorer-jpackage-windows-$env:APP_VERSION.zip" -Force
+          Write-Host "Created dist/jvm-explorer-jpackage-windows-$env:APP_VERSION.zip"
+
       - name: Package artifact (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -103,6 +111,14 @@ jobs:
           cd staging
           bash ../scripts/jre.sh
           cd ..
+
+      - name: Package jpackage artifact (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          bash scripts/jpackage.sh
+          mv "dist/jvm-explorer-linux-${APP_VERSION}.zip" "dist/jvm-explorer-jpackage-linux-${APP_VERSION}.zip"
+          echo "Created dist/jvm-explorer-jpackage-linux-${APP_VERSION}.zip"
 
       - name: Package artifact (Linux)
         if: runner.os == 'Linux'
@@ -146,6 +162,14 @@ jobs:
           cd staging
           bash ../scripts/jre-mac.sh
           cd ..
+
+      - name: Package jpackage artifact (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          bash scripts/jpackage-mac.sh
+          mv "dist/jvm-explorer-mac-${ARCH_LABEL}-${APP_VERSION}.zip" "dist/jvm-explorer-jpackage-mac-${ARCH_LABEL}-${APP_VERSION}.zip"
+          echo "Created dist/jvm-explorer-jpackage-mac-${ARCH_LABEL}-${APP_VERSION}.zip"
 
       - name: Package artifact (macOS)
         if: runner.os == 'macOS'
