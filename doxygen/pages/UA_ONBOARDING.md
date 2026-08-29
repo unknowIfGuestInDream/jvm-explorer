@@ -81,4 +81,4 @@
 - `agent/.../InstrumentationHelper.java`、`JvmConnectionImpl.java`
 - `protocol/.../AgentConfiguration.java`、`helper/VerboseScheduledExecutorService.java`
 - `Jenkinsfile`、`pom.xml`、`explorer/pom.xml`
-- `explorer/src/main/resources/jdk_patch/instrument-32.dll`（二进制资源，行数统计导致的误报，实际为 JNI 库，无需阅读）
+- `explorer/src/main/resources/jdk_patch/instrument-32.dll`（二进制资源，实际为 JNI 库，无需阅读）
