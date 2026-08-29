@@ -6,3 +6,4 @@ generated Java API reference.
 - @subpage module-guide
 - @subpage implementation-principles
 - @subpage package-list
+- @subpage onboarding
