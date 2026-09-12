@@ -46,7 +46,7 @@
         <asm.version>9.10.1</asm.version>
         <javafx.version>21.0.12</javafx.version>
         <kryonet.version>2.22.0-RC1</kryonet.version>
-        <slf4j.version>2.0.18</slf4j.version>
+        <slf4j.version>2.0.19</slf4j.version>
         <logback.version>1.6.3</logback.version>
         <junit.version>6.1.3</junit.version>
         <mockito.version>5.23.0</mockito.version>
