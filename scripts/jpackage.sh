@@ -50,7 +50,7 @@ echo "[1/4] Checking prerequisites..."
 
 if ! command -v jpackage &> /dev/null; then
   echo "jpackage not found on PATH." >&2
-  echo "jpackage is included with JDK 14 and later. Make sure JDK 21 is installed and JAVA_HOME/bin is on PATH." >&2
+  echo "jpackage is included with JDK 14 and later. Make sure JDK 25 is installed and JAVA_HOME/bin is on PATH." >&2
   exit 1
 fi
 echo "  jpackage: found"

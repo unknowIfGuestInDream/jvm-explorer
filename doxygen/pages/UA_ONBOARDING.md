@@ -8,7 +8,7 @@
 |---|---|
 | 名称 | jvm-explorer |
 | 描述 | 一个用于浏览本地运行 JVM 中已加载类文件的 Java 桌面应用，支持查看反编译/反汇编字节码、修改方法实现、远程执行代码与导出类文件 |
-| 语言 | Java 21（另有 FXML、CSS、XML、properties、Markdown、Groovy/Jenkinsfile） |
+| 语言 | Java 25（另有 FXML、CSS、XML、properties、Markdown、Groovy/Jenkinsfile） |
 | 框架/技术 | JavaFX、JUnit、Jenkins、Maven、ASM、Vineflower、KryoNet |
 | 结构 | Maven 多模块：`protocol`、`agent`、`launch-agent`、`explorer` |
 

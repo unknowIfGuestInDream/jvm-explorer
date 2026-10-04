@@ -123,7 +123,7 @@ Notes:
 ## Getting Started
 
 There are two ways to run the application. Download a provided platform-specific package, or build and run it yourself.
-This application requires **Java 21+** and can attach to JVMs running Java 7+.
+This application requires **Java 25+** and can attach to JVMs running Java 7+.
 
 ### Download Package:
 
@@ -144,7 +144,7 @@ git clone https://github.com/unknowIfGuestInDream/jvm-explorer.git
 cd jvm-explorer
 ```
 
-3) Build with Maven (Java 21+, Maven 3.9+)
+3) Build with Maven (Java 25+, Maven 3.9+)
 
 ```bash
 mvn clean install -DskipTests
@@ -160,7 +160,7 @@ mvn -pl explorer javafx:run
 
 Two logs files `application.log` and `agent.log` are created at `[User Home]/jvm-explorer/logs`
 
-* Must run the application with a Java version of at least Java 21
+* Must run the application with a Java version of at least Java 25
 * Must attach to a JVM running a Java version of at least Java 7
 * Must attach to a JVM running the same architecture - a 32-bit JVM must attach to a 32-bit JVM
 * May have to attach to a JVM that the same user started

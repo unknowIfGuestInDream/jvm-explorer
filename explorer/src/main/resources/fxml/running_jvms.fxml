@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <TitledPane xmlns:fx="http://javafx.com/fxml/1" fx:id="jvmsTitlePane" animated="false" collapsible="false"
             maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%ui.runningJvms"
-            xmlns="http://javafx.com/javafx/21"
+            xmlns="http://javafx.com/javafx/25"
             fx:controller="com.tlcsdm.jvmexplorer.fx.jvms.RunningJvmsController">
     <content>
         <VBox prefHeight="200.0" prefWidth="100.0">

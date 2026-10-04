@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.fxmisc.richtext.CodeArea?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-      minWidth="-Infinity" prefWidth="900.0" xmlns="http://javafx.com/javafx/21"
+      minWidth="-Infinity" prefWidth="900.0" xmlns="http://javafx.com/javafx/25"
       fx:controller="com.tlcsdm.jvmexplorer.fx.method.ModifyMethodController">
     <children>
         <GridPane hgap="10.0" vgap="10.0">
