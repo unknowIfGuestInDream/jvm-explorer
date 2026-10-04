@@ -52,7 +52,7 @@ Write-Host "`n[1/4] Checking prerequisites..." -ForegroundColor Cyan
 if (-not (Get-Command jpackage -ErrorAction SilentlyContinue)) {
     throw @"
 jpackage not found on PATH.
-jpackage is included with JDK 14 and later. Make sure JDK 21 is installed and JAVA_HOME/bin is on PATH.
+jpackage is included with JDK 14 and later. Make sure JDK 25 is installed and JAVA_HOME/bin is on PATH.
 "@
 }
 Write-Host "  jpackage: found" -ForegroundColor Gray
